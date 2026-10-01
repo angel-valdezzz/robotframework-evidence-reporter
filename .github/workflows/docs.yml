@@ -21,6 +21,7 @@ jobs:
       - run: pip install poetry==2.5.1
       - run: poetry install --no-interaction
       - run: poetry run python scripts/demo.py
+      - run: poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
       - run: poetry run mkdocs build --strict
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

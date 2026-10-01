@@ -2,7 +2,20 @@
 
 ## GitHub Pages
 
-El workflow `docs.yml` construye MkDocs Material y genera la demo HTML desde Python. Publica mediante GitHub Actions. Configura **Settings → Pages → Source: GitHub Actions**.
+El workflow `docs.yml` genera la demo HTML y la referencia de keywords con Libdoc desde los docstrings de la librería, y después construye MkDocs Material. Publica mediante GitHub Actions. Configura **Settings → Pages → Source: GitHub Actions**.
+
+### Generar la documentación localmente
+
+Desde la raíz del proyecto:
+
+```bash
+poetry run python scripts/demo.py
+poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
+poetry run mkdocs build --strict
+poetry run mkdocs serve
+```
+
+Abre `/keywords/` para acceder a la referencia o `/reference/keywords.html` para consultar Libdoc directamente. El HTML generado se publica en Pages, pero no se versiona: cada compilación lo reconstruye desde el código. Al cambiar una keyword, actualiza su docstring; no mantengas otra tabla de firmas en MkDocs.
 
 ## PyPI
 
