@@ -2,20 +2,19 @@
 
 Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera el HTML después, desde CLI o Python.
 
-[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Documentación de keywords](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
+[PyPI](https://pypi.org/project/robotframework-evidence-reporter/) · [Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Documentación de keywords](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
 ## Estado de publicación
 
-El código, la documentación y la demo HTML están publicados. La publicación en PyPI se ejecuta mediante GitHub Actions y requiere el Trusted Publisher configurado en la cuenta del propietario. Por ahora se puede instalar desde una revisión Git fija o construir el wheel desde el repositorio.
+La versión 0.1.0 está publicada en [PyPI](https://pypi.org/project/robotframework-evidence-reporter/). El código, la documentación y la demo HTML también están publicados. Las nuevas versiones se publican mediante GitHub Actions con Trusted Publishing.
 
 ## Instalación
 
 ```bash
-# Disponible después de la primera publicación en PyPI
 pip install robotframework-evidence-reporter
 poetry add robotframework-evidence-reporter
 
-# Instalación desde el código publicado mientras tanto
+# Instalación alternativa desde el repositorio
 pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@main"
 ```
 
