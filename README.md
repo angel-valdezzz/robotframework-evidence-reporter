@@ -16,7 +16,7 @@ pip install robotframework-evidence-reporter
 poetry add robotframework-evidence-reporter
 
 # Instalación desde el código publicado mientras tanto
-pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@ad7d2bd2d5c4a3c05a1238399d3e7c1ea8290f0b"
+pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@c52e2e0e050358a2a8135529b5edb16af8bb68c0"
 ```
 
 Python 3.12 o superior y Robot Framework 7. Para capturar páginas o elementos instala también SeleniumLibrary. La librería reutiliza su navegador activo: no abre otra sesión ni depende de un navegador concreto.
