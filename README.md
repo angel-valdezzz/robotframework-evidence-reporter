@@ -124,6 +124,8 @@ rf-evidence build results/evidence --output reports --formats html,pdf,docx --ma
 
 HTML sigue siendo el formato predeterminado. PDF y Word conservan el resumen del caso, metadatos, estado final, evidencias directas, hitos, mensajes y advertencias. Las imágenes completas se ajustan sin recortar, con un máximo de dos capturas por página. Los formatos de impresión son documentos estáticos; las pestañas y controles interactivos pertenecen al HTML.
 
+Cada paso se presenta en un marco propio con cabecera de color y numeración dentro de su bloque. Los hitos usan violeta; PASS verde, FAIL y ERROR rojo, WARN, SKIP e INCOMPLETE ámbar, e INFO azul, con la misma paleta del HTML. El estado general también se destaca en el resumen.
+
 `--max-image-width` reduce el ancho conservando la proporción y sin ampliar imágenes pequeñas. `--image-quality` acepta valores 1–100 y comprime la imagen exportada como WebP; PDF y DOCX la convierten a PNG para compatibilidad de sus motores. Sin estas opciones se conserva la resolución original. Los JSON y capturas originales nunca se modifican.
 
 ### Combinar ejecución y reejecución
