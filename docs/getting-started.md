@@ -4,8 +4,8 @@ Registra una captura en un caso de Robot y genera el HTML al terminar. Necesitas
 
 ## 1. Instala la librería
 
-!!! note "Publicación en PyPI pospuesta"
-    Por ahora instala desde la revisión Git publicada. Los comandos de PyPI estarán disponibles después de la primera publicación.
+!!! note "Instalación desde fuente"
+    Hasta que se confirme la primera publicación en PyPI, instala desde la revisión Git publicada. También puedes instalar el wheel generado por el workflow de publicación.
 
 === "Poetry"
 
@@ -30,7 +30,7 @@ Guarda este ejemplo como `evidence.robot`. Usa `BROWSER:chrome` para abrir una v
 ```robotframework linenums="1" hl_lines="3 15"
 *** Settings ***
 Library    SeleniumLibrary
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 Test Teardown    Close All Browsers
 
 *** Variables ***

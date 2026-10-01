@@ -1,5 +1,8 @@
 name: Publish to PyPI
 on:
+  push:
+    branches: [main]
+    paths: [pyproject.toml]
   release:
     types: [published]
   workflow_dispatch:
@@ -29,4 +32,11 @@ jobs:
       - run: poetry install --no-interaction
       - run: poetry run python -m unittest discover -s tests -v
       - run: poetry build
+      - name: Validate installed wheel
+        run: |
+          poetry run python scripts/check_wheel.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-distributions
+          path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1

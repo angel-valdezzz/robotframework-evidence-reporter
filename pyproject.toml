@@ -17,7 +17,10 @@ Repository = "https://github.com/angel-valdezzz/robotframework-evidence-reporter
 rf-evidence = "rf_evidence_reporter.cli:main"
 
 [tool.poetry]
-packages = [{include = "rf_evidence_reporter", from = "src"}]
+packages = [
+    {include = "rf_evidence_reporter", from = "src"},
+    {include = "EvidenceReporter", from = "src"},
+]
 include = ["src/rf_evidence_reporter/templates/*.html"]
 
 [tool.poetry.group.dev.dependencies]

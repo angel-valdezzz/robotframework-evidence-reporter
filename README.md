@@ -2,11 +2,11 @@
 
 Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera el HTML después, desde CLI o Python.
 
-[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Keywords (Libdoc)](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
+[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Documentación de keywords](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
 ## Estado de publicación
 
-El código, la documentación y la demo HTML están publicados. La primera publicación en PyPI está pendiente de completar la autenticación del propietario; el navegador no respondió al preparar ese paso. Por ahora se puede instalar desde una revisión Git fija o construir el wheel desde el repositorio.
+El código, la documentación y la demo HTML están publicados. La publicación en PyPI se ejecuta mediante GitHub Actions y requiere el Trusted Publisher configurado en la cuenta del propietario. Por ahora se puede instalar desde una revisión Git fija o construir el wheel desde el repositorio.
 
 ## Instalación
 
@@ -26,7 +26,7 @@ Python 3.12 o superior y Robot Framework 7. Para capturar páginas o elementos i
 ```robotframework
 *** Settings ***
 Library    SeleniumLibrary
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 
 *** Test Cases ***
 Registrar Cliente
@@ -83,7 +83,7 @@ poetry run robocop check tests examples
 poetry run python -m unittest discover -s tests -v
 poetry run python scripts/validate.py
 poetry run python scripts/demo.py
-poetry run python -m robot.libdoc --name "Evidence Reporter" rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
+poetry run python -m robot.libdoc --name "Evidence Reporter" EvidenceReporter docs/reference/keywords.html
 poetry run mkdocs build --strict
 poetry build
 ```
@@ -94,7 +94,7 @@ El HTML incluye imágenes, CSS y JavaScript sin recursos externos. Su visualizad
 
 ## Publicación
 
-GitHub Actions valida los cambios. `main` publica MkDocs y la demo en GitHub Pages. Una release `vX.Y.Z`, cuya versión coincida con el paquete, publica wheel y sdist en PyPI mediante Trusted Publishing. Consulta `docs/publishing.md` para el registro inicial del publisher.
+GitHub Actions valida los cambios. `main` publica MkDocs y la demo en GitHub Pages. Un cambio de `pyproject.toml` en `main`, o una release `vX.Y.Z` cuya versión coincida con el paquete, publica wheel y sdist en PyPI mediante Trusted Publishing. Consulta `docs/publishing.md` para el registro inicial del publisher.
 
 Licencia MIT.
 

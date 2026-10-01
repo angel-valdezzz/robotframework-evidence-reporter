@@ -28,7 +28,7 @@ class EvidenceReporter:
     ``milestone_id`` pertenecen directamente al caso.
 
     = Importación =
-    | Library | rf_evidence_reporter.EvidenceReporter | output_dir=${OUTPUTDIR}/evidence | strict=${False} |
+    | Library | EvidenceReporter | output_dir=${OUTPUTDIR}/evidence | strict=${False} |
 
     = Argumentos comunes de captura =
     - ``title``: título de negocio visible en el reporte.

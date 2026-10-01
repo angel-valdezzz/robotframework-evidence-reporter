@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Validación de evidencias explícitas, estados y aislamiento por caso.
 
-Library          rf_evidence_reporter.EvidenceReporter
+Library          EvidenceReporter
 
 
 *** Test Cases ***
