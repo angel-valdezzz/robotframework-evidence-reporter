@@ -96,3 +96,16 @@ El HTML incluye imágenes, CSS y JavaScript sin recursos externos. Su visualizad
 GitHub Actions valida los cambios. `main` publica MkDocs y la demo en GitHub Pages. Una release `vX.Y.Z`, cuya versión coincida con el paquete, publica wheel y sdist en PyPI mediante Trusted Publishing. Consulta `docs/publishing.md` para el registro inicial del publisher.
 
 Licencia MIT.
+
+## Estatus de evidencia y presentación
+
+Las cuatro keywords de captura aceptan `status=INFO` (por defecto), `PASS`, `WARN` o `FAIL`. No aceptan `SKIP`; un valor inválido produce `INVALID_CAPTURE_STATUS`. El estatus describe la evidencia y no modifica el resultado de Robot. Si la captura falla, se registra una advertencia independientemente del estatus solicitado.
+
+```robotframework
+Capture Page Evidence    Error mostrado por la aplicación    status=FAIL
+Capture Element Evidence    css:.confirmation    Alta confirmada    status=PASS
+```
+
+El HTML tiene pestañas **Resumen**, **Pasos** y **Logs**. Resumen muestra una sola insignia de estatus de ejecución (`SKIP` en amarillo). Pasos presenta capturas e hitos; sus logs son plegables. Logs agrupa mensajes y advertencias en bloques plegables, con bordes por nivel y fondo neutro. El switch permite elegir modo claro u oscuro; conserva la preferencia cuando el navegador permite almacenamiento local.
+
+Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria se indica al pie y el JSON conserva el timestamp completo. Los registros anteriores sin estatus de captura se presentan como `INFO`. No hay botón de impresión; PDF y Word quedan para una etapa posterior.

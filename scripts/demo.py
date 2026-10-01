@@ -43,6 +43,7 @@ for status, filename in [
         "Confirmación de registro",
         kind="capture",
         capture_type="page",
+        status="PASS",
         milestone_id=milestone,
         description="Captura ilustrativa del resultado esperado.",
         image="registration.png",
@@ -51,6 +52,24 @@ for status, filename in [
         url="https://example.test/clientes",
         page_title="Portal ficticio",
     )
+    for evidence_status, title in [
+        ("INFO", "Contexto del formulario"),
+        ("WARN", "Datos que requieren revisión"),
+        ("FAIL", "Error documentado en la aplicación"),
+    ]:
+        recorder.event(
+            title,
+            kind="capture",
+            capture_type="element",
+            status=evidence_status,
+            description="Ejemplo visual de estatus de evidencia; no determina el resultado del caso.",
+            image="registration.png",
+            width=1200,
+            height=650,
+            milestone_id=milestone,
+        )
+    recorder.event("Mensaje de negocio que requiere revisión.", level="WARN", milestone_id=milestone)
+    recorder.event("Error documentado para diagnóstico.", level="ERROR", milestone_id=milestone)
     recorder.event(
         "El escritorio no estaba disponible en esta demostración.",
         kind="capture_warning",
