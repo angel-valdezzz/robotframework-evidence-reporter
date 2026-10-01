@@ -10,6 +10,7 @@ root = Path("results/demo")
 if root.exists():
     shutil.rmtree(root)
 root.mkdir(parents=True)
+Path("docs/demo").mkdir(parents=True, exist_ok=True)
 font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 font = ImageFont.truetype(font_path, 22) if Path(font_path).exists() else ImageFont.load_default(size=22)
 large = ImageFont.truetype(font_path, 34) if Path(font_path).exists() else ImageFont.load_default(size=34)
