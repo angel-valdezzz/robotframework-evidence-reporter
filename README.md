@@ -2,7 +2,7 @@
 
 Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera el HTML después, desde CLI o Python.
 
-[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
+[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Keywords (Libdoc)](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
 ## Estado de publicación
 
@@ -83,7 +83,7 @@ poetry run robocop check tests examples
 poetry run python -m unittest discover -s tests -v
 poetry run python scripts/validate.py
 poetry run python scripts/demo.py
-poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
+poetry run python -m robot.libdoc --name "Evidence Reporter" rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
 poetry run mkdocs build --strict
 poetry build
 ```
@@ -102,10 +102,7 @@ Licencia MIT.
 
 Las cuatro keywords de captura aceptan `status=INFO` (por defecto), `PASS`, `WARN` o `FAIL`. No aceptan `SKIP`; un valor inválido produce `INVALID_CAPTURE_STATUS`. El estatus describe la evidencia y no modifica el resultado de Robot. Si la captura falla, se registra una advertencia independientemente del estatus solicitado.
 
-```robotframework
-Capture Page Evidence    Error mostrado por la aplicación    status=FAIL
-Capture Element Evidence    css:.confirmation    Alta confirmada    status=PASS
-```
+Consulta los [ejemplos completos con estatus de evidencia](https://angel-valdezzz.github.io/robotframework-evidence-reporter/guide/#estatus-de-evidencia-y-presentacion).
 
 El HTML tiene pestañas **Resumen**, **Pasos** y **Logs**. Resumen muestra una sola insignia de estatus de ejecución (`SKIP` en amarillo). Pasos presenta capturas e hitos; sus logs son plegables. Logs agrupa mensajes y advertencias en bloques plegables, con bordes por nivel y fondo neutro. El switch permite elegir modo claro u oscuro; conserva la preferencia cuando el navegador permite almacenamiento local.
 

@@ -7,7 +7,7 @@ Estos son HTML reales, autocontenidos, generados por el mismo motor del paquete.
 - [Abrir reporte omitido](demo/skipped.html)
 - [Abrir ejecución incompleta](demo/incomplete.html)
 
-Pulsa una imagen para ampliarla. Puedes descargar el HTML y abrirlo sin conexión. La demo contiene evidencias directas, dos hitos y una advertencia de captura.
+Pulsa una imagen para ampliarla. Puedes descargar el HTML y abrirlo sin conexión. La demo aprobada contiene evidencias directas, dos hitos y una advertencia de captura. La demo omitida representa un caso saltado desde el inicio: tiene estado y motivo, pero no capturas. Si se omite durante el flujo, se conservan las evidencias anteriores; consulta [casos omitidos](guide.md#casos-omitidos-skip).
 
 El ejemplo `examples/browser.robot` toma imágenes reales de una aplicación local ficticia y se valida con Chrome en el workflow de CI, bajo Xvfb. Sus reportes se conservan como artefactos; no se confunden con las imágenes ilustrativas de estas demos.
 
