@@ -24,6 +24,7 @@ Consultar Portada En Ambos Temas
 Buscar Keywords En La Documentación
     [Documentation]    Comprueba que el índice de búsqueda entrega resultados útiles.
     Click Element    css:label[for="__search"]
+    Wait Until Element Is Visible    css:input[data-md-component="search-query"]
     Input Text    css:input[data-md-component="search-query"]    Capture Page Evidence
     Wait Until Element Is Visible    css:.md-search-result__link
     Element Should Contain    css:.md-search-result__list    Capture
