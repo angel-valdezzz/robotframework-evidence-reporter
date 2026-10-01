@@ -51,7 +51,16 @@ class ExportTests(unittest.TestCase):
         pdf = PdfReader(next(p for p in paths if p.suffix == ".pdf"))
         text = "\n".join(page.extract_text() for page in pdf.pages)
         doc = Document(next(p for p in paths if p.suffix == ".docx"))
-        doc_text = "\n".join(p.text for p in doc.paragraphs)
+        doc_text = "\n".join(
+            [p.text for p in doc.paragraphs]
+            + [
+                p.text
+                for table in doc.tables
+                for row in table.rows
+                for cell in row.cells
+                for p in cell.paragraphs
+            ]
+        )
         for expected in ["Cliente registrado", "Confirmación", "Mensaje de negocio"]:
             self.assertIn(expected, text)
             self.assertIn(expected, doc_text)
@@ -64,6 +73,36 @@ class ExportTests(unittest.TestCase):
             path = output / item["path"]
             self.assertEqual(path.stat().st_size, item["size_bytes"])
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), item["sha256"])
+
+    def test_print_cards_keep_message_levels_and_long_content(self):
+        recorder = EvidenceRecorder(self.root / "run")
+        recorder.start("Estados y mensajes largos", "Portal", "")
+        milestone = recorder.milestone("Validación", "Pasos de negocio")
+        recorder.event("Advertencia", level="WARN", milestone_id=milestone)
+        recorder.event("Error", level="ERROR", milestone_id=milestone)
+        recorder.event("Detalle", description="Detalle extenso " * 800, milestone_id=milestone)
+        recorder.finish("SKIP", 1, "Caso omitido")
+        outputs = build_reports(self.root / "run", self.root / "reports", formats=("pdf", "docx"))
+        pdf = PdfReader(next(p for p in outputs if p.suffix == ".pdf"))
+        text = "\n".join(page.extract_text() for page in pdf.pages)
+        self.assertIn("Paso 1 | WARN | Advertencia", text)
+        self.assertIn("Paso 2 | ERROR | Error", text)
+        self.assertEqual(" ".join(text.split()).count("Detalle extenso"), 800)
+        doc = Document(next(p for p in outputs if p.suffix == ".docx"))
+        from docx.oxml.ns import qn
+
+        cards = {table.cell(0, 0).text: table for table in doc.tables if len(table.columns) == 1}
+        for title, color, fill in [
+            ("Paso 1  |  WARN | Advertencia", "A26000", "FFF3C9"),
+            ("Paso 2  |  ERROR | Error", "C52D4B", "FFE8EE"),
+            ("ESTATUS DE EJECUCIÓN  |  SKIP", "A26000", "FFF3C9"),
+        ]:
+            table = cards[title]
+            border = table._tbl.tblPr.find(qn("w:tblBorders"))
+            self.assertEqual(border.find(qn("w:left")).get(qn("w:color")), color)
+            shading = table.cell(0, 0)._tc.tcPr.find(qn("w:shd"))
+            self.assertEqual(shading.get(qn("w:fill")), fill)
+        self.assertIn("Detalle extenso " * 800, doc.tables[-1].cell(1, 0).text)
 
     def test_resize_keeps_original_and_full_aspect_ratio(self):
         directory = self.case("run")
