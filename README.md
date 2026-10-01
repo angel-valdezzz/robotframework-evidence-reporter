@@ -1,6 +1,6 @@
 # Robot Framework Evidence Reporter
 
-Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera el HTML después, desde CLI o Python.
+Reportes HTML, PDF y Word por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera los documentos después, desde CLI o Python.
 
 [PyPI](https://pypi.org/project/robotframework-evidence-reporter/) · [Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Documentación de keywords](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
@@ -105,10 +105,50 @@ Consulta los [ejemplos completos con estatus de evidencia](https://angel-valdezz
 
 El HTML tiene pestañas **Resumen**, **Pasos** y **Logs**. Resumen muestra una sola insignia de estatus de ejecución (`SKIP` en amarillo). Pasos presenta capturas e hitos; sus logs son plegables. Logs agrupa mensajes y advertencias en bloques plegables, con bordes por nivel y fondo neutro. El switch permite elegir modo claro u oscuro; conserva la preferencia cuando el navegador permite almacenamiento local.
 
-Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria se indica al pie y el JSON conserva el timestamp completo. Los registros anteriores sin estatus de captura se presentan como `INFO`. No hay botón de impresión; PDF y Word quedan para una etapa posterior.
+Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria se indica al pie y el JSON conserva el timestamp completo. Los registros anteriores sin estatus de captura se presentan como `INFO`. No hay botón de impresión; PDF y Word se generan desde la CLI con `--formats pdf docx`.
 
 ## Navegación del reporte
 
 En Pasos, las evidencias directas empiezan plegadas y tienen pestañas Evidencias/Logs del bloque. Los hitos empiezan abiertos; puedes contraerlos individualmente o usar Expandir/Contraer todos los hitos. Los controles globales no modifican el bloque directo.
 
 La documentación comparte logo, colores y temas con el reporte. Consulta [Primera evidencia](https://angel-valdezzz.github.io/robotframework-evidence-reporter/getting-started/) para ejemplos de instalación y ejecución.
+
+## PDF Word merge e inventario de archivos
+
+Genera los formatos que necesites desde los mismos JSON e imágenes de evidencia:
+
+```bash
+rf-evidence build results/evidence --output reports --formats html pdf docx
+rf-evidence build results/evidence --output reports --formats html,pdf,docx --max-image-width 1600 --image-quality 85
+```
+
+HTML sigue siendo el formato predeterminado. PDF y Word conservan el resumen del caso, metadatos, estado final, evidencias directas, hitos, mensajes y advertencias. Las imágenes completas se ajustan sin recortar, con un máximo de dos capturas por página. Los formatos de impresión son documentos estáticos; las pestañas y controles interactivos pertenecen al HTML.
+
+`--max-image-width` reduce el ancho conservando la proporción y sin ampliar imágenes pequeñas. `--image-quality` acepta valores 1–100 y comprime la imagen exportada como WebP; PDF y DOCX la convierten a PNG para compatibilidad de sus motores. Sin estas opciones se conserva la resolución original. Los JSON y capturas originales nunca se modifican.
+
+### Combinar ejecución y reejecución
+
+```bash
+rf-evidence merge results/run/evidence results/rerun/evidence --output results/merged
+rf-evidence build results/merged --output reports --formats html pdf docx
+```
+
+La identidad es la **suite y el nombre completo del caso**. Los nombres deben conservarse entre ejecuciones. La última entrada indicada prevalece, independientemente de su fecha o estado: un último SKIP o INCOMPLETE también reemplaza el resultado anterior. Los casos no reejecutados se conservan. Si una ejecución contiene dos casos con la misma identidad, el merge falla con `AMBIGUOUS_CASE`; usa nombres distintos para cada fila de datos.
+
+Cada resultado conserva los intentos anteriores completos en `attempts`, junto con sus imágenes, y muestra su historial de estados en los tres formatos. El directorio combinado es independiente de las entradas: se pueden mover o retirar las carpetas originales después del merge. La salida debe estar vacía y separada de las entradas.
+
+### Manifest de archivos
+
+Cada `build` genera `manifest.json` con una entrada por caso: ID, suite, nombre, estado, número de intentos y una lista `files` con los reportes, JSON e imágenes originales y de intentos anteriores. Cada archivo incluye ruta relativa al manifiesto, tipo, tamaño en bytes y SHA-256. El inventario referencia los archivos existentes sin duplicarlos. Para mover el conjunto conserva la relación entre las carpetas; los reportes individuales contienen sus imágenes.
+
+Este es el esquema propio de Evidence Reporter para integraciones y subida de evidencias. No es el formato `allure-results` ni se puede enviar directamente a Allure.
+
+```python
+from rf_evidence_reporter import build_reports, merge_results
+
+merge_results(["results/run/evidence", "results/rerun/evidence"], "results/merged")
+paths = build_reports(
+    "results/merged", "reports", formats=("html", "pdf", "docx"),
+    max_image_width=1600, image_quality=85,
+)
+```
