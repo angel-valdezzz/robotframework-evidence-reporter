@@ -1,0 +1,32 @@
+name: Quality and browser evidence
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install poetry==2.5.1
+      - run: poetry install --no-interaction
+      - run: poetry run ruff check src tests scripts
+      - run: poetry run ruff format --check src tests scripts
+      - run: poetry run robocop check tests examples
+      - run: poetry run robocop format --check tests examples
+      - run: poetry run python -m unittest discover -s tests -v
+      - run: poetry run python scripts/validate.py
+      - run: xvfb-run -a poetry run robot --outputdir results/browser examples/browser.robot
+      - if: always()
+        run: poetry run rf-evidence build results/browser-evidence --output results/browser/html
+      - run: poetry run python scripts/demo.py
+      - run: poetry run mkdocs build --strict
+      - run: poetry build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-validation
+          path: results/
+          retention-days: 7

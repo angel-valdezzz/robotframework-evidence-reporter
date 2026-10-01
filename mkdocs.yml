@@ -1,0 +1,27 @@
+site_name: Robot Framework Evidence Reporter
+site_description: Reportes individuales de evidencias de negocio para Robot Framework
+site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
+repo_url: https://github.com/angel-valdezzz/robotframework-evidence-reporter
+repo_name: angel-valdezzz/robotframework-evidence-reporter
+theme:
+  name: material
+  language: es
+  palette:
+    scheme: default
+    primary: teal
+    accent: cyan
+  features:
+    - navigation.sections
+    - content.code.copy
+nav:
+  - Inicio: index.md
+  - Guía de uso: guide.md
+  - Keywords: keywords.md
+  - CLI y Python: generation.md
+  - Paralelo y CI/CD: parallel.md
+  - Demo HTML: demo.md
+  - Publicación: publishing.md
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
