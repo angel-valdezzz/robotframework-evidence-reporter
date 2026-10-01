@@ -23,6 +23,7 @@ jobs:
         run: poetry run rf-evidence build results/browser-evidence --output results/browser/html
       - run: poetry run python scripts/demo.py
       - run: poetry run robot --outputdir results/report-ui tests/report_ui.robot
+      - run: poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
       - run: poetry run mkdocs build --strict
       - name: Verificar documentación en navegador
         run: |

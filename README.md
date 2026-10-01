@@ -83,6 +83,7 @@ poetry run robocop check tests examples
 poetry run python -m unittest discover -s tests -v
 poetry run python scripts/validate.py
 poetry run python scripts/demo.py
+poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
 poetry run mkdocs build --strict
 poetry build
 ```

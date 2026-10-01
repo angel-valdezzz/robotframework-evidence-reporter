@@ -39,6 +39,15 @@ Consultar Ejemplos Por Pestañas
     Click Element    id:tab-steps
     Page Should Contain    Cuentas consultadas
 
+Consultar Referencia Libdoc
+    [Documentation]    Comprueba que MkDocs enlaza la referencia generada de la librería.
+    Go To    http://localhost:8765/keywords/
+    Click Link    Consultar keywords en Libdoc
+    Location Should Be    http://localhost:8765/reference/keywords.html
+    Wait Until Page Contains    Capture Page Evidence
+    Page Should Contain    Create Milestone
+    Page Should Contain    INVALID_CAPTURE_STATUS
+
 
 *** Keywords ***
 Abrir Documentación

@@ -8,3 +8,4 @@ site/
 *.egg-info/
 .pabotsuitenames
 docs/demo/*.html
+docs/reference/*.html
