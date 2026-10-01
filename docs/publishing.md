@@ -10,7 +10,7 @@ Desde la raíz del proyecto:
 
 ```bash
 poetry run python scripts/demo.py
-poetry run python -m robot.libdoc rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
+poetry run python -m robot.libdoc --name "Evidence Reporter" rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
 poetry run mkdocs build --strict
 poetry run mkdocs serve
 ```

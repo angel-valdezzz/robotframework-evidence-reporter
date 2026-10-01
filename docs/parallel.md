@@ -1,7 +1,18 @@
 # Paralelo y CI/CD
 
-```robotframework
+Guarda este caso en `tests/portal.robot`. La línea resaltada configura el directorio de evidencias compartido por los procesos de esta ejecución.
+
+```robotframework linenums="1" hl_lines="3"
+*** Settings ***
+Library    SeleniumLibrary
 Library    rf_evidence_reporter.EvidenceReporter    output_dir=${EXECDIR}/results/evidence
+Test Teardown    Close All Browsers
+
+*** Test Cases ***
+Consultar Portal En Paralelo
+    Open Browser    https://example.com    headlesschrome
+    Wait Until Element Is Visible    css:h1
+    Capture Page Evidence    Portal disponible    status=PASS
 ```
 
 ```bash

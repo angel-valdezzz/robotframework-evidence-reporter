@@ -27,7 +27,7 @@ Estos comandos instalan la rama `main`. En un proyecto de equipo, fija una revis
 
 Guarda este ejemplo como `evidence.robot`. Usa `BROWSER:chrome` para abrir una ventana o conserva `headlesschrome` para ejecutarlo sin interfaz visible.
 
-```robotframework
+```robotframework linenums="1" hl_lines="3 15"
 *** Settings ***
 Library    SeleniumLibrary
 Library    rf_evidence_reporter.EvidenceReporter

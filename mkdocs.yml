@@ -2,12 +2,14 @@ site_name: Evidence Reporter
 site_description: Evidencias de negocio y reportes individuales para Robot Framework
 site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
 repo_url: https://github.com/angel-valdezzz/robotframework-evidence-reporter
-repo_name: angel-valdezzz/robotframework-evidence-reporter
+repo_name: Evidence Reporter
 theme:
   name: material
   language: es
   logo: assets/logo.svg
   favicon: assets/logo.svg
+  icon:
+    repo: fontawesome/brands/github
   font: false
   palette:
     - media: "(prefers-color-scheme: light)"

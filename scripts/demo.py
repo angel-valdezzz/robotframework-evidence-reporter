@@ -35,6 +35,11 @@ for status, filename in [
         "Demostración",
         "Reporte de ejemplo con datos ficticios. Las imágenes son ilustrativas.",
     )
+    if status == "SKIP":
+        recorder.finish("SKIP", 0.0, "Caso omitido antes de ejecutar el cuerpo (ejemplo de robot:skip).")
+        paths = build_reports(recorder.case_dir, root / "html")
+        shutil.copyfile(paths[0], Path("docs/demo") / filename)
+        continue
     recorder.metadata({"Aplicación": "Portal de clientes", "Ambiente": "Demo", "Requerimiento": "DEMO-001"})
     recorder.event("Se inició la validación de negocio.")
     milestone = recorder.milestone("Cliente registrado", "Confirmación del alta y acceso habilitado.")

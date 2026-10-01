@@ -44,9 +44,18 @@ Consultar Referencia Libdoc
     Go To    http://localhost:8765/keywords/
     Click Link    Consultar keywords en Libdoc
     Location Should Be    http://localhost:8765/reference/keywords.html
+    Wait Until Page Contains    Evidence Reporter
     Wait Until Page Contains    Capture Page Evidence
     Page Should Contain    Create Milestone
     Page Should Contain    INVALID_CAPTURE_STATUS
+
+Consultar Ejemplos Resaltados
+    [Documentation]    Comprueba contexto Robot completo y líneas resaltadas en la guía.
+    Go To    http://localhost:8765/guide/
+    Page Should Contain    *** Settings ***
+    Page Should Contain    *** Test Cases ***
+    Page Should Contain Element    css:.highlight .hll
+    Capture Page Screenshot    ${OUTPUTDIR}/docs-guide.png
 
 
 *** Keywords ***
