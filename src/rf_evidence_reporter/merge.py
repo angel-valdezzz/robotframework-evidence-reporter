@@ -3,6 +3,7 @@
 import copy
 import json
 import shutil
+import tempfile
 
 from .recorder import slug
 from pathlib import Path
@@ -37,6 +38,11 @@ def merge_results(inputs, output_dir):
             case = json.loads(source.read_text(encoding="utf-8"))
             if (
                 case.get("schema_version") != 1
+                or not isinstance(case.get("id"), str)
+                or not case.get("id")
+                or case.get("status") not in {"PASS", "FAIL", "SKIP", "INCOMPLETE"}
+                or not isinstance(case.get("events"), list)
+                or not isinstance(case.get("milestones"), list)
                 or not isinstance(case.get("suite"), str)
                 or not isinstance(case.get("name"), str)
             ):
@@ -55,6 +61,17 @@ def merge_results(inputs, output_dir):
                         path = (source.parent / event["image"]).resolve()
                         if not path.is_relative_to(source.parent):
                             raise ValueError("INVALID_IMAGE_PATH: referencia fuera del caso")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".evidence-merge-", dir=target.parent) as temporary:
+        staging = Path(temporary) / "merged"
+        paths = _write_groups(groups, staging)
+        if target.exists():
+            target.rmdir()
+        staging.replace(target)
+        return [target / path.relative_to(staging) for path in paths]
+
+
+def _write_groups(groups, target):
     target.mkdir(parents=True, exist_ok=True)
     generated = []
     for index, attempts in enumerate(groups.values()):

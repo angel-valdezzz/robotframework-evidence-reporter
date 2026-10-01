@@ -7,12 +7,14 @@ import tempfile
 import unittest
 from io import BytesIO
 from pathlib import Path
+from unittest.mock import patch
 
 from docx import Document
 from PIL import Image
 from pypdf import PdfReader
 
 from rf_evidence_reporter import EvidenceRecorder, EvidenceReporter, build_reports, merge_results
+from rf_evidence_reporter.documents import event_text
 
 
 class ExportTests(unittest.TestCase):
@@ -34,6 +36,12 @@ class ExportTests(unittest.TestCase):
         recorder.event("Mensaje de negocio", milestone_id=milestone)
         recorder.finish(status, 1.5, f"Resultado {status}")
         return recorder.case_dir
+
+    def test_message_levels_are_not_capture_statuses(self):
+        self.assertEqual(
+            event_text({"kind": "message", "level": "ERROR", "status": "INFO", "title": "Error"}),
+            "ERROR | Error",
+        )
 
     def test_formats_preserve_hierarchy_and_manifest_checksums(self):
         directory = self.case("run")
@@ -106,6 +114,15 @@ class ExportTests(unittest.TestCase):
         self.assertFalse((self.root / "merged").exists())
         with self.assertRaisesRegex(ValueError, "MERGE_OVERLAP"):
             merge_results([self.root / "run", self.root / "rerun"], self.root / "run" / "merged")
+
+    def test_merge_copy_failure_does_not_leave_partial_output(self):
+        self.case("run", "FAIL")
+        self.case("rerun", "PASS")
+        with patch("rf_evidence_reporter.merge.shutil.copyfile", side_effect=OSError("disk failure")):
+            with self.assertRaises(OSError):
+                merge_results([self.root / "run", self.root / "rerun"], self.root / "merged")
+        self.assertFalse((self.root / "merged").exists())
+        self.assertTrue(list((self.root / "run").rglob("case.json")))
 
     def test_later_skip_wins_and_cases_from_other_suites_stay_distinct(self):
         self.case("run", "FAIL")

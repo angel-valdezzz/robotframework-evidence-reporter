@@ -6,7 +6,7 @@ Reportes HTML, PDF y Word por caso de Robot Framework, orientado a evidencias de
 
 ## Estado de publicación
 
-La versión 0.1.0 está publicada en [PyPI](https://pypi.org/project/robotframework-evidence-reporter/). El código, la documentación y la demo HTML también están publicados. Las nuevas versiones se publican mediante GitHub Actions con Trusted Publishing.
+La versión 0.2.0 se publica automáticamente al integrar esta ampliación; la versión 0.1.0 está publicada en [PyPI](https://pypi.org/project/robotframework-evidence-reporter/). El código, la documentación y la demo HTML también están publicados. Las nuevas versiones se publican mediante GitHub Actions con Trusted Publishing.
 
 ## Instalación
 

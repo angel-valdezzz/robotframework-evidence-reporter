@@ -125,6 +125,9 @@ def render_pdf(case, blocks, target):
             )
     captures_on_page = 0
     for block in blocks:
+        if block.get("id"):
+            story.append(PageBreak())
+            captures_on_page = 0
         story.append(paragraph(block["title"], "Heading1"))
         if block["description"]:
             story.append(paragraph(block["description"], "BlockDescription"))
@@ -214,6 +217,9 @@ def render_docx(case, blocks, target):
             )
     captures_on_page = 0
     for block in blocks:
+        if block.get("id"):
+            document.add_page_break()
+            captures_on_page = 0
         document.add_heading(block["title"], 1)
         if block["description"]:
             description = document.add_paragraph(block["description"])
