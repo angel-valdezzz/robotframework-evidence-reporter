@@ -61,6 +61,30 @@ Mostrar Estatus De Ejecución
         Page Should Not Contain Element    css:.capture[data-status="SKIP"]
     END
 
+Contraer Y Expandir Hitos
+    [Documentation]    Valida el estado inicial y los controles globales sin abrir evidencias directas.
+    Click Element    id:tab-steps
+    Element Should Not Be Visible    css:details[data-block-kind="direct"] .events
+    Contar Hitos Abiertos    2
+    Click Element    id:collapse-milestones
+    Contar Hitos Abiertos    0
+    Click Element    id:expand-milestones
+    Contar Hitos Abiertos    2
+    Element Should Not Be Visible    css:details[data-block-kind="direct"] .events
+    Capture Page Screenshot    ${OUTPUTDIR}/report-milestones.png
+
+Consultar Pestañas De Evidencias Directas
+    [Documentation]    Comprueba pestañas locales y teclado sin cambiar la pestaña global.
+    Click Element    id:tab-steps
+    Click Element    css:details[data-block-kind="direct"] > summary
+    Element Should Be Visible    id:direct-evidence
+    Click Element    id:direct-logs-tab
+    Element Should Be Visible    id:direct-logs
+    Element Should Not Be Visible    id:direct-evidence
+    Press Keys    id:direct-logs-tab    ARROW_LEFT
+    Element Should Be Visible    id:direct-evidence
+    Element Should Be Visible    id:steps
+
 
 *** Keywords ***
 Abrir Reporte
@@ -86,3 +110,10 @@ Cargar Demo
     [Documentation]    Restablece el reporte y el tamaño antes de cada verificación.
     Go To    file://${EXECDIR}/docs/demo/passed.html
     Set Window Size    1440    1000
+
+Contar Hitos Abiertos
+    [Documentation]    Verifica todos los hitos, no solo el primer bloque visible.
+    [Arguments]    ${expected}
+    ${count}=    Execute Javascript
+    ...    return document.querySelectorAll('details[data-block-kind="milestone"][open]').length;
+    Should Be Equal As Integers    ${count}    ${expected}

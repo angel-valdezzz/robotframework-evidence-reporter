@@ -24,6 +24,10 @@ jobs:
       - run: poetry run python scripts/demo.py
       - run: poetry run robot --outputdir results/report-ui tests/report_ui.robot
       - run: poetry run mkdocs build --strict
+      - name: Verificar documentación en navegador
+        run: |
+          python -m http.server 8765 --directory site >/tmp/evidence-docs-server.log 2>&1 &
+          poetry run robot --outputdir results/docs-ui tests/docs_ui.robot
       - run: poetry build
       - uses: actions/upload-artifact@v4
         if: always()

@@ -25,7 +25,7 @@ Añade tantas etiquetas como necesites. Los campos automáticos (nombre, estado,
 
 ## Resultado y mensajes
 
-El estado final se registra después del teardown. INFO es azul, WARN naranja y ERROR rojo. El nivel de un mensaje no cambia por sí mismo el resultado de Robot. No se inventan estados para capturas: una captura está disponible o genera una advertencia.
+El estado final se registra después del teardown. INFO es azul, WARN naranja y ERROR rojo. El nivel de un mensaje no cambia por sí mismo el resultado de Robot. Las capturas tienen un estatus explícito que describe su contenido; si no se obtienen, se registra una advertencia.
 
 No se captura cada clic ni se copian argumentos de keywords automáticamente. Esto evita saturar el reporte y registrar contraseñas introducidas durante el flujo. Las imágenes y notas explícitas pueden contener datos sensibles; el usuario controla lo que registra.
 
@@ -41,3 +41,18 @@ Capture Element Evidence    css:.confirmation    Alta confirmada    status=PASS
 El HTML tiene pestañas **Resumen**, **Pasos** y **Logs**. Resumen muestra una sola insignia de estatus de ejecución (`SKIP` en amarillo). Pasos presenta capturas e hitos; sus logs son plegables. Logs agrupa mensajes y advertencias en bloques plegables, con bordes por nivel y fondo neutro. El switch permite elegir modo claro u oscuro; conserva la preferencia cuando el navegador permite almacenamiento local.
 
 Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria se indica al pie y el JSON conserva el timestamp completo. Los registros anteriores sin estatus de captura se presentan como `INFO`. No hay botón de impresión; PDF y Word quedan para una etapa posterior.
+
+## Consultar bloques y hitos
+
+!!! tip "Capturas primero"
+    En **Pasos**, las evidencias directas empiezan plegadas. Su cabecera muestra capturas, logs y advertencias. Al abrir el bloque puedes elegir **Evidencias** o **Logs del bloque**.
+
+Los hitos empiezan abiertos y se pueden contraer individualmente. **Expandir todos los hitos** y **Contraer todos los hitos** actúan solo sobre los hitos, sin modificar las evidencias directas. Los controles funcionan con teclado; no cambian los JSON ni los resultados.
+
+??? example "Dos hitos en el mismo caso"
+    ```robotframework
+    ${registration}=    Create Milestone    Cliente registrado
+    Capture Page Evidence    Alta confirmada    milestone_id=${registration}    status=PASS
+    ${accounts}=    Create Milestone    Cuentas consultadas
+    Capture Page Evidence    Resumen de cuentas    milestone_id=${accounts}    status=PASS
+    ```
