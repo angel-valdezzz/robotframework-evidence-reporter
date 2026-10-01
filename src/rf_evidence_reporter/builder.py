@@ -4,10 +4,22 @@ import base64
 import json
 import warnings
 from pathlib import Path
+from datetime import datetime
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from .recorder import slug, timestamp
+
+
+def display_date(value):
+    if not value:
+        return "No registrado"
+    return datetime.fromisoformat(value).strftime("%d/%m/%Y · %H:%M:%S")
+
+
+def timezone_label(value):
+    offset = datetime.fromisoformat(value).strftime("%z")
+    return "UTC" + offset[:3] + ":" + offset[3:] if offset else "Sin zona horaria"
 
 
 def build_reports(results_dir, output_dir):
@@ -22,9 +34,12 @@ def build_reports(results_dir, output_dir):
         raise ValueError(f"NO_CASES: no hay archivos case.json en {root}")
     destination = Path(output_dir).resolve()
     destination.mkdir(parents=True, exist_ok=True)
-    template = Environment(
+    environment = Environment(
         loader=PackageLoader("rf_evidence_reporter", "templates"), autoescape=select_autoescape(["html"])
-    ).get_template("report.html")
+    )
+    environment.filters["display_date"] = display_date
+    environment.filters["timezone_label"] = timezone_label
+    template = environment.get_template("report.html")
     generated = []
     for source in files:
         case = json.loads(source.read_text(encoding="utf-8"))
@@ -36,6 +51,9 @@ def build_reports(results_dir, output_dir):
         if case.get("status") not in {"PASS", "FAIL", "SKIP", "INCOMPLETE"}:
             raise ValueError(f"INVALID_STATUS: {source}")
         for event in case["events"]:
+            event.setdefault("status", "WARN" if event["kind"] == "capture_warning" else "INFO")
+            if event["status"] not in {"INFO", "PASS", "WARN", "FAIL"}:
+                raise ValueError(f"INVALID_CAPTURE_STATUS: {source}")
             if event.get("image"):
                 path = (source.parent / event["image"]).resolve()
                 try:
@@ -48,8 +66,16 @@ def build_reports(results_dir, output_dir):
                         mime = {"PNG": "image/png", "JPEG": "image/jpeg", "WEBP": "image/webp"}[image.format]
                     event["image_data"] = f"data:{mime};base64,{base64.b64encode(path.read_bytes()).decode()}"
                 except (OSError, ValueError, KeyError) as error:
-                    event.update(kind="capture_warning", level="WARN", reason=f"IMAGE_UNAVAILABLE: {error}")
+                    event.update(
+                        kind="capture_warning",
+                        level="WARN",
+                        status="WARN",
+                        reason=f"IMAGE_UNAVAILABLE: {error}",
+                    )
                     warnings.warn(f"{source}: {event['reason']}", stacklevel=2)
+        case["warning_count"] = sum(
+            event.get("level") == "WARN" or event.get("status") == "WARN" for event in case["events"]
+        )
         blocks = []
         # Blocks follow first evidence appearance; evidence within each block retains its order.
         direct = [event for event in case["events"] if not event.get("milestone_id")]

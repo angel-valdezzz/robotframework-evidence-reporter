@@ -95,7 +95,10 @@ class EvidenceReporter:
         except Exception as error:
             raise CaptureError("INVALID_IMAGE", str(error)) from error
 
-    def _capture(self, title, producer, kind, milestone_id, strict, description, context=None):
+    def _capture(self, title, producer, kind, milestone_id, strict, description, status="INFO", context=None):
+        status = status.upper()
+        if status not in {"INFO", "PASS", "WARN", "FAIL"}:
+            raise ValueError("INVALID_CAPTURE_STATUS: utiliza INFO, PASS, WARN o FAIL; SKIP no es válido.")
         recorder = self._active(milestone_id)
         try:
             content, details = producer()
@@ -110,6 +113,7 @@ class EvidenceReporter:
                 kind="capture",
                 milestone_id=milestone_id,
                 capture_type=kind,
+                status=status,
                 description=description,
                 image=path.name,
                 width=size[0],
@@ -126,6 +130,7 @@ class EvidenceReporter:
                 title,
                 kind="capture_warning",
                 level="WARN",
+                status="WARN",
                 milestone_id=milestone_id,
                 capture_type=kind,
                 description=description,
@@ -141,7 +146,12 @@ class EvidenceReporter:
 
     @keyword
     def capture_page_evidence(
-        self, title: str, description: str = "", milestone_id=None, strict: bool | None = None
+        self,
+        title: str,
+        description: str = "",
+        milestone_id=None,
+        strict: bool | None = None,
+        status: str = "INFO",
     ):
         """Capture the browser viewport; does not include browser chrome or desktop."""
 
@@ -152,11 +162,17 @@ class EvidenceReporter:
             except Exception as error:
                 raise CaptureError("SCREENSHOT_FAILED", str(error)) from error
 
-        return self._capture(title, producer, "page", milestone_id, strict, description)
+        return self._capture(title, producer, "page", milestone_id, strict, description, status)
 
     @keyword
     def capture_element_evidence(
-        self, locator: str, title: str, description: str = "", milestone_id=None, strict: bool | None = None
+        self,
+        locator: str,
+        title: str,
+        description: str = "",
+        milestone_id=None,
+        strict: bool | None = None,
+        status: str = "INFO",
     ):
         """Capture one element using SeleniumLibrary locator syntax."""
 
@@ -171,11 +187,16 @@ class EvidenceReporter:
             except Exception as error:
                 raise CaptureError("SCREENSHOT_FAILED", str(error)) from error
 
-        return self._capture(title, producer, "element", milestone_id, strict, description)
+        return self._capture(title, producer, "element", milestone_id, strict, description, status)
 
     @keyword
     def capture_desktop_evidence(
-        self, title: str, description: str = "", milestone_id=None, strict: bool | None = None
+        self,
+        title: str,
+        description: str = "",
+        milestone_id=None,
+        strict: bool | None = None,
+        status: str = "INFO",
     ):
         """Capture the desktop of this Robot process with Pillow ImageGrab.
 
@@ -192,11 +213,17 @@ class EvidenceReporter:
             except Exception as error:
                 raise CaptureError("DESKTOP_UNAVAILABLE", str(error)) from error
 
-        return self._capture(title, producer, "desktop", milestone_id, strict, description)
+        return self._capture(title, producer, "desktop", milestone_id, strict, description, status)
 
     @keyword
     def attach_image_evidence(
-        self, path: str, title: str, description: str = "", milestone_id=None, strict: bool | None = None
+        self,
+        path: str,
+        title: str,
+        description: str = "",
+        milestone_id=None,
+        strict: bool | None = None,
+        status: str = "INFO",
     ):
         """Copy an existing PNG/JPEG/WEBP image into this case; original can then be moved."""
 
@@ -206,4 +233,4 @@ class EvidenceReporter:
             except OSError as error:
                 raise CaptureError("IMAGE_UNAVAILABLE", str(error)) from error
 
-        return self._capture(title, producer, "attachment", milestone_id, strict, description)
+        return self._capture(title, producer, "attachment", milestone_id, strict, description, status)

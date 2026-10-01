@@ -96,3 +96,34 @@ class CoreTests(unittest.TestCase):
         case = json.loads(next((self.root / "raw").rglob("case.json")).read_text())
         self.assertEqual(case["status"], "SKIP")
         self.assertEqual(case["duration_seconds"], 1)
+
+    def test_capture_status_independent_and_legacy_reports(self):
+        image = self.root / "sample.png"
+        Image.new("RGB", (40, 30), "blue").save(image)
+        library = EvidenceReporter()
+        library.recorder = self.recorder
+        for status in ["INFO", "PASS", "WARN", "FAIL"]:
+            library.attach_image_evidence(str(image), status, status=status.lower())
+            self.assertEqual(self.recorder.case["events"][-1]["status"], status)
+        with self.assertRaisesRegex(ValueError, "INVALID_CAPTURE_STATUS"):
+            library.attach_image_evidence(str(image), "No válido", status="SKIP")
+        self.assertEqual(len(self.recorder.case["events"]), 4)
+        self.recorder.case["events"][0].pop("status")
+        self.recorder.finish("PASS", 1)
+        report = build_reports(self.root / "raw", self.root / "html")[0].read_text()
+        self.assertIn('data-status="FAIL"', report)
+        self.assertIn('data-status="INFO"', report)
+        self.assertIn("execution-status PASS", report)
+        self.assertNotIn("Estado de Robot", report)
+        self.assertNotIn("Imprimir", report)
+        self.assertIn("Estatus de ejecución", report)
+        self.assertEqual(report.count('class="badge execution-status'), 1)
+
+    def test_date_display_preserves_raw_timestamp(self):
+        self.recorder.case["started_at"] = "2026-10-01T13:29:32.456-06:00"
+        self.recorder.save()
+        report = build_reports(self.root / "raw", self.root / "html")[0].read_text()
+        self.assertIn("01/10/2026 · 13:29:32", report)
+        self.assertIn("UTC-06:00", report)
+        case = json.loads(next((self.root / "raw").rglob("case.json")).read_text())
+        self.assertEqual(case["started_at"], "2026-10-01T13:29:32.456-06:00")

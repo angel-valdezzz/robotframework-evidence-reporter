@@ -26,7 +26,7 @@ Registrar Cliente En Portal De Demostración
     ...    Confirmación de registro
     ...    milestone_id=${milestone}
     ...    strict=${True}
-    Capture Page Evidence    Resultado del registro    milestone_id=${milestone}    strict=${True}
+    Capture Page Evidence    Resultado del registro    milestone_id=${milestone}    strict=${True}    status=PASS
     Add Evidence Message    La identidad utilizada es ficticia.    milestone_id=${milestone}
     Capture Desktop Evidence    Escritorio del runner gráfico    strict=${True}
 
