@@ -4,9 +4,11 @@ import json
 import subprocess
 import sys
 import tempfile
+import tomllib
 from pathlib import Path
 
-wheel = next(Path("dist").glob("*.whl")).resolve()
+version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
+wheel = next(Path("dist").glob(f"*-{version}-*.whl")).resolve()
 with tempfile.TemporaryDirectory() as temporary:
     root = Path(temporary)
     target = root / "installed"
@@ -29,6 +31,10 @@ assert len(spec.keywords) == 7
 spec.save(sys.argv[2], format='JSON')
 from robot import run
 assert run(sys.argv[3], outputdir=sys.argv[4]) == 0
+from rf_evidence_reporter import build_reports, merge_results
+paths = build_reports(Path(sys.argv[4]) / "evidence", Path(sys.argv[4]) / "reports", formats=("html", "pdf", "docx"))
+assert len(paths) == 3 and all(path.stat().st_size > 0 for path in paths)
+assert (Path(sys.argv[4]) / "reports" / "manifest.json").is_file()
 """
     suite = root / "smoke.robot"
     suite.write_text(

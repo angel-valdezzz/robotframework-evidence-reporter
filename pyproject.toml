@@ -1,13 +1,13 @@
 [project]
 name = "robotframework-evidence-reporter"
-version = "0.1.0"
+version = "0.2.0"
 description = "Standalone business evidence reports per Robot Framework test"
 authors = [{name = "Angel Gerardo Molina Valdez"}]
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 license = "MIT"
 keywords = ["robotframework", "selenium", "evidence", "reporting", "pabot"]
-dependencies = ["robotframework>=7.0,<8.0", "jinja2>=3.1.6,<4.0", "pillow>=11.0,<14.0"]
+dependencies = ["robotframework>=7.0,<8.0", "jinja2>=3.1.6,<4.0", "pillow>=11.0,<14.0", "reportlab>=4.0,<5.0", "python-docx>=1.1,<2.0"]
 
 [project.urls]
 Homepage = "https://angel-valdezzz.github.io/robotframework-evidence-reporter/"
@@ -24,6 +24,7 @@ packages = [
 include = ["src/rf_evidence_reporter/templates/*.html"]
 
 [tool.poetry.group.dev.dependencies]
+pypdf = ">=6.0,<7.0"
 robotframework-seleniumlibrary = "^6.9.0"
 robotframework-pabot = "^5.1.0"
 robotframework-robocop = "^9.1.0"
