@@ -41,7 +41,7 @@ Desplegar Logs Y Navegar Con Teclado
     Element Should Not Be Visible    id:steps
     Click Element    css:#logs details summary
     Element Should Be Visible    css:#logs details[open] .log-list
-    Press Keys    id:tab-logs    ARROWLEFT
+    Press Keys    id:tab-logs    ARROW_LEFT
     Element Should Be Visible    id:steps
 
 Consultar Reporte En Pantalla Móvil
