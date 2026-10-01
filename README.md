@@ -4,12 +4,19 @@ Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de neg
 
 [Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
+## Estado de publicación
+
+El código, la documentación y la demo HTML están publicados. La primera publicación en PyPI está pendiente de completar la autenticación del propietario; el navegador no respondió al preparar ese paso. Por ahora se puede instalar desde una revisión Git fija o construir el wheel desde el repositorio.
+
 ## Instalación
 
 ```bash
+# Disponible después de la primera publicación en PyPI
 pip install robotframework-evidence-reporter
-# Con Poetry
 poetry add robotframework-evidence-reporter
+
+# Instalación desde el código publicado mientras tanto
+pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@ad7d2bd2d5c4a3c05a1238399d3e7c1ea8290f0b"
 ```
 
 Python 3.12 o superior y Robot Framework 7. Para capturar páginas o elementos instala también SeleniumLibrary. La librería reutiliza su navegador activo: no abre otra sesión ni depende de un navegador concreto.
