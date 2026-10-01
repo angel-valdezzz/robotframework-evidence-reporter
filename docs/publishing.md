@@ -10,7 +10,7 @@ Desde la raíz del proyecto:
 
 ```bash
 poetry run python scripts/demo.py
-poetry run python -m robot.libdoc --name "Evidence Reporter" rf_evidence_reporter.EvidenceReporter docs/reference/keywords.html
+poetry run python -m robot.libdoc --name "Evidence Reporter" EvidenceReporter docs/reference/keywords.html
 poetry run mkdocs build --strict
 poetry run mkdocs serve
 ```
@@ -29,6 +29,8 @@ Antes de la primera release registra un **pending trusted publisher** en PyPI:
 | Workflow | `release.yml` |
 | Environment | Dejar vacío; el workflow no define environment |
 
-Una release publicada con tag `v0.1.0` verifica la versión, construye wheel/sdist y usa `pypa/gh-action-pypi-publish` con OIDC. No almacena un token PyPI en el repositorio. La configuración del publisher se realiza en la cuenta PyPI del propietario.
+Un cambio de `pyproject.toml` integrado en `main` activa la publicación. También puede activarse con una release cuyo tag coincida con la versión (por ejemplo, `v0.1.0`). El workflow verifica la versión en las releases, construye wheel/sdist y usa `pypa/gh-action-pypi-publish` con OIDC. No almacena un token PyPI en el repositorio. La configuración del publisher se realiza en la cuenta PyPI del propietario.
+
+Antes de publicar, el workflow prueba la importación `Library    EvidenceReporter` desde el wheel instalado y conserva wheel/sdist como artefactos, incluso si el paso posterior de PyPI no puede autenticarse.
 
 Cada versión publicada es inmutable: aumenta la versión antes de otra release. Para validar el paquete desde fuente: `poetry install`. Para distribución local: `poetry build` y `pip install dist/*.whl`.

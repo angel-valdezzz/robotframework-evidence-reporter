@@ -2,7 +2,7 @@
 Documentation    Validación de evidencias explícitas, estados y aislamiento por caso.
 
 Library          SeleniumLibrary    run_on_failure=NONE
-Library          rf_evidence_reporter.EvidenceReporter    output_dir=${EXECDIR}/results/browser-evidence
+Library          EvidenceReporter    output_dir=${EXECDIR}/results/browser-evidence
 
 Test Setup       Abrir Portal
 Test Teardown    Close All Browsers

@@ -1,6 +1,6 @@
 # Guía de uso
 
-Importa `rf_evidence_reporter.EvidenceReporter` en las suites. La instancia incluye su listener: no necesitas registrar también `--listener`.
+Importa `EvidenceReporter` en las suites. La instancia incluye su listener: no necesitas registrar también `--listener`.
 
 El ciclo es: Robot/Pabot registra JSON e imágenes → termina la ejecución → `rf-evidence build` genera un HTML por caso. Estos ejemplos completos usan `example.com`; guarda cada uno como un archivo `.robot` y ejecútalo desde la raíz de tu proyecto.
 
@@ -11,7 +11,7 @@ Las líneas resaltadas crean un hito y le asignan una captura y un mensaje. La �
 ```robotframework linenums="1" hl_lines="10-12"
 *** Settings ***
 Library    SeleniumLibrary
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 Test Teardown    Close All Browsers
 
 *** Test Cases ***
@@ -32,7 +32,7 @@ La línea resaltada agrega etiquetas a la tabla de información del reporte. No 
 
 ```robotframework linenums="1" hl_lines="6"
 *** Settings ***
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 
 *** Test Cases ***
 Registrar Contexto De Negocio
@@ -57,7 +57,7 @@ Este ejemplo clasifica dos evidencias explícitamente. La segunda usa `FAIL` par
 ```robotframework linenums="1" hl_lines="11-12"
 *** Settings ***
 Library    SeleniumLibrary
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 Test Teardown    Close All Browsers
 
 *** Test Cases ***
@@ -82,7 +82,7 @@ Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria 
 
 ```robotframework linenums="1" hl_lines="6 11"
 *** Settings ***
-Library    rf_evidence_reporter.EvidenceReporter
+Library    EvidenceReporter
 
 *** Test Cases ***
 Omitido Desde El Inicio
@@ -111,7 +111,7 @@ Los hitos empiezan abiertos y se pueden contraer individualmente. **Expandir tod
     ```robotframework linenums="1" hl_lines="10-13"
     *** Settings ***
     Library    SeleniumLibrary
-    Library    rf_evidence_reporter.EvidenceReporter
+    Library    EvidenceReporter
     Test Teardown    Close All Browsers
 
     *** Test Cases ***

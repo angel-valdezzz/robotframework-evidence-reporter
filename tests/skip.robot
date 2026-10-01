@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Comprueba omisiones iniciales y conservación de evidencias previas.
 
-Library          rf_evidence_reporter.EvidenceReporter
+Library          EvidenceReporter
 
 
 *** Test Cases ***
