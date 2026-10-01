@@ -16,7 +16,7 @@ pip install robotframework-evidence-reporter
 poetry add robotframework-evidence-reporter
 
 # Instalación desde el código publicado mientras tanto
-pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@c52e2e0e050358a2a8135529b5edb16af8bb68c0"
+pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@main"
 ```
 
 Python 3.12 o superior y Robot Framework 7. Para capturar páginas o elementos instala también SeleniumLibrary. La librería reutiliza su navegador activo: no abre otra sesión ni depende de un navegador concreto.
@@ -109,3 +109,9 @@ Capture Element Evidence    css:.confirmation    Alta confirmada    status=PASS
 El HTML tiene pestañas **Resumen**, **Pasos** y **Logs**. Resumen muestra una sola insignia de estatus de ejecución (`SKIP` en amarillo). Pasos presenta capturas e hitos; sus logs son plegables. Logs agrupa mensajes y advertencias en bloques plegables, con bordes por nivel y fondo neutro. El switch permite elegir modo claro u oscuro; conserva la preferencia cuando el navegador permite almacenamiento local.
 
 Las fechas visibles incluyen día/mes/año y hora con segundos. La zona horaria se indica al pie y el JSON conserva el timestamp completo. Los registros anteriores sin estatus de captura se presentan como `INFO`. No hay botón de impresión; PDF y Word quedan para una etapa posterior.
+
+## Navegación del reporte
+
+En Pasos, las evidencias directas empiezan plegadas y tienen pestañas Evidencias/Logs del bloque. Los hitos empiezan abiertos; puedes contraerlos individualmente o usar Expandir/Contraer todos los hitos. Los controles globales no modifican el bloque directo.
+
+La documentación comparte logo, colores y temas con el reporte. Consulta [Primera evidencia](https://angel-valdezzz.github.io/robotframework-evidence-reporter/getting-started/) para ejemplos de instalación y ejecución.

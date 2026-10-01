@@ -1,27 +1,66 @@
-site_name: Robot Framework Evidence Reporter
-site_description: Reportes individuales de evidencias de negocio para Robot Framework
+site_name: Evidence Reporter
+site_description: Evidencias de negocio y reportes individuales para Robot Framework
 site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
 repo_url: https://github.com/angel-valdezzz/robotframework-evidence-reporter
 repo_name: angel-valdezzz/robotframework-evidence-reporter
 theme:
   name: material
   language: es
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  font: false
   palette:
-    scheme: default
-    primary: teal
-    accent: cyan
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Cambiar a modo oscuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Cambiar a modo claro
   features:
     - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
     - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+plugins:
+  - search:
+      lang: es
+extra_css:
+  - assets/stylesheets/extra.css
 nav:
   - Inicio: index.md
-  - Guía de uso: guide.md
-  - Keywords: keywords.md
-  - CLI y Python: generation.md
-  - Paralelo y CI/CD: parallel.md
-  - Demo HTML: demo.md
-  - Publicación: publishing.md
+  - Empezar:
+      - Primera evidencia: getting-started.md
+      - Guía de uso: guide.md
+      - Demo HTML: demo.md
+  - Referencia:
+      - Keywords: keywords.md
+      - CLI y Python: generation.md
+  - Ejecución y publicación:
+      - Paralelo y CI/CD: parallel.md
+      - Publicación: publishing.md
 markdown_extensions:
   - admonition
-  - pymdownx.highlight
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg

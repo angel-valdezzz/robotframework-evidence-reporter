@@ -90,6 +90,10 @@ def build_reports(results_dir, output_dir):
                     ],
                 }
             )
+        for block in blocks:
+            block["warning_count"] = sum(
+                event.get("level") == "WARN" or event.get("status") == "WARN" for event in block["events"]
+            )
         name = f"{slug(case['name'])}-{slug(case['id'])}.html"
         target = destination / name
         target.write_text(

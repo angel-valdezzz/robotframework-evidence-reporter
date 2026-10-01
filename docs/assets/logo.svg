@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Evidence Reporter">
+<title>Evidence Reporter</title><defs><linearGradient id="brand" x2="1" y2="1"><stop stop-color="#5744cc"/><stop offset="1" stop-color="#155571"/></linearGradient></defs>
+<rect width="64" height="64" rx="16" fill="url(#brand)"/>
+<rect x="14" y="10" width="34" height="44" rx="5" fill="none" stroke="#fff" stroke-width="3"/>
+<rect x="20" y="18" width="22" height="17" rx="3" fill="#b1a3ff"/>
+<path d="m22 31 6-7 5 5 4-4 3 6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M21 42h14M21 47h9" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+<circle cx="47" cy="47" r="12" fill="#47d4d9" stroke="#155571" stroke-width="2"/>
+<path d="m41 47 4 4 8-9" fill="none" stroke="#132a43" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

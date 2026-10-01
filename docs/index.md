@@ -1,91 +1,66 @@
-# Robot Framework Evidence Reporter
+---
+hide:
+  - toc
+---
 
-Un HTML autocontenido por caso de Robot Framework, orientado a evidencias de negocio. Registra capturas explícitas, mensajes y metadatos durante la ejecución; genera el HTML después, desde CLI o Python.
+<div class="hero" markdown>
+<span class="eyebrow">Robot Framework · Evidencias de negocio</span>
 
-[Documentación](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Ver reporte HTML](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
+# Lo que validaste, listo para compartir
 
-## Instalación
+Un **HTML por caso**, con el resultado de ejecución, capturas, hitos y mensajes que explican qué ocurrió. Sin perderse entre los detalles técnicos de cada clic.
 
-```bash
-pip install robotframework-evidence-reporter
-# Con Poetry
-poetry add robotframework-evidence-reporter
-```
+[Empezar](getting-started.md){ .md-button .md-button--primary }
+[Ver reporte](demo/passed.html){ .md-button }
+</div>
 
-Python 3.12 o superior y Robot Framework 7. Para capturar páginas o elementos instala también SeleniumLibrary. La librería reutiliza su navegador activo: no abre otra sesión ni depende de un navegador concreto.
+<div class="grid cards" markdown>
 
-## Uso en Robot
+-   :material-camera-outline:{ .card-icon } **Captura lo que importa**
 
-```robotframework
-*** Settings ***
-Library    SeleniumLibrary
-Library    rf_evidence_reporter.EvidenceReporter
+    ---
 
-*** Test Cases ***
-Registrar Cliente
-    Open Browser    https://example.test    chrome
-    Set Report Metadata    Aplicación=Portal    Ambiente=QA    Ticket=QA-123
-    Capture Page Evidence    Formulario de alta
-    ${milestone}=    Create Milestone    Cliente registrado
-    Capture Element Evidence    css:.confirmation    Confirmación    milestone_id=${milestone}
-    Add Evidence Message    El alta fue confirmada.    milestone_id=${milestone}
-    [Teardown]    Close All Browsers
-```
+    Página visible, elemento o escritorio. Tú decides cuándo registrar una evidencia y cómo describirla.
 
-Los hitos son opcionales. Sin `milestone_id`, la evidencia se añade directamente al caso. No se registran automáticamente argumentos ni todos los logs técnicos; añade los mensajes de negocio que necesites.
+    [Elegir una captura →](keywords.md)
 
-```bash
-robot --outputdir results tests
-rf-evidence build results/evidence --output reports
-```
+-   :material-view-dashboard-outline:{ .card-icon } **Lee el resultado del caso**
 
-Cada caso conserva su estado final de Robot (`PASS`, `FAIL`, `SKIP`), inicio, fin y duración, incluidos fallos del teardown. Un proceso interrumpido antes de guardar el resultado final conserva `INCOMPLETE`. Las fechas incluyen el offset horario del proceso que las registra.
+    ---
 
-## Capturas y errores
+    Resumen, Pasos y Logs. Hitos plegables, temas claro/oscuro e imágenes que puedes ampliar.
 
-| Keyword | Captura |
-| --- | --- |
-| `Capture Page Evidence` | Página visible del navegador activo |
-| `Capture Element Evidence` | Elemento usando un locator SeleniumLibrary |
-| `Capture Desktop Evidence` | Escritorio de la máquina donde corre Robot |
-| `Attach Image Evidence` | Copia una imagen PNG, JPEG o WEBP existente |
+    [Explorar la demo →](demo.md)
 
-Las capturas fallidas producen **WARN por defecto**, se registran en el HTML y no cambian el estado del caso. Usa `strict=${True}` por keyword o `strict=${True}` al importar la librería para exigir una captura. `strict=${False}` por keyword permite sobrescribir esa configuración global.
+-   :material-file-code-outline:{ .card-icon } **Genera después de ejecutar**
 
-El usuario elige cuándo usar el escritorio. No hay detección automática de headless, remoto ni paralelismo. Pillow ImageGrab necesita un entorno gráfico compatible; en Linux puede requerir un backend de captura, y en macOS permisos de pantalla. La captura corresponde al escritorio del proceso, no necesariamente al navegador remoto. No se implementa página completa en esta versión.
+    ---
 
-Errores definidos: `BROWSER_UNAVAILABLE`, `ELEMENT_NOT_FOUND`, `SCREENSHOT_FAILED`, `DESKTOP_UNAVAILABLE`, `IMAGE_UNAVAILABLE`, `INVALID_IMAGE`, `STORAGE_ERROR`. Argumentos incorrectos, hitos ajenos al caso y errores internos no se silencian. Si falla el almacenamiento inicial o final del listener, Robot registra el error del listener; comprueba también que se hayan generado los JSON esperados.
+    Robot guarda JSON e imágenes; la CLI o Python los convierten en reportes autocontenidos.
 
-## Python y paralelo
+    [Generar HTML →](generation.md)
 
-```python
-from rf_evidence_reporter import build_reports
+-   :material-call-split:{ .card-icon } **Ejecuta en paralelo**
 
-paths = build_reports("results/evidence", "reports")
-```
+    ---
 
-Cada caso usa un UUID y un directorio propio. Para Pabot proporciona un directorio compartido de esta ejecución, por ejemplo `output_dir=${EXECDIR}/results/evidence`. Genera los HTML después de que terminen todos los procesos. Usa un directorio nuevo por ejecución: el generador incluye todos los `case.json` encontrados y conserva cada intento separado.
+    Directorios independientes por caso para trabajar con Pabot sin sobrescribir evidencias.
 
-## Desarrollo
+    [Configurar Pabot →](parallel.md)
 
-```bash
-poetry install
-poetry run ruff check src tests scripts
-poetry run ruff format --check src tests scripts
-poetry run robocop check tests examples
-poetry run python -m unittest discover -s tests -v
-poetry run python scripts/validate.py
-poetry run python scripts/demo.py
-poetry run mkdocs build --strict
-poetry build
-```
+</div>
 
-`scripts/validate.py` verifica Robot y Pabot, incluyendo un caso con fallo deliberado en teardown. Las pruebas del núcleo usan unittest de Python; las pruebas de integración usan Robot. La demo pública utiliza datos e imágenes ficticios, indicados en el propio reporte.
+## Del flujo de negocio al reporte
 
-El HTML incluye imágenes, CSS y JavaScript sin recursos externos. Su visualizador funciona sin conexión y es navegable con teclado. Jira puede permitir adjuntarlo sin ofrecer vista previa; se puede descargar y abrir en un navegador. El contenido y las imágenes no se censuran automáticamente: registra solo datos apropiados para el destino del reporte.
+1. **Ejecuta** el caso con Robot o Pabot.
+2. **Registra** capturas y mensajes con keywords explícitas.
+3. **Genera** un HTML individual y compártelo como archivo.
 
-## Publicación
+!!! info "Dos resultados diferentes"
+    El **estatus de ejecución** viene de Robot. El **estatus de evidencia** lo eliges para describir una captura. Documentar un error con `status=FAIL` no cambia por sí mismo el resultado del caso.
 
-GitHub Actions valida los cambios. `main` publica MkDocs y la demo en GitHub Pages. Una release `vX.Y.Z`, cuya versión coincida con el paquete, publica wheel y sdist en PyPI mediante Trusted Publishing. Consulta `docs/publishing.md` para el registro inicial del publisher.
+## Una vista del reporte
 
-Licencia MIT.
+[![Resumen de un caso en modo claro](assets/images/report-light.png){ .report-preview }](demo/passed.html)
+
+La imagen ilustra la demo con datos ficticios. Abre el reporte para cambiar de tema, consultar los hitos y ampliar las evidencias.

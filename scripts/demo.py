@@ -76,6 +76,35 @@ for status, filename in [
         level="WARN",
         reason="DESKTOP_UNAVAILABLE: ejemplo de advertencia sin afectar el caso.",
     )
+    accounts = recorder.milestone(
+        "Cuentas consultadas", "Verificación de la identidad y disponibilidad de cuentas."
+    )
+    account_image = Image.new("RGB", (1200, 650), "#f0f4fb")
+    account_draw = ImageDraw.Draw(account_image)
+    account_draw.rectangle((0, 0, 1200, 90), fill="#33277d")
+    account_draw.text((45, 28), "Cuentas | DEMO CON DATOS FICTICIOS", font=font, fill="white")
+    account_draw.rounded_rectangle((140, 145, 1060, 545), radius=18, fill="white")
+    account_draw.text((190, 190), "Cuentas de Ana Pruebas", font=large, fill="#5744cc")
+    account_draw.text((190, 290), "Cuenta de demostracion: DEMO-001", font=font, fill="#18354c")
+    account_draw.text((190, 345), "Saldo ficticio: $1,250.00 MXN", font=font, fill="#146b42")
+    account_draw.text(
+        (190, 440), "Imagen ilustrativa; no es informacion bancaria real.", font=font, fill="#52657c"
+    )
+    account_image.save(recorder.case_dir / "accounts.png")
+    recorder.event(
+        "Cuentas disponibles",
+        kind="capture",
+        capture_type="page",
+        status="PASS",
+        milestone_id=accounts,
+        image="accounts.png",
+        width=1200,
+        height=650,
+        description="Segunda evidencia de negocio, con una imagen diferente.",
+        url="https://example.test/cuentas",
+        page_title="Cuentas ficticias",
+    )
+    recorder.event("La consulta devolvió la cuenta de demostración esperada.", milestone_id=accounts)
     if status != "INCOMPLETE":
         recorder.finish(
             status,
