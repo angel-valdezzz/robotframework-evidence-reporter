@@ -1,6 +1,7 @@
 """Generate translated Libdoc without changing the executable keyword interface."""
 
 import ast
+import base64
 import copy
 import hashlib
 import json
@@ -96,6 +97,19 @@ def localize_menu(output: Path, root: Path, relative: str, language: str) -> Non
     )
     theme_style = (Path(__file__).parent / "libdoc-theme.css").read_text(encoding="utf-8")
     document += "<style>" + theme_style + "</style>"
+    brand_svg = (root / "docs/assets/logo.svg").read_text(encoding="utf-8")
+    brand_uri = "data:image/svg+xml;base64," + base64.b64encode(brand_svg.encode()).decode("ascii")
+    document = re.sub(r'<link\b[^>]*\brel=(?:["\'](?:shortcut )?icon["\']|icon(?=\s|>))[^>]*>', "", document)
+    document = document.replace(
+        "</head>", '<link rel="icon" type="image/svg+xml" href="' + brand_uri + '"></head>', 1
+    )
+    document = document.replace(
+        "</head>",
+        "<script>const libdocBrand="
+        + json.dumps({"name": "Evidence Reporter", "icon": brand_uri})
+        + ";</script></head>",
+        1,
+    )
     output.write_text(document, encoding="utf-8")
 
 

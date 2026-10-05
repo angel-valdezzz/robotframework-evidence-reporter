@@ -1,5 +1,6 @@
 """Print formats preserve the same case, milestone and evidence hierarchy as HTML."""
 
+from importlib.resources import files
 from io import BytesIO
 from xml.sax.saxutils import escape
 
@@ -65,24 +66,25 @@ def render_document(case, blocks, target, format_name):
 
 
 def render_pdf(case, blocks, target):
+    from pathlib import Path
+
+    import reportlab
     from reportlab.lib import colors
     from reportlab.lib.enums import TA_LEFT
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
     from reportlab.lib.units import inch
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
     from reportlab.platypus import (
-        SimpleDocTemplate,
+        Image,
+        PageBreak,
         Paragraph,
+        SimpleDocTemplate,
         Spacer,
         Table,
         TableStyle,
-        Image,
-        PageBreak,
     )
-    from reportlab.pdfbase import pdfmetrics
-    from reportlab.pdfbase.ttfonts import TTFont
-    from pathlib import Path
-    import reportlab
 
     fonts = Path(reportlab.__file__).parent / "fonts"
     pdfmetrics.registerFont(TTFont("EvidenceVera", str(fonts / "Vera.ttf")))
@@ -160,16 +162,7 @@ def render_pdf(case, blocks, target):
         card.keepWithNext = keep
         return card
 
-    brand = Paragraph(
-        "EVIDENCE REPORTER",
-        ParagraphStyle(
-            "Brand",
-            parent=styles["Evidence"],
-            textColor=colors.HexColor("#5744cc"),
-            fontName="EvidenceVeraBold",
-        ),
-    )
-    story.extend([brand, paragraph(case["name"], "Title")])
+    story.append(paragraph(case["name"], "Title"))
     accent, background = status_colors(case["status"])
     story.extend(
         [
@@ -252,6 +245,13 @@ def render_pdf(case, blocks, target):
 
     def footer(canvas, document):
         canvas.saveState()
+        from reportlab.lib.utils import ImageReader
+
+        logo = files("rf_evidence_reporter").joinpath("assets/logo.png").read_bytes()
+        canvas.drawImage(ImageReader(BytesIO(logo)), 36, A4[1] - 49, width=28, height=28, mask="auto")
+        canvas.setFont("EvidenceVeraBold", 10)
+        canvas.setFillColor(colors.HexColor("#5744CC"))
+        canvas.drawString(74, A4[1] - 39, "Evidence Reporter")
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#52657c"))
         canvas.drawString(36, 23, "Evidence Reporter | Reporte individual de negocio")
@@ -263,7 +263,7 @@ def render_pdf(case, blocks, target):
         pagesize=A4,
         rightMargin=36,
         leftMargin=36,
-        topMargin=36,
+        topMargin=70,
         bottomMargin=40,
         title=case["name"],
         author="Evidence Reporter",
@@ -272,9 +272,9 @@ def render_pdf(case, blocks, target):
 
 def render_docx(case, blocks, target):
     from docx import Document
-    from docx.shared import Inches, Pt, RGBColor
     from docx.oxml import OxmlElement
     from docx.oxml.ns import qn
+    from docx.shared import Inches, Pt, RGBColor
 
     document = Document()
     section = document.sections[0]
@@ -315,7 +315,7 @@ def render_docx(case, blocks, target):
             margins.append(edge)
         props.append(margins)
 
-    def card(title, accent, background):
+    def card(title, accent, background, *, new_page=False):
         table = document.add_table(rows=2, cols=1)
         table.autofit = False
         table.columns[0].width = Inches(7.07)
@@ -326,6 +326,7 @@ def render_docx(case, blocks, target):
             row._tr.get_or_add_trPr().append(OxmlElement("w:cantSplit"))
         shade(header, background)
         p = header.paragraphs[0]
+        p.paragraph_format.page_break_before = new_page
         p.paragraph_format.keep_with_next = True
         p.paragraph_format.space_after = Pt(0)
         run = p.add_run(title)
@@ -343,9 +344,15 @@ def render_docx(case, blocks, target):
         p.add_run(str(text))
         return p
 
-    brand = document.add_paragraph("EVIDENCE REPORTER")
-    brand.runs[0].bold = True
-    brand.runs[0].font.color.rgb = RGBColor.from_string("5744CC")
+    brand = document.add_paragraph()
+    brand.add_run().add_picture(
+        BytesIO(files("rf_evidence_reporter").joinpath("assets/logo.png").read_bytes()),
+        width=Inches(0.32),
+    )
+    brand.add_run("  Evidence Reporter")
+    brand.paragraph_format.keep_with_next = True
+    brand.runs[-1].bold = True
+    brand.runs[-1].font.color.rgb = RGBColor.from_string("5744CC")
     document.add_paragraph(case["name"], "Title")
     if case["description"]:
         document.add_paragraph(case["description"])
@@ -382,9 +389,11 @@ def render_docx(case, blocks, target):
     captures_on_page = 0
     for block in blocks:
         if block.get("id"):
-            document.add_page_break()
+            # Separate adjacent tables so Word keeps each milestone as its own card.
+            document.add_paragraph().paragraph_format.space_after = Pt(2)
+        heading = card(block["title"], "5744CC", "EDE9FF", new_page=bool(block.get("id")))
+        if block.get("id"):
             captures_on_page = 0
-        heading = card(block["title"], "5744CC", "EDE9FF")
         body_paragraph(
             heading, block["description"] or "Evidencias del caso"
         ).paragraph_format.keep_with_next = True
@@ -392,13 +401,14 @@ def render_docx(case, blocks, target):
         gap.paragraph_format.space_after = Pt(2)
         gap.paragraph_format.keep_with_next = True
         for number, event in enumerate(block["events"], 1):
+            new_page = False
             if event.get("_image_bytes"):
                 if captures_on_page == 2:
-                    document.add_page_break()
+                    new_page = True
                     captures_on_page = 0
                 captures_on_page += 1
             accent, background = status_colors(event_level(event))
-            body = card(f"Paso {number}  |  {event_text(event)}", accent, background)
+            body = card(f"Paso {number}  |  {event_text(event)}", accent, background, new_page=new_page)
             if event.get("description"):
                 body_paragraph(body, event["description"])
             if event.get("_image_bytes"):

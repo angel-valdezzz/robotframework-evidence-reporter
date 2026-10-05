@@ -6,6 +6,18 @@
   try { selected = localStorage.getItem(key); } catch (_) { /* Storage may be disabled. */ }
   if (!['light', 'dark'].includes(selected)) selected = null;
   function enhance() {
+    const title = document.querySelector('.libdoc-title');
+    if (title && typeof libdocBrand !== 'undefined') {
+      const mark = document.createElement('img');
+      mark.className = 'libdoc-brand-mark';
+      mark.src = libdocBrand.icon;
+      mark.alt = '';
+      title.querySelector(':scope > svg')?.remove();
+      title.prepend(mark);
+      const heading = title.querySelector('h1');
+      if (heading) heading.textContent = libdocBrand.name;
+      document.title = libdocBrand.name + ' — ' + (document.documentElement.lang === 'es' ? 'Referencia de keywords' : 'Keyword reference');
+    }
     const language = document.getElementById('language-container');
     if (!language) throw new Error('Libdoc language menu not found');
     const toolbar = document.createElement('div');

@@ -77,3 +77,12 @@
 .md-header__title .md-header__topic[data-md-component="header-topic"] {
   display: none;
 }
+
+/* Version 1 identity; explicit variants keep wordmarks legible in both themes. */
+.project-brand {margin:0 0 1.4rem;}
+.project-brand img {display:block;width:min(100%,380px);height:auto;max-height:110px;object-fit:contain;object-position:left;}
+.project-brand .project-brand-dark {display:none;}
+[data-md-color-scheme="slate"] .project-brand .project-brand-light {display:none;}
+[data-md-color-scheme="slate"] .project-brand .project-brand-dark {display:block;}
+.md-header__button.md-logo img {width:1.5rem;height:1.5rem;background:white;border-radius:6px;padding:2px;box-sizing:border-box;}
+@media(max-width:600px) {.project-brand img {max-width:290px;}}

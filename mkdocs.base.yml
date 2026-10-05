@@ -4,11 +4,11 @@ site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
 repo_url: https://github.com/angel-valdezzz/robotframework-evidence-reporter
 repo_name: Evidence Reporter
 theme:
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   custom_dir: overrides
   name: material
   language: en
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
   icon:
     repo: fontawesome/brands/github
   font: false
