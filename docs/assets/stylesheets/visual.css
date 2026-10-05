@@ -68,3 +68,12 @@
 .md-typeset .report-preview { border-radius: .75rem; border: 1px solid var(--doc-border); box-shadow: 0 10px 30px #102b5015; }
 .md-nav__link--active { font-weight: 700; }
 @media(max-width:600px) { .md-typeset .hero { padding: 1rem; } }
+
+/* Keep the project identity visible when Material activates the page topic on scroll. */
+.md-header__title .md-header__topic:first-child {
+  opacity: 1;
+  transform: none;
+}
+.md-header__title .md-header__topic[data-md-component="header-topic"] {
+  display: none;
+}
