@@ -1,0 +1,36 @@
+INHERIT: mkdocs.base.yml
+site_description: Evidencias de negocio y reportes individuales para Robot Framework
+site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/
+docs_dir: docs/es
+site_dir: build/site-es
+edit_uri: edit/main/docs/es/
+theme:
+  language: es
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: custom
+    accent: custom
+    toggle:
+      icon: material/weather-night
+      name: Modo oscuro
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: custom
+    accent: custom
+    toggle:
+      icon: material/weather-sunny
+      name: Modo claro
+plugins:
+  - search:
+      lang: es
+nav:
+  - Inicio: index.md
+  - Manual de usuario:
+      - Primera evidencia: getting-started.md
+      - Uso: guide.md
+      - Paralelo y CI: parallel.md
+  - Referencia de keywords: keywords.md
+  - Referencia de API: generation.md
+  - Desarrollo y publicación: publishing.md
+  - Ejemplos visuales: demo.md

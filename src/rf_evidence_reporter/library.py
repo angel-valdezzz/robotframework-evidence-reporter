@@ -20,63 +20,45 @@ class CaptureError(RuntimeError):
 
 @library(scope="GLOBAL", auto_keywords=False)
 class EvidenceReporter:
-    """Registra evidencias de negocio independientes por caso de Robot Framework.
+    """Record independent business evidence for each Robot Framework case.
 
-    Las capturas y los mensajes se guardan junto con los datos de ejecución en
-    JSON. El HTML se genera después con ``rf-evidence build``; no se genera
-    durante las keywords. Los hitos son opcionales: las evidencias sin
-    ``milestone_id`` pertenecen directamente al caso.
+    Screenshots and messages are stored with execution data as JSON. Generate HTML afterwards with ``rf-evidence build``, not during keywords. Milestones are optional: evidence without ``milestone_id`` belongs directly to the case.
 
-    = Importación =
+    = Importing =
     | Library | EvidenceReporter | output_dir=${OUTPUTDIR}/evidence | strict=${False} |
 
-    = Argumentos comunes de captura =
-    - ``title``: título de negocio visible en el reporte.
-    - ``description``: descripción opcional de la evidencia.
-    - ``milestone_id``: ID devuelto por `Create Milestone` dentro del mismo caso.
-      Si se omite, la evidencia se registra directamente en el caso.
-    - ``strict``: si se omite, hereda la configuración de importación.
-      Con ``${False}``, un fallo de captura registra WARN y devuelve ``None``.
-      Con ``${True}``, conserva la advertencia y falla con ``CAPTURE_FAILED``.
-    - ``status``: INFO (predeterminado), PASS, WARN o FAIL. Describe la evidencia;
-      no modifica el resultado de ejecución. SKIP solo pertenece a la ejecución.
+    = Common capture arguments =
+    - ``title``: business title displayed in the report.
+    - ``description``: optional evidence description.
+    - ``milestone_id``: ID returned by `Create Milestone` in the same case. Omit it for direct evidence.
+    - ``strict``: inherits the import setting when omitted. With ``${False}``, capture failure records WARN and returns ``None``. With ``${True}``, it preserves the warning and fails with ``CAPTURE_FAILED``.
+    - ``status``: INFO (default), PASS, WARN or FAIL. Describes evidence without changing execution status. SKIP belongs only to execution.
 
-    = Errores =
-    | Código | Motivo |
-    | BROWSER_UNAVAILABLE | SeleniumLibrary no importada o navegador no activo. |
-    | ELEMENT_NOT_FOUND | El locator no pudo resolverse. |
-    | SCREENSHOT_FAILED | El navegador o elemento no pudo producir la imagen. |
-    | DESKTOP_UNAVAILABLE | El backend no pudo capturar el escritorio. |
-    | IMAGE_UNAVAILABLE | La imagen solicitada no pudo leerse. |
-    | INVALID_IMAGE | Archivo inválido o formato distinto de PNG, JPEG y WEBP. |
-    | STORAGE_ERROR | No se pudo guardar el archivo. |
+    = Errors =
+    | Code | Reason |
+    | BROWSER_UNAVAILABLE | SeleniumLibrary not imported or no active browser. |
+    | ELEMENT_NOT_FOUND | The locator could not be resolved. |
+    | SCREENSHOT_FAILED | The browser or element could not produce an image. |
+    | DESKTOP_UNAVAILABLE | The backend could not capture the desktop. |
+    | IMAGE_UNAVAILABLE | The requested image could not be read. |
+    | INVALID_IMAGE | Invalid file or format other than PNG, JPEG and WEBP. |
+    | STORAGE_ERROR | The file could not be saved. |
 
-    Los errores anteriores producen advertencias por defecto. En modo estricto,
-    ``CAPTURE_FAILED`` incluye el código y motivo originales. ``NO_ACTIVE_CASE``,
-    ``UNKNOWN_MILESTONE``, ``INVALID_LEVEL`` e ``INVALID_CAPTURE_STATUS`` son
-    errores de uso y siempre se propagan. Los errores inesperados también se
-    propagan; no se convierten silenciosamente en advertencias.
+    These errors produce warnings by default. In strict mode, ``CAPTURE_FAILED`` includes the original code and reason. ``NO_ACTIVE_CASE``, ``UNKNOWN_MILESTONE``, ``INVALID_LEVEL`` and ``INVALID_CAPTURE_STATUS`` are usage errors and always propagate. Unexpected errors also propagate rather than silently becoming warnings.
 
-    = Ejemplo =
-    | ${hito}= | Create Milestone | Cliente registrado | Alta confirmada. |
-    | Capture Page Evidence | Confirmación de registro | milestone_id=${hito} | status=PASS |
-    | Add Evidence Message | Se confirmó el alta del cliente. | milestone_id=${hito} |
+    = Example =
+    | ${milestone}= | Create Milestone | Customer registered | Registration confirmed. |
+    | Capture Page Evidence | Registration confirmation | milestone_id=${milestone} | status=PASS |
+    | Add Evidence Message | Customer registration confirmed. | milestone_id=${milestone} |
 
-    Cada caso tiene su propio directorio e identificadores, también en Pabot.
-    Las capturas se solicitan explícitamente; la librería no decide cuándo
-    capturar ni oculta información sensible de las imágenes.
-    """
+    Each case has its own directory and identifiers, including with Pabot. Captures are explicit: the library does not decide when to capture or hide sensitive information in images."""
 
     ROBOT_LISTENER_API_VERSION = 3
 
     def __init__(self, output_dir=None, strict: bool = False):
-        """Configura el directorio de evidencias y la política de errores de captura.
+        """Configure the evidence directory and capture error policy.
 
-        ``output_dir`` admite una ruta absoluta o relativa al directorio de
-        ejecución. Si se omite, utiliza ``${OUTPUTDIR}/evidence`` de Robot.
-        ``strict`` es falso por defecto; puede sobrescribirse en cada captura.
-        La importación no abre un navegador ni genera reportes HTML.
-        """
+        ``output_dir`` accepts an absolute path or a path relative to the execution directory. Defaults to Robot's ``${OUTPUTDIR}/evidence``. ``strict`` defaults to false and can be overridden per capture. Importing does not open a browser or generate HTML reports."""
         self.ROBOT_LIBRARY_LISTENER = self
         self.output_dir = output_dir
         self.strict = strict
@@ -99,42 +81,31 @@ class EvidenceReporter:
 
     @keyword
     def create_milestone(self, title: str, description: str = ""):
-        """Crea un hito de negocio dentro del caso activo y devuelve su ID.
+        """Create a business milestone in the active case and return its ID.
 
-        ``title`` identifica el hito; ``description`` añade contexto opcional.
-        Pasa el ID a las capturas o mensajes mediante ``milestone_id``. No hay
-        un hito implícitamente activo: omitir el ID registra evidencia directa.
+        ``title`` identifies the milestone; ``description`` adds optional context. Pass its ID to captures or messages using ``milestone_id``. There is no implicit active milestone: omitting the ID records direct evidence.
 
-        | ${hito}= | Create Milestone | Cuentas consultadas | Saldos disponibles. |
-        | Capture Page Evidence | Lista de cuentas | milestone_id=${hito} |
-        """
+        | ${milestone}= | Create Milestone | Accounts queried | Balances available. |
+        | Capture Page Evidence | Account list | milestone_id=${milestone} |"""
         return self._active().milestone(title, description)
 
     @keyword
     def set_report_metadata(self, **metadata):
-        """Añade campos personalizados a la tabla de información del caso.
+        """Add custom fields to the case information table.
 
-        Recibe argumentos nombrados ``etiqueta=valor`` y los guarda como texto.
-        Si se repite una etiqueta personalizada, conserva el último valor.
-        Los campos automáticos de ejecución se mantienen separados. No devuelve
-        un valor; falla con ``NO_ACTIVE_CASE`` fuera de un caso activo.
+        Accepts named ``label=value`` arguments and stores them as text. Repeated custom labels retain the last value. Automatic execution fields stay separate. Returns nothing; fails with ``NO_ACTIVE_CASE`` outside an active case.
 
-        | Set Report Metadata | Aplicación=ParaBank | Requerimiento=QA-123 |
-        """
+        | Set Report Metadata | Application=ParaBank | Requirement=QA-123 |"""
         self._active().metadata(metadata)
 
     @keyword
     def add_evidence_message(self, message: str, level: str = "INFO", milestone_id=None):
-        """Registra un mensaje de negocio y devuelve el ID del evento.
+        """Record a business message and return its event ID.
 
-        ``message`` es el texto del mensaje. ``level`` admite INFO
-        (predeterminado), WARN y ERROR, sin distinguir mayúsculas. No modifica
-        el resultado del caso. ``milestone_id`` es opcional; debe pertenecer al
-        caso activo. Un nivel inválido falla con ``INVALID_LEVEL``.
+        ``message`` is the message text. ``level`` accepts INFO (default), WARN and ERROR, case-insensitively. It does not change test status. Optional ``milestone_id`` must belong to the active case. An invalid level fails with ``INVALID_LEVEL``.
 
-        | Add Evidence Message | Se consultaron las cuentas del cliente. |
-        | Add Evidence Message | Saldo pendiente de confirmar. | level=WARN |
-        """
+        | Add Evidence Message | Customer accounts queried. |
+        | Add Evidence Message | Balance pending confirmation. | level=WARN |"""
         level = level.upper()
         if level not in {"INFO", "WARN", "ERROR"}:
             raise ValueError("INVALID_LEVEL: utiliza INFO, WARN o ERROR.")
@@ -226,18 +197,13 @@ class EvidenceReporter:
         strict: bool | None = None,
         status: str = "INFO",
     ):
-        """Captura el área visible de la página en el navegador activo.
+        """Capture the visible page area in the active browser.
 
-        Reutiliza la sesión de SeleniumLibrary (Chrome, Edge o Firefox).
-        No incluye barras del navegador, escritorio ni la página completa.
-        Guarda URL y título de página cuando están disponibles.
+        Reuses the SeleniumLibrary session (Chrome, Edge or Firefox). Does not include browser toolbars, desktop or the full page. Stores page URL and title when available.
 
-        Consulta los argumentos comunes y errores en la introducción.
-        Devuelve el ID del evento, o ``None`` si falla sin modo estricto.
-        Sin sesión disponible registra ``BROWSER_UNAVAILABLE``.
+        See common arguments and errors in the introduction. Returns the event ID, or ``None`` on failure without strict mode. No available session records ``BROWSER_UNAVAILABLE``.
 
-        | Capture Page Evidence | Error mostrado por la aplicación | status=FAIL |
-        """
+        | Capture Page Evidence | Error shown by the application | status=FAIL |"""
 
         def producer():
             driver = self._driver()
@@ -258,18 +224,13 @@ class EvidenceReporter:
         strict: bool | None = None,
         status: str = "INFO",
     ):
-        """Captura un elemento de la sesión activa de SeleniumLibrary.
+        """Capture an element in SeleniumLibrary's active session.
 
-        ``locator`` utiliza la sintaxis de SeleniumLibrary, por ejemplo
-        ``css:.confirmation`` o ``id:registrationForm``. Guarda URL y título de
-        página cuando están disponibles. No abre una sesión nueva.
+        ``locator`` uses SeleniumLibrary syntax, such as ``css:.confirmation`` or ``id:registrationForm``. Stores page URL and title when available. Does not open a new session.
 
-        Consulta los argumentos comunes y errores en la introducción.
-        Devuelve el ID del evento, o ``None`` si falla sin modo estricto.
-        Un locator no resuelto registra ``ELEMENT_NOT_FOUND``.
+        See common arguments and errors in the introduction. Returns the event ID, or ``None`` on failure without strict mode. An unresolved locator records ``ELEMENT_NOT_FOUND``.
 
-        | Capture Element Evidence | css:.confirmation | Alta confirmada | status=PASS |
-        """
+        | Capture Element Evidence | css:.confirmation | Registration confirmed | status=PASS |"""
 
         def producer():
             driver = self._driver()
@@ -293,20 +254,13 @@ class EvidenceReporter:
         strict: bool | None = None,
         status: str = "INFO",
     ):
-        """Captura el escritorio del entorno donde se ejecuta Robot.
+        """Capture the desktop of the environment where Robot runs.
 
-        Utiliza Pillow ImageGrab y no necesita SeleniumLibrary. Requiere un
-        entorno gráfico/backend compatible y los permisos del sistema.
-        No captura el escritorio de una máquina remota de Selenium Grid.
-        En headless, CI o paralelo, el usuario decide si esta captura es útil:
-        puede incluir otras ventanas y no se sustituye por una captura de página.
+        Uses Pillow ImageGrab without SeleniumLibrary. Requires a compatible graphical environment/backend and system permissions. Does not capture a remote Selenium Grid machine's desktop. In headless, CI or parallel execution, the user decides whether this is useful: it can include other windows and is not replaced by a page screenshot.
 
-        Consulta los argumentos comunes y errores en la introducción.
-        Devuelve el ID del evento, o ``None`` si falla sin modo estricto.
-        Un backend no disponible registra ``DESKTOP_UNAVAILABLE``.
+        See common arguments and errors in the introduction. Returns the event ID, or ``None`` on failure without strict mode. An unavailable backend records ``DESKTOP_UNAVAILABLE``.
 
-        | Capture Desktop Evidence | Escritorio al confirmar la operación | status=INFO |
-        """
+        | Capture Desktop Evidence | Desktop after confirming the operation | status=INFO |"""
 
         def producer():
             try:
@@ -329,20 +283,13 @@ class EvidenceReporter:
         strict: bool | None = None,
         status: str = "INFO",
     ):
-        """Copia una imagen existente al directorio de evidencias del caso.
+        """Copy an existing image into the case's evidence directory.
 
-        ``path`` admite una ruta absoluta o relativa al directorio de ejecución.
-        Acepta PNG, JPEG y WEBP; valida el contenido real de la imagen. El archivo
-        original no se modifica y puede moverse después de una copia exitosa.
-        No necesita navegador ni entorno gráfico.
+        ``path`` accepts an absolute path or a path relative to the execution directory. Accepts PNG, JPEG and WEBP and validates actual image content. The original is unchanged and can be moved after a successful copy. No browser or graphical environment is required.
 
-        Consulta los argumentos comunes y errores en la introducción.
-        Devuelve el ID del evento, o ``None`` si falla sin modo estricto.
-        Una ruta ilegible registra ``IMAGE_UNAVAILABLE``; contenido inválido,
-        ``INVALID_IMAGE``.
+        See common arguments and errors in the introduction. Returns the event ID, or ``None`` on failure without strict mode. An unreadable path records ``IMAGE_UNAVAILABLE``; invalid content records ``INVALID_IMAGE``.
 
-        | Attach Image Evidence | ${EXECDIR}/data/confirmacion.png | Confirmación externa | status=PASS |
-        """
+        | Attach Image Evidence | ${EXECDIR}/data/confirmation.png | External confirmation | status=PASS |"""
 
         def producer():
             try:

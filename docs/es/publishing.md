@@ -9,10 +9,8 @@ El workflow `docs.yml` genera la demo HTML y la referencia de keywords con Libdo
 Desde la raíz del proyecto:
 
 ```bash
-poetry run python scripts/demo.py
-poetry run python -m robot.libdoc --name "Evidence Reporter" EvidenceReporter docs/reference/keywords.html
-poetry run mkdocs build --strict
-poetry run mkdocs serve
+poetry run python scripts/build_docs.py
+poetry run python -m http.server 8000 --directory site
 ```
 
 Abre `/keywords/` para acceder a la referencia o `/reference/keywords.html` para consultar Libdoc directamente. El HTML generado se publica en Pages, pero no se versiona: cada compilación lo reconstruye desde el código. Al cambiar una keyword, actualiza su docstring; no mantengas otra tabla de firmas en MkDocs.
@@ -34,3 +32,10 @@ Un cambio de `pyproject.toml` integrado en `main` activa la publicación. Tambi�
 Antes de publicar, el workflow prueba la importación `Library    EvidenceReporter` desde el wheel instalado y conserva wheel/sdist como artefactos, incluso si el paso posterior de PyPI no puede autenticarse.
 
 Cada versión publicada es inmutable: aumenta la versión antes de otra release. Para validar el paquete desde fuente: `poetry install`. Para distribución local: `poetry build` y `pip install dist/*.whl`.
+
+## Mantener los idiomas
+
+El inglés vive en `docs/en/` y se publica en la raíz. El español vive en `docs/es/`
+y se publica bajo `/es/`. Conserva los mismos nombres de páginas en ambos idiomas.
+Las traducciones de Libdoc viven en `docs/translations/es/libdoc.json`; la compilación
+rechaza entradas faltantes o desactualizadas. El selector nativo de Libdoc cambia los controles y las descripciones. Actualiza ambos textos y el SHA-256 del original cuando cambie una keyword.

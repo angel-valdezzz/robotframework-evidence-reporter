@@ -42,9 +42,9 @@ Consultar Ejemplos Por Pestañas
 Consultar Referencia Libdoc
     [Documentation]    Comprueba que MkDocs enlaza la referencia generada de la librería.
     Go To    http://localhost:8765/keywords/
-    Click Link    Consultar keywords en Libdoc
+    Click Link    css:a[href="../reference/keywords.html"]
     Location Should Be    http://localhost:8765/reference/keywords.html
-    Wait Until Page Contains    Evidence Reporter
+    Wait Until Page Contains    EvidenceReporter
     Wait Until Page Contains    Capture Page Evidence
     Page Should Contain    Create Milestone
     Page Should Contain    INVALID_CAPTURE_STATUS
@@ -57,6 +57,18 @@ Consultar Ejemplos Resaltados
     Page Should Contain Element    css:.highlight .hll
     Capture Page Screenshot    ${OUTPUTDIR}/docs-guide.png
 
+Cambiar Idioma En Libdoc
+    [Documentation]    Cambia controles y descripciones desde el menú nativo, conservando la keyword.
+    Go To    http://localhost:8765/reference/keywords.html#Capture%20Page%20Evidence
+    Elegir Idioma De Libdoc    Español
+    Location Should Be    http://localhost:8765/es/reference/keywords.html#Capture%20Page%20Evidence
+    Wait Until Page Contains    Introducción
+    Page Should Contain    Captura el área visible de la página
+    Element Should Contain    css:#language-container button    Idioma: Español
+    Elegir Idioma De Libdoc    English
+    Location Should Be    http://localhost:8765/reference/keywords.html#Capture%20Page%20Evidence
+    Wait Until Page Contains    Capture the visible page area
+
 
 *** Keywords ***
 Abrir Documentación
@@ -64,3 +76,9 @@ Abrir Documentación
     Open Browser    http://localhost:8765/    headlesschrome
     ...    options=add_argument("--no-sandbox");add_argument("--disable-dev-shm-usage")
     Set Window Size    1440    1000
+
+Elegir Idioma De Libdoc
+    [Documentation]    Usa el selector nativo para abrir la referencia del idioma elegido.
+    [Arguments]    ${idioma}
+    Click Element    css:#language-container button
+    Click Link    ${idioma}
