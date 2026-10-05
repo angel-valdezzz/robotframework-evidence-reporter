@@ -120,5 +120,8 @@ for status, filename in [
             if status == "SKIP"
             else "",
         )
-    paths = build_reports(recorder.case_dir, root / "html")
+    formats = ("html", "pdf") if status == "PASS" else ("html",)
+    paths = build_reports(recorder.case_dir, root / "html", formats=formats)
     shutil.copyfile(paths[0], Path("docs/demo") / filename)
+    if status == "PASS":
+        shutil.copyfile(paths[1], Path("docs/demo/passed.pdf"))

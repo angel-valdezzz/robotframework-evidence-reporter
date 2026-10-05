@@ -8,6 +8,7 @@ site/
 *.egg-info/
 .pabotsuitenames
 docs/demo/*.html
+docs/demo/*.pdf
 docs/reference/*.html
 
 build/
