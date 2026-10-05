@@ -1,0 +1,5 @@
+/* Shared documentation style; each library retains its logo and accent. */
+:root { --md-text-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.md-typeset h1, .md-typeset h2 { font-weight: 650; letter-spacing: -.02em; }
+.md-typeset .md-button { border-radius: .45rem; }
+.md-typeset table:not([class]) { border-radius: .4rem; overflow: hidden; }

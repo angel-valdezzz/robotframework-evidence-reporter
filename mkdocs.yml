@@ -1,68 +1,36 @@
-site_name: Evidence Reporter
-site_description: Evidencias de negocio y reportes individuales para Robot Framework
+INHERIT: mkdocs.base.yml
+site_description: Business evidence and individual reports for Robot Framework
 site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
-repo_url: https://github.com/angel-valdezzz/robotframework-evidence-reporter
-repo_name: Evidence Reporter
+docs_dir: docs/en
+site_dir: site
+edit_uri: edit/main/docs/en/
 theme:
-  name: material
-  language: es
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
-  icon:
-    repo: fontawesome/brands/github
-  font: false
+  language: en
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-night
-        name: Cambiar a modo oscuro
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: custom
-      accent: custom
-      toggle:
-        icon: material/weather-sunny
-        name: Cambiar a modo claro
-  features:
-    - navigation.sections
-    - navigation.top
-    - navigation.footer
-    - toc.follow
-    - content.code.copy
-    - content.tabs.link
-    - search.highlight
-    - search.suggest
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: custom
+    accent: custom
+    toggle:
+      icon: material/weather-night
+      name: Dark mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: custom
+    accent: custom
+    toggle:
+      icon: material/weather-sunny
+      name: Light mode
 plugins:
   - search:
-      lang: es
-extra_css:
-  - assets/stylesheets/extra.css
+      lang: en
 nav:
-  - Inicio: index.md
-  - Empezar:
-      - Primera evidencia: getting-started.md
-      - Guía de uso: guide.md
-      - Demo HTML: demo.md
-  - Referencia:
-      - Keywords: keywords.md
-      - CLI y Python: generation.md
-  - Ejecución y publicación:
-      - Paralelo y CI/CD: parallel.md
-      - Publicación: publishing.md
-markdown_extensions:
-  - admonition
-  - attr_list
-  - md_in_html
-  - pymdownx.details
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.superfences
-  - pymdownx.inlinehilite
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - Home: index.md
+  - User guide:
+      - First evidence: getting-started.md
+      - Usage: guide.md
+      - Parallel execution and CI: parallel.md
+  - Keyword reference: keywords.md
+  - API reference: generation.md
+  - Development and publishing: publishing.md
+  - Visual examples: demo.md

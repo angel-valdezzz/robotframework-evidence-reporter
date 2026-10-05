@@ -20,9 +20,7 @@ jobs:
           python-version: '3.12'
       - run: pip install poetry==2.5.1
       - run: poetry install --no-interaction
-      - run: poetry run python scripts/demo.py
-      - run: poetry run python -m robot.libdoc --name "Evidence Reporter" EvidenceReporter docs/reference/keywords.html
-      - run: poetry run mkdocs build --strict
+      - run: poetry run python scripts/build_docs.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

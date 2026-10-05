@@ -18,7 +18,7 @@ Salida: rutas de los HTML generados. Código 0: generación completada. Código 
 
 No requiere una sesión Robot ni un navegador para generar. `EvidenceRecorder` también es público para registrar desde Python: `start`, `milestone`, `metadata`, `event` y `finish`. El contrato de datos se versiona con `schema_version`.
 
-La generación no cambia los JSON originales. Se puede volver a generar con otra versión de la plantilla. No combina reintentos: cada ejecución de un caso genera su propio reporte. El UUID del archivo evita sobrescrituras de casos homónimos.
+La generación no cambia los JSON originales. Se puede volver a generar con otra versión de la plantilla. Cada ejecución de un caso genera su propio reporte. Para combinar reintentos usa el [comando merge](guide.md#combinar-ejecucion-y-reejecucion). El UUID del archivo evita sobrescrituras de casos homónimos.
 
 No hay dashboard ni índice agregado de ejecuciones. Cada HTML tiene su resumen individual. Las fechas de ejecución y generación se presentan por separado, con zona horaria.
 

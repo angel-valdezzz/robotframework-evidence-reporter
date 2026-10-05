@@ -4,24 +4,23 @@ Registra una captura en un caso de Robot y genera el HTML al terminar. Necesitas
 
 ## 1. Instala la librería
 
-!!! note "Instalación desde fuente"
-    Hasta que se confirme la primera publicación en PyPI, instala desde la revisión Git publicada. También puedes instalar el wheel generado por el workflow de publicación.
+La biblioteca está publicada en [PyPI](https://pypi.org/project/robotframework-evidence-reporter/).
 
 === "Poetry"
 
     ```bash
-    poetry add "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@main"
+    poetry add robotframework-evidence-reporter
     poetry add robotframework-seleniumlibrary
     ```
 
 === "pip"
 
     ```bash
-    pip install "git+https://github.com/angel-valdezzz/robotframework-evidence-reporter.git@main"
+    pip install robotframework-evidence-reporter
     pip install robotframework-seleniumlibrary
     ```
 
-Estos comandos instalan la rama `main`. En un proyecto de equipo, fija una revisión Git en el archivo de dependencias para hacer reproducible la instalación. Consulta el [repositorio](https://github.com/angel-valdezzz/robotframework-evidence-reporter) para el código actualizado.
+En un proyecto de equipo, fija una versión del paquete en el archivo de dependencias para hacer reproducible la instalación. Consulta el [repositorio](https://github.com/angel-valdezzz/robotframework-evidence-reporter) para el código actualizado.
 
 ## 2. Registra una captura
 
