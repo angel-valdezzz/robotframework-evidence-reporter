@@ -75,6 +75,7 @@ def localize_menu(output: Path, root: Path, relative: str, language: str) -> Non
         for lang in ("en", "es")
     }
     script = (Path(__file__).parent / "libdoc-language.js").read_text(encoding="utf-8")
+    theme_script = (Path(__file__).parent / "libdoc-theme.js").read_text(encoding="utf-8")
     style = """<style>
 #language-container {width:auto;max-width:220px}
 #language-container button {font:inherit;padding:12px;cursor:pointer;color:var(--text-color)}
@@ -82,10 +83,19 @@ def localize_menu(output: Path, root: Path, relative: str, language: str) -> Non
 #language-container a[aria-current] {font-weight:bold}
 .documentation-language-help {border-left:3px solid #008c95;padding:8px 12px}
 @media(max-width:600px) {#language-container button {font-size:12px;padding:10px 6px}}
+
 </style>"""
     document += (
-        style + "<script>const libdocLanguageTargets=" + json.dumps(targets) + ";" + script + "</script>"
+        style
+        + "<script>const libdocLanguageTargets="
+        + json.dumps(targets)
+        + ";"
+        + script
+        + theme_script
+        + "</script>"
     )
+    theme_style = (Path(__file__).parent / "libdoc-theme.css").read_text(encoding="utf-8")
+    document += "<style>" + theme_style + "</style>"
     output.write_text(document, encoding="utf-8")
 
 

@@ -23,6 +23,18 @@ const { JSDOM, VirtualConsole } = require('jsdom');
       if (errors.length) throw errors[0];
       const document=dom.window.document;
       assert.equal(document.documentElement.lang,lang);
+      const theme=document.querySelector('#libdoc-theme-toggle');
+      assert(theme, 'Visible Libdoc theme control');
+      assert.equal(document.documentElement.getAttribute('data-theme'),'light');
+      theme.click();
+      assert.equal(document.documentElement.getAttribute('data-theme'),'dark');
+      assert.equal(theme.getAttribute('aria-pressed'),'true');
+      assert.equal(dom.window.localStorage.getItem('documentation-libdoc-theme'),'dark');
+      assert.equal(theme.textContent,lang==='es'?'Modo claro':'Light mode');
+      theme.click();
+      assert.equal(document.documentElement.getAttribute('data-theme'),'light');
+      assert.equal(theme.getAttribute('aria-pressed'),'false');
+
       const button=document.querySelector('#language-container button');
       assert(button);
       assert(button.textContent.includes(lang==='es'?'Idioma: Español':'Language: English'));

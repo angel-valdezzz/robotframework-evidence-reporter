@@ -1,0 +1,68 @@
+#libdoc-controls {
+  position:fixed;
+  top:0;
+  right:0;
+  z-index:1001;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--background-color);
+  padding:4px 8px;
+  border-bottom:1px solid var(--border-color)
+}
+
+#libdoc-controls #language-container {
+  position:relative;
+  top:auto;
+  right:auto;
+  width:auto;
+  min-width:max-content;
+  flex:0 0 auto
+}
+
+#libdoc-controls #language-container button {
+  padding:10px 4px;
+  white-space:nowrap;
+  width:auto;
+  height:auto
+}
+
+#libdoc-theme-toggle {
+  font:inherit;
+  padding:7px 10px;
+  border:1px solid var(--border-color);
+  border-radius:6px;
+  cursor:pointer;
+  white-space:nowrap
+}
+
+#libdoc-theme-toggle:focus-visible {
+  outline:2px solid var(--link-color);
+  outline-offset:2px
+}
+
+.libdoc-title {
+  max-width:calc(100% - 330px)
+}
+
+@media(max-width:600px) {
+  #libdoc-controls {
+  top:48px;
+  font-size:12px
+}
+.libdoc-title {
+  max-width:calc(100% - 80px)
+}
+.libdoc-details {
+  margin-top:108px
+}
+
+}
+
+@media print {
+  #libdoc-controls {
+  display:none
+}
+
+}
+

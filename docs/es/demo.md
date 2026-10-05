@@ -1,4 +1,12 @@
-# Demo HTML
+# Ejemplos visuales
+
+## Ejemplo PDF
+
+[Ver PDF de ejemplo](demo/passed.pdf){ .md-button .md-button--primary target="_blank" rel="noopener" }
+
+Este PDF se genera con el motor de exportación de Evidence Reporter a partir del mismo caso aprobado de la demo HTML. Incluye datos ficticios, hitos, capturas y estados de evidencia. El enlace abre el archivo estático en otra pestaña; el navegador puede mostrarlo o descargarlo según su configuración.
+
+## Ejemplos HTML
 
 Estos son HTML reales, autocontenidos, generados por el mismo motor del paquete. Los datos y las imágenes son ficticios y están identificados como demostración.
 

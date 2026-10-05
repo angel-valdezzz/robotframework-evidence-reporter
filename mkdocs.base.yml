@@ -43,6 +43,7 @@ plugins:
 extra_css:
   - assets/stylesheets/standard.css
   - assets/stylesheets/extra.css
+  - assets/stylesheets/visual.css
 markdown_extensions:
   - admonition
   - attr_list
