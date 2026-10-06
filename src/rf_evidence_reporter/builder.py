@@ -9,28 +9,32 @@ from pathlib import Path
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from .i18n import footer_text, translator
 from .images import image_bytes
 from .manifest import file_entry, write_manifest
 from .recorder import slug, timestamp
 
 
-def display_date(value):
+def display_date(value, language="en"):
     if not value:
-        return "No registrado"
+        return translator(language)("No registrado")
     return datetime.fromisoformat(value).strftime("%d/%m/%Y · %H:%M:%S")
 
 
-def timezone_label(value):
+def timezone_label(value, language="en"):
     offset = datetime.fromisoformat(value).strftime("%z")
-    return "UTC" + offset[:3] + ":" + offset[3:] if offset else "Sin zona horaria"
+    return "UTC" + offset[:3] + ":" + offset[3:] if offset else translator(language)("Sin zona horaria")
 
 
-def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width=None, image_quality=None):
+def build_reports(
+    results_dir, output_dir, *, formats=("html",), max_image_width=None, image_quality=None, language="en"
+):
     """Return generated HTML Paths. One HTML per recorded case, never a global dashboard.
 
     Invalid case files fail generation clearly. Missing/invalid images become visible warnings.
     Input image references must remain inside their case directory.
     """
+    t = translator(language)
     if isinstance(formats, str):
         formats = formats.split(",")
     formats = tuple(dict.fromkeys(item.strip().lower() for item in formats))
@@ -49,8 +53,8 @@ def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width
     environment = Environment(
         loader=PackageLoader("rf_evidence_reporter", "templates"), autoescape=select_autoescape(["html"])
     )
-    environment.filters["display_date"] = display_date
-    environment.filters["timezone_label"] = timezone_label
+    environment.filters["display_date"] = lambda value: display_date(value, language)
+    environment.filters["timezone_label"] = lambda value: timezone_label(value, language)
     template = environment.get_template("report.html")
     logo_data = "data:image/svg+xml;base64," + base64.b64encode(
         package_files("rf_evidence_reporter").joinpath("assets/logo.svg").read_bytes()
@@ -94,7 +98,7 @@ def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width
         # Blocks follow first evidence appearance; evidence within each block retains its order.
         direct = [event for event in case["events"] if not event.get("milestone_id")]
         if direct:
-            blocks.append({"title": "Evidencias del caso", "description": "", "events": direct})
+            blocks.append({"title": t("Evidencias del caso"), "description": "", "events": direct})
         for milestone in case["milestones"]:
             blocks.append(
                 {
@@ -114,13 +118,21 @@ def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width
             target = destination / f"{stem}.{format_name}"
             if format_name == "html":
                 target.write_text(
-                    template.render(logo_data=logo_data, case=case, blocks=blocks, generated_at=timestamp()),
+                    template.render(
+                        logo_data=logo_data,
+                        case=case,
+                        blocks=blocks,
+                        generated_at=timestamp(),
+                        t=t,
+                        language=language,
+                        footer=footer_text(language),
+                    ),
                     encoding="utf-8",
                 )
             else:
                 from .documents import render_document
 
-                render_document(case, blocks, target, format_name)
+                render_document(case, blocks, target, format_name, language=language)
             generated.append(target)
             outputs.append(file_entry(target, destination, format_name))
         assets = [file_entry(source, destination, "case_json")]

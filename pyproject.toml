@@ -1,6 +1,6 @@
 [project]
 name = "robotframework-evidence-reporter"
-version = "0.2.1"
+version = "0.3.0"
 description = "Standalone business evidence reports per Robot Framework test"
 authors = [{name = "Angel Gerardo Molina Valdez"}]
 readme = "README.md"

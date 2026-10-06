@@ -34,7 +34,7 @@ for status, filename in [
     recorder.start(
         "Registrar cliente y consultar sus cuentas",
         "Demostración",
-        "Reporte de ejemplo con datos ficticios. Las imágenes son ilustrativas.",
+        "",
     )
     if status == "SKIP":
         recorder.finish("SKIP", 0.0, "Caso omitido antes de ejecutar el cuerpo (ejemplo de robot:skip).")
@@ -126,3 +126,19 @@ for status, filename in [
     shutil.copyfile(paths[0], Path("docs/demo") / filename)
     if status == "PASS":
         shutil.copyfile(paths[1], Path("docs/demo/passed.pdf"))
+
+# Spanish interface preview from the same recorded cases, including PDF and Word.
+spanish = Path("docs/demo/es")
+spanish.mkdir(parents=True, exist_ok=True)
+for case_file in root.rglob("case.json"):
+    import json
+
+    case = json.loads(case_file.read_text())
+    filename = {"PASS": "passed", "FAIL": "failed", "SKIP": "skipped", "INCOMPLETE": "incomplete"}[
+        case["status"]
+    ]
+    outputs = build_reports(
+        case_file.parent, root / "html-es", formats=("html", "pdf", "docx"), language="es"
+    )
+    for source in outputs:
+        shutil.copyfile(source, spanish / (filename + source.suffix))

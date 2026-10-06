@@ -167,3 +167,12 @@ paths = build_reports(
     max_image_width=1600, image_quality=85,
 )
 ```
+
+
+## Idioma del reporte
+
+El idioma predeterminado es inglés. Usa `--language es` para generar HTML, PDF y Word en español. Los nombres de casos, metadata y mensajes conservan su texto original.
+
+```bash
+rf-evidence build results/evidence --output reports/es --language es --formats html pdf docx
+```

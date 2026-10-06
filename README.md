@@ -11,6 +11,13 @@
 
 [User guide](https://angel-valdezzz.github.io/robotframework-evidence-reporter/) · [Keyword reference](https://angel-valdezzz.github.io/robotframework-evidence-reporter/reference/keywords.html) · [PyPI](https://pypi.org/project/robotframework-evidence-reporter/) · [Visual examples](https://angel-valdezzz.github.io/robotframework-evidence-reporter/demo/passed.html)
 
+
+[![PyPI](https://img.shields.io/pypi/v/robotframework-evidence-reporter?logo=pypi)](https://pypi.org/project/robotframework-evidence-reporter/)
+![Python](https://img.shields.io/pypi/pyversions/robotframework-evidence-reporter?logo=python)
+![Robot Framework](https://img.shields.io/badge/Robot_Framework-compatible-00A6A6?logo=robotframework)
+[![License](https://img.shields.io/github/license/angel-valdezzz/robotframework-evidence-reporter)](LICENSE)
+[![CI](https://github.com/angel-valdezzz/robotframework-evidence-reporter/actions/workflows/ci.yml/badge.svg)](https://github.com/angel-valdezzz/robotframework-evidence-reporter/actions/workflows/ci.yml)
+
 ## Features
 
 - Explicit page, element, desktop and existing-image captures.
@@ -81,3 +88,11 @@ Submit changes through a pull request with passing checks. Update both documenta
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Report language
+
+English by default; use `--language es` for Spanish HTML, PDF and Word.
+
+```bash
+rf-evidence build results/evidence --output reports --language es --formats html pdf docx
+```

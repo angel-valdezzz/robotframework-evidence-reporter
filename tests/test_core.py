@@ -116,7 +116,7 @@ class CoreTests(unittest.TestCase):
         self.assertIn("execution-status PASS", report)
         self.assertNotIn("Estado de Robot", report)
         self.assertNotIn("Imprimir", report)
-        self.assertIn("Estatus de ejecución", report)
+        self.assertIn("Execution status", report)
         self.assertEqual(report.count('class="badge execution-status'), 1)
 
     def test_date_display_preserves_raw_timestamp(self):
@@ -124,6 +124,6 @@ class CoreTests(unittest.TestCase):
         self.recorder.save()
         report = build_reports(self.root / "raw", self.root / "html")[0].read_text()
         self.assertIn("01/10/2026 · 13:29:32", report)
-        self.assertIn("UTC-06:00", report)
+        self.assertIn("2026-10-01T13:29:32.456-06:00", report)
         case = json.loads(next((self.root / "raw").rglob("case.json")).read_text())
         self.assertEqual(case["started_at"], "2026-10-01T13:29:32.456-06:00")

@@ -175,3 +175,12 @@ paths = build_reports(
     max_image_width=1600, image_quality=85,
 )
 ```
+
+
+## Report language
+
+English is the default. Generate Spanish reports with `--language es`; this applies to HTML, PDF and Word. Case names, metadata and evidence messages retain their original text.
+
+```bash
+rf-evidence build results/evidence --output reports/es --language es --formats html pdf docx
+```

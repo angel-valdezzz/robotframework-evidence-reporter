@@ -83,7 +83,9 @@ class ExportTests(unittest.TestCase):
         recorder.event("Error", level="ERROR", milestone_id=milestone)
         recorder.event("Detalle", description="Detalle extenso " * 800, milestone_id=milestone)
         recorder.finish("SKIP", 1, "Caso omitido")
-        outputs = build_reports(self.root / "run", self.root / "reports", formats=("pdf", "docx"))
+        outputs = build_reports(
+            self.root / "run", self.root / "reports", formats=("pdf", "docx"), language="es"
+        )
         pdf = PdfReader(next(p for p in outputs if p.suffix == ".pdf"))
         text = "\n".join(page.extract_text() for page in pdf.pages)
         self.assertIn("Paso 1 | WARN | Advertencia", text)
@@ -141,7 +143,7 @@ class ExportTests(unittest.TestCase):
         outputs = build_reports(self.root / "merged", self.root / "reports", formats="html,pdf,docx")
         self.assertEqual(len(outputs), 6)
         self.assertIn(
-            "Historial de intentos",
+            "Attempt history",
             next(p for p in outputs if p.suffix == ".html" and "Registrar" in p.name).read_text(),
         )
 

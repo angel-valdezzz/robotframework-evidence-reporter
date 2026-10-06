@@ -5,18 +5,22 @@ from io import BytesIO
 from xml.sax.saxutils import escape
 
 from .builder import display_date, timezone_label
+from .i18n import footer_text, translator
 
 
-def summary(case):
+def summary(case, language="en"):
+    t = translator(language)
     rows = [
-        ("Suite", case["suite"]),
-        ("Estatus de ejecución", case["status"]),
-        ("Inicio", display_date(case["started_at"])),
-        ("Fin", display_date(case["ended_at"])),
-        ("Zona horaria", timezone_label(case["started_at"])),
+        (t("Suite"), case["suite"]),
+        (t("Estatus de ejecución"), case["status"]),
+        (t("Inicio"), display_date(case["started_at"], language)),
+        (t("Fin"), display_date(case["ended_at"], language)),
+        (t("Zona horaria"), timezone_label(case["started_at"], language)),
         (
-            "Duración",
-            f"{case['duration_seconds']:.2f} s" if case["duration_seconds"] is not None else "Sin finalizar",
+            t("Duración"),
+            f"{case['duration_seconds']:.2f} s"
+            if case["duration_seconds"] is not None
+            else t("Sin finalizar"),
         ),
     ]
     return [*rows, *case["metadata"].items()]
@@ -58,14 +62,15 @@ def printable_image(event):
         return content, image.size
 
 
-def render_document(case, blocks, target, format_name):
+def render_document(case, blocks, target, format_name, *, language="en"):
     if format_name == "pdf":
-        render_pdf(case, blocks, target)
+        render_pdf(case, blocks, target, language=language)
     else:
-        render_docx(case, blocks, target)
+        render_docx(case, blocks, target, language=language)
 
 
-def render_pdf(case, blocks, target):
+def render_pdf(case, blocks, target, *, language="en"):
+    t = translator(language)
     from pathlib import Path
 
     import reportlab
@@ -167,8 +172,8 @@ def render_pdf(case, blocks, target):
     story.extend(
         [
             panel(
-                "ESTATUS DE EJECUCIÓN  |  " + case["status"],
-                [paragraph(case["message"] or "Resultado del caso", "CardBody")],
+                t(t("Estatus de ejecución")).upper() + "  |  " + case["status"],
+                [paragraph(case["message"] or t("Resultado del caso"), "CardBody")],
                 accent,
                 background,
             ),
@@ -177,7 +182,7 @@ def render_pdf(case, blocks, target):
     )
     if case["description"]:
         story.append(paragraph(case["description"]))
-    rows = [[paragraph(key), paragraph(value)] for key, value in summary(case)]
+    rows = [[paragraph(key), paragraph(value)] for key, value in summary(case, language)]
     table = Table(rows, colWidths=[1.5 * inch, 5.05 * inch], hAlign="LEFT")
     table.setStyle(
         TableStyle(
@@ -194,7 +199,7 @@ def render_pdf(case, blocks, target):
     )
     story.extend([table, Spacer(1, 12)])
     if case.get("attempts"):
-        story.append(paragraph("Historial de intentos", "Heading1"))
+        story.append(paragraph(t("Historial de intentos"), "Heading1"))
         for attempt in [*case["attempts"], case]:
             story.append(
                 paragraph(
@@ -209,7 +214,7 @@ def render_pdf(case, blocks, target):
         story.append(
             panel(
                 block["title"],
-                [paragraph(block["description"] or "Evidencias del caso", "CardBody")],
+                [paragraph(block["description"] or t("Evidencias del caso"), "CardBody")],
                 "5744CC",
                 "EDE9FF",
                 keep=True,
@@ -235,8 +240,8 @@ def render_pdf(case, blocks, target):
             accent, background = status_colors(event_level(event))
             story.append(
                 panel(
-                    f"Paso {number}  |  {event_text(event)}",
-                    content or [paragraph("Mensaje registrado", "CardBody")],
+                    f"{t('Paso')} {number}  |  {event_text(event)}",
+                    content or [paragraph(t("Mensaje registrado"), "CardBody")],
                     accent,
                     background,
                 )
@@ -254,8 +259,8 @@ def render_pdf(case, blocks, target):
         canvas.drawString(74, A4[1] - 39, "Evidence Reporter")
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#52657c"))
-        canvas.drawString(36, 23, "Evidence Reporter | Reporte individual de negocio")
-        canvas.drawRightString(A4[0] - 36, 23, f"Página {document.page}")
+        canvas.drawString(36, 23, footer_text(language))
+        canvas.drawRightString(A4[0] - 36, 23, f"{t('Página')} {document.page}")
         canvas.restoreState()
 
     SimpleDocTemplate(
@@ -270,7 +275,8 @@ def render_pdf(case, blocks, target):
     ).build(story, onFirstPage=footer, onLaterPages=footer)
 
 
-def render_docx(case, blocks, target):
+def render_docx(case, blocks, target, *, language="en"):
+    t = translator(language)
     from docx import Document
     from docx.oxml import OxmlElement
     from docx.oxml.ns import qn
@@ -357,22 +363,22 @@ def render_docx(case, blocks, target):
     if case["description"]:
         document.add_paragraph(case["description"])
     accent, background = status_colors(case["status"])
-    result = card("ESTATUS DE EJECUCIÓN  |  " + case["status"], accent, background)
-    body_paragraph(result, case["message"] or "Resultado del caso")
+    result = card(t(t("Estatus de ejecución")).upper() + "  |  " + case["status"], accent, background)
+    body_paragraph(result, case["message"] or t("Resultado del caso"))
     document.add_paragraph().paragraph_format.space_after = Pt(2)
     table = document.add_table(rows=0, cols=2)
     table.style = "Table Grid"
     table.autofit = False
     table.columns[0].width = Inches(1.5)
     table.columns[1].width = Inches(5.57)
-    for key, value in summary(case):
+    for key, value in summary(case, language):
         cells = table.add_row().cells
         cells[0].text, cells[1].text = str(key), str(value)
         cells[0].width, cells[1].width = Inches(1.5), Inches(5.5)
         shade(cells[0], "EDE9FF")
         if len(table.rows) % 2 == 0:
             shade(cells[1], "F7F9FD")
-        if key == "Estatus de ejecución":
+        if key == t("Estatus de ejecución"):
             shade(cells[1], background)
             for run in cells[1].paragraphs[0].runs:
                 run.font.color.rgb = RGBColor.from_string(accent)
@@ -381,7 +387,7 @@ def render_docx(case, blocks, target):
             run.bold = True
     document.add_paragraph()
     if case.get("attempts"):
-        document.add_heading("Historial de intentos", 1)
+        document.add_heading(t("Historial de intentos"), 1)
         for attempt in [*case["attempts"], case]:
             document.add_paragraph(
                 f"{display_date(attempt['started_at'])} | {attempt['status']} | {attempt['message']}"
@@ -395,7 +401,7 @@ def render_docx(case, blocks, target):
         if block.get("id"):
             captures_on_page = 0
         body_paragraph(
-            heading, block["description"] or "Evidencias del caso"
+            heading, block["description"] or t("Evidencias del caso")
         ).paragraph_format.keep_with_next = True
         gap = document.add_paragraph()
         gap.paragraph_format.space_after = Pt(2)
@@ -408,7 +414,9 @@ def render_docx(case, blocks, target):
                     captures_on_page = 0
                 captures_on_page += 1
             accent, background = status_colors(event_level(event))
-            body = card(f"Paso {number}  |  {event_text(event)}", accent, background, new_page=new_page)
+            body = card(
+                f"{t('Paso')} {number}  |  {event_text(event)}", accent, background, new_page=new_page
+            )
             if event.get("description"):
                 body_paragraph(body, event["description"])
             if event.get("_image_bytes"):
@@ -428,7 +436,7 @@ def render_docx(case, blocks, target):
             if number < len(block["events"]):
                 document.add_paragraph().paragraph_format.space_after = Pt(2)
     footer = section.footer.paragraphs[0]
-    footer.add_run("Evidence Reporter | Página ")
+    footer.add_run(footer_text(language) + " | " + t("Página") + " ")
     field = OxmlElement("w:fldSimple")
     field.set(qn("w:instr"), "PAGE")
     footer._p.append(field)
