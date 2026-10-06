@@ -8,7 +8,7 @@
 
 === "Python"
 
-    ```python
+    ```python hl_lines="3"
     from rf_evidence_reporter import build_reports
 
     reports = build_reports("results/evidence", "reports")

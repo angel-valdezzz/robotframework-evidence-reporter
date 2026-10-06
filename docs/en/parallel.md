@@ -2,7 +2,7 @@
 
 Save this as `tests/portal.robot`. Robot's output directory also controls the evidence location; no import argument is needed.
 
-```robotframework linenums="1"
+```robotframework linenums="1" hl_lines="10"
 *** Settings ***
 Library    SeleniumLibrary
 Library    EvidenceReporter
@@ -38,7 +38,7 @@ Saved events survive interruption. Without `end_test`, the report remains INCOMP
 ??? tip "Generate even when tests fail"
     Separate execution from generation and retain reports as artifacts:
 
-    ```yaml
+    ```yaml hl_lines="2-3 5 8"
     - run: poetry run robot --outputdir results tests
     - if: always()
       run: poetry run rf-evidence build results/evidence --output reports

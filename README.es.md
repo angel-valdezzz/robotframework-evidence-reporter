@@ -9,7 +9,7 @@
 
 [English](README.md) · **Español**
 
-[Manual de usuario ↗](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/) · [Referencia de keywords ↗](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/reference/keywords.html) · [PyPI ↗](https://pypi.org/project/robotframework-evidence-reporter/) · [Ejemplos visuales ↗](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/demo/passed.html)
+[Manual de usuario](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/) · [Referencia de keywords](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/reference/keywords.html) · [PyPI](https://pypi.org/project/robotframework-evidence-reporter/) · [Ejemplos visuales](https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/demo/passed.html)
 
 
 [![PyPI](https://img.shields.io/pypi/v/robotframework-evidence-reporter?logo=pypi)](https://pypi.org/project/robotframework-evidence-reporter/)

@@ -2,7 +2,7 @@
 
 Guarda este caso en `tests/portal.robot`. El directorio de salida de Robot también controla las evidencias; no hace falta un argumento de importación.
 
-```robotframework linenums="1"
+```robotframework linenums="1" hl_lines="10"
 *** Settings ***
 Library    SeleniumLibrary
 Library    EvidenceReporter
@@ -38,7 +38,7 @@ Los eventos ya guardados sobreviven a una interrupción. Si no se registra `end_
 ??? tip "Generar aunque fallen las pruebas"
     En GitHub Actions separa la ejecución de la generación y conserva los reportes como artefactos:
 
-    ```yaml
+    ```yaml hl_lines="2-3 5 8"
     - run: poetry run robot --outputdir results tests
     - if: always()
       run: poetry run rf-evidence build results/evidence --output reports
