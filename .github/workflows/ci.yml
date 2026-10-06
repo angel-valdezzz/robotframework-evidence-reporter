@@ -12,8 +12,8 @@ jobs:
           python-version: '3.12'
       - run: pip install poetry==2.5.1
       - run: poetry install --no-interaction
-      - run: poetry run ruff check src tests scripts
-      - run: poetry run ruff format --check src tests scripts
+      - run: poetry run ruff check src tests scripts docs/scripts
+      - run: poetry run ruff format --check src tests scripts docs/scripts
       - run: poetry run robocop check tests examples
       - run: poetry run robocop format --check tests examples
       - run: poetry run python -m unittest discover -s tests -v
@@ -21,7 +21,7 @@ jobs:
       - run: xvfb-run -a poetry run robot --outputdir results/browser examples/browser.robot
       - if: always()
         run: poetry run rf-evidence build results/browser-evidence --output results/browser/html
-      - run: poetry run python scripts/build_docs.py
+      - run: poetry run python docs/scripts/build_docs.py
       - run: poetry run robot --outputdir results/report-ui tests/report_ui.robot
       - name: Set up Node for Libdoc UI verification
         uses: actions/setup-node@v6
@@ -30,7 +30,7 @@ jobs:
       - name: Verify native bilingual Libdoc menu
         run: |
           npm install --prefix build/libdoc-ui jsdom@26.1.0 --no-audit --no-fund
-          NODE_PATH="$PWD/build/libdoc-ui/node_modules" node scripts/verify_libdoc_ui.cjs reference/keywords.html
+          NODE_PATH="$PWD/build/libdoc-ui/node_modules" node docs/scripts/verify_libdoc_ui.cjs reference/keywords.html
       - name: Verificar documentación en navegador
         run: |
           python -m http.server 8765 --directory site >/tmp/evidence-docs-server.log 2>&1 &

@@ -9,7 +9,7 @@ El workflow `docs.yml` genera la demo HTML y la referencia de keywords con Libdo
 Desde la raíz del proyecto:
 
 ```bash
-poetry run python scripts/build_docs.py
+poetry run python docs/scripts/build_docs.py
 poetry run python -m http.server 8000 --directory site
 ```
 

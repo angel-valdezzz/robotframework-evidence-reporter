@@ -41,8 +41,8 @@ Consultar Ejemplos Por Pestañas
 
 Consultar Referencia Libdoc
     [Documentation]    Comprueba que MkDocs enlaza la referencia generada de la librería.
-    Go To    http://localhost:8765/keywords/
-    Click Link    css:a[href="../reference/keywords.html"]
+    Click Link    css:a[href="reference/keywords.html"]
+    Switch Window    NEW
     Location Should Be    http://localhost:8765/reference/keywords.html
     Wait Until Page Contains    EvidenceReporter
     Wait Until Page Contains    Capture Page Evidence

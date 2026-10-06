@@ -1,10 +1,11 @@
-INHERIT: mkdocs.base.yml
+INHERIT: base.yml
 site_description: Evidencias de negocio y reportes individuales para Robot Framework
 site_url: https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/
-docs_dir: docs/es
-site_dir: build/site-es
+docs_dir: ../es
+site_dir: ../../build/site-es
 edit_uri: edit/main/docs/es/
 theme:
+  custom_dir: ../overrides
   language: es
   palette:
   - media: '(prefers-color-scheme: light)'
@@ -30,7 +31,7 @@ nav:
       - Primera evidencia: getting-started.md
       - Uso: guide.md
       - Paralelo y CI: parallel.md
-  - Referencia de keywords: keywords.md
+  - Referencia de keywords: reference/keywords.html
   - Referencia de API: generation.md
   - Desarrollo y publicación: publishing.md
   - Ejemplos visuales: demo.md

@@ -70,3 +70,7 @@ Abre el archivo de `reports/` en tu navegador. El HTML incluye las imágenes, es
 
 [Continuar con hitos y metadatos](guide.md){ .md-button }
 [Ver el reporte completo](demo/passed.html){ .md-button .md-button--primary }
+
+## Directorio de salida
+
+Normalmente importa `EvidenceReporter` sin argumentos de salida y ejecuta `robot --outputdir results tests`. Las evidencias van a `results/evidence`. Para elegir otra ubicación, usa `robot --outputdir results --variable EVIDENCE_OUTPUT_DIR:artifacts/evidence tests`. El argumento explícito `output_dir` de la librería conserva la prioridad por compatibilidad. Para Pabot, consulta [ejecución paralela](parallel.md).

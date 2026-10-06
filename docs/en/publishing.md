@@ -9,7 +9,7 @@
 From the project root:
 
 ```bash
-poetry run python scripts/build_docs.py
+poetry run python docs/scripts/build_docs.py
 poetry run python -m http.server 8000 --directory site
 ```
 

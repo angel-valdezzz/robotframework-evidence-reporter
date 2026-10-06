@@ -9,6 +9,7 @@ import posixpath
 import re
 from pathlib import Path
 
+from highlight_examples import highlight_examples, styles
 from robot.libdocpkg import LibraryDocumentation
 
 
@@ -34,6 +35,8 @@ def generate(library: str, root: Path, relative: str, _site_url: str) -> None:
         output = root / "docs" / language / relative
         output.parent.mkdir(parents=True, exist_ok=True)
         model.convert_docs_to_html()
+        for item in [model, *model.inits, *model.keywords]:
+            set_doc(item, highlight_examples(item.doc))
         hint = (
             "Usa el selector Idioma, arriba a la derecha, para elegir inglés o español. "
             "Cambia los controles y las descripciones; las keywords conservan sus nombres."
@@ -96,7 +99,7 @@ def localize_menu(output: Path, root: Path, relative: str, language: str) -> Non
         + "</script>"
     )
     theme_style = (Path(__file__).parent / "libdoc-theme.css").read_text(encoding="utf-8")
-    document += "<style>" + theme_style + "</style>"
+    document += "<style>" + theme_style + "</style>" + styles()
     brand_svg = (root / "docs/assets/logo.svg").read_text(encoding="utf-8")
     brand_uri = "data:image/svg+xml;base64," + base64.b64encode(brand_svg.encode()).decode("ascii")
     document = re.sub(r'<link\b[^>]*\brel=(?:["\'](?:shortcut )?icon["\']|icon(?=\s|>))[^>]*>', "", document)
@@ -106,7 +109,17 @@ def localize_menu(output: Path, root: Path, relative: str, language: str) -> Non
     document = document.replace(
         "</head>",
         "<script>const libdocBrand="
-        + json.dumps({"name": "Evidence Reporter", "icon": brand_uri})
+        + json.dumps(
+            {
+                "name": "Evidence Reporter",
+                "icon": brand_uri,
+                "manual": "../",
+                "github": "https://github.com/angel-valdezzz/robotframework-evidence-reporter",
+                "pypi": "https://pypi.org/project/robotframework-evidence-reporter/",
+                "pypiIcon": "data:image/svg+xml;base64,"
+                + base64.b64encode((root / "docs/assets/pypi.svg").read_bytes()).decode("ascii"),
+            }
+        )
         + ";</script></head>",
         1,
     )

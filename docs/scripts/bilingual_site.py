@@ -18,7 +18,7 @@ def build(root: Path, shared: tuple[str, ...] = ("assets",)) -> None:
             source = root / "docs" / directory
             if source.is_dir():
                 shutil.copytree(source, root / "docs" / language / directory, dirs_exist_ok=True)
-    for config in ("mkdocs.yml", "mkdocs.es.yml"):
+    for config in ("mkdocs.yml", "docs/config/es.yml"):
         subprocess.run(
             [sys.executable, "-m", "mkdocs", "build", "--strict", "-f", config], cwd=root, check=True
         )

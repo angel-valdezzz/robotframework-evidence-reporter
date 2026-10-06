@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
       - run: pip install poetry==2.5.1
       - run: poetry install --no-interaction
-      - run: poetry run python scripts/build_docs.py
+      - run: poetry run python docs/scripts/build_docs.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
