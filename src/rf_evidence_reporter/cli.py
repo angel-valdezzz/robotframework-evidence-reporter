@@ -14,6 +14,7 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     build = commands.add_parser("build", help="Generar HTML, PDF o Word por caso y manifest.json")
     build.add_argument("results_dir")
+    build.add_argument("--language", choices=("en", "es"), default="en", help="Report language (default: en)")
     build.add_argument("--output", "-o", default="evidence-reports")
     build.add_argument(
         "--formats", nargs="+", default=["html"], help="html pdf docx; también separados por comas"
@@ -33,6 +34,7 @@ def main():
                 args.results_dir,
                 args.output,
                 formats=formats,
+                language=args.language,
                 max_image_width=args.max_image_width,
                 image_quality=args.image_quality,
             )

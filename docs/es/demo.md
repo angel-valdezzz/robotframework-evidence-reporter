@@ -31,3 +31,6 @@ Las demos incluyen Resumen, Pasos y Logs, switch claro/oscuro y los cuatro estat
 
 !!! info "Datos ilustrativos"
     Los saldos y las cuentas de la demo son ficticios. Los reportes se generan con el mismo motor que usa la librería.
+
+
+[Spanish HTML / HTML en español](demo/es/passed.html){ target=_blank rel="noopener noreferrer" } · [PDF](demo/es/passed.pdf){ target=_blank rel="noopener noreferrer" } · [Word](demo/es/passed.docx)
