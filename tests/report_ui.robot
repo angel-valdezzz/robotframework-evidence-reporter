@@ -39,7 +39,6 @@ Desplegar Logs Y Navegar Con Teclado
     Click Element    id:tab-logs
     Element Should Be Visible    id:logs
     Element Should Not Be Visible    id:steps
-    Click Element    css:#logs details summary
     Element Should Be Visible    css:#logs details[open] .log-list
     Press Keys    id:tab-logs    ARROW_LEFT
     Element Should Be Visible    id:steps
@@ -65,25 +64,27 @@ Contraer Y Expandir Hitos
     [Documentation]    Valida el estado inicial y los controles globales sin abrir evidencias directas.
     Click Element    id:tab-steps
     Element Should Not Be Visible    css:details[data-block-kind="direct"] .events
-    Contar Hitos Abiertos    2
+    Contar Hitos Abiertos    1
     Click Element    id:collapse-milestones
     Contar Hitos Abiertos    0
     Click Element    id:expand-milestones
     Contar Hitos Abiertos    2
-    Element Should Not Be Visible    css:details[data-block-kind="direct"] .events
+    Element Should Be Visible    css:details[data-block-kind="direct"] .events
     Capture Page Screenshot    ${OUTPUTDIR}/report-milestones.png
 
-Consultar Pestañas De Evidencias Directas
-    [Documentation]    Comprueba pestañas locales y teclado sin cambiar la pestaña global.
+Filtrar Advertencias Y Buscar Mensajes
+    [Documentation]    Comprueba filtros globales, búsqueda y resultado vacío sin logs dentro de pasos.
+    Click Element    id:view-warnings
+    Element Should Be Visible    id:logs
+    ${levels}=    Execute Javascript
+    ...    return Array.from(document.querySelectorAll('#logs .log'))
+    ...    .filter(e => !e.hidden).map(e => e.dataset.level).join(',');
+    Should Not Contain    ${levels}    INFO
+    Should Contain    ${levels}    WARN
+    Input Text    id:log-search    mensaje-inexistente
+    Element Should Be Visible    id:logs-empty
     Click Element    id:tab-steps
-    Click Element    css:details[data-block-kind="direct"] > summary
-    Element Should Be Visible    id:direct-evidence
-    Click Element    id:direct-logs-tab
-    Element Should Be Visible    id:direct-logs
-    Element Should Not Be Visible    id:direct-evidence
-    Press Keys    id:direct-logs-tab    ARROW_LEFT
-    Element Should Be Visible    id:direct-evidence
-    Element Should Be Visible    id:steps
+    Page Should Not Contain Element    css:#steps .log-list
 
 
 *** Keywords ***

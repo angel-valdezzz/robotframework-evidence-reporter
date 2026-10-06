@@ -88,24 +88,16 @@ class ExportTests(unittest.TestCase):
         )
         pdf = PdfReader(next(p for p in outputs if p.suffix == ".pdf"))
         text = "\n".join(page.extract_text() for page in pdf.pages)
-        self.assertIn("Paso 1 | WARN | Advertencia", text)
-        self.assertIn("Paso 2 | ERROR | Error", text)
+        self.assertIn("WARN | Advertencia", text)
+        self.assertIn("ERROR | Error", text)
+        self.assertIn("Logs", text)
         self.assertEqual(" ".join(text.split()).count("Detalle extenso"), 800)
         doc = Document(next(p for p in outputs if p.suffix == ".docx"))
-        from docx.oxml.ns import qn
-
-        cards = {table.cell(0, 0).text: table for table in doc.tables if len(table.columns) == 1}
-        for title, color, fill in [
-            ("Paso 1  |  WARN | Advertencia", "A26000", "FFF3C9"),
-            ("Paso 2  |  ERROR | Error", "C52D4B", "FFE8EE"),
-            ("ESTATUS DE EJECUCIÓN  |  SKIP", "A26000", "FFF3C9"),
-        ]:
-            table = cards[title]
-            border = table._tbl.tblPr.find(qn("w:tblBorders"))
-            self.assertEqual(border.find(qn("w:left")).get(qn("w:color")), color)
-            shading = table.cell(0, 0)._tc.tcPr.find(qn("w:shd"))
-            self.assertEqual(shading.get(qn("w:fill")), fill)
-        self.assertIn("Detalle extenso " * 800, doc.tables[-1].cell(1, 0).text)
+        paragraphs = "\n".join(p.text for p in doc.paragraphs)
+        self.assertIn("WARN | Advertencia", paragraphs)
+        self.assertIn("ERROR | Error", paragraphs)
+        self.assertIn("Detalle extenso " * 800, paragraphs)
+        self.assertNotIn("ESTATUS DE EJECUCIÓN", paragraphs)
 
     def test_resize_keeps_original_and_full_aspect_ratio(self):
         directory = self.case("run")

@@ -21,6 +21,7 @@ def main():
     )
     build.add_argument("--max-image-width", type=int, help="Ancho máximo en píxeles; conserva proporciones")
     build.add_argument("--image-quality", type=int, help="Calidad WebP 1-100; conserva los originales")
+    build.add_argument("--brand-config", help="Local JSON file with name, logo and palette")
     merge = commands.add_parser("merge", help="Combinar ejecuciones en orden, prevalece la última")
     merge.add_argument("results_dirs", nargs="+")
     merge.add_argument("--output", "-o", required=True)
@@ -35,6 +36,7 @@ def main():
                 args.output,
                 formats=formats,
                 language=args.language,
+                brand_config=args.brand_config,
                 max_image_width=args.max_image_width,
                 image_quality=args.image_quality,
             )

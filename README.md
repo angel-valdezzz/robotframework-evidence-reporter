@@ -96,3 +96,7 @@ English by default; use `--language es` for Spanish HTML, PDF and Word.
 ```bash
 rf-evidence build results/evidence --output reports --language es --formats html pdf docx
 ```
+
+## Report branding
+
+Optional institution name, local logo and accessible brand colors are free. See the user guide for `brand_config` and the executable `examples/brand.json` configuration. Existing imports and capture keywords remain compatible.

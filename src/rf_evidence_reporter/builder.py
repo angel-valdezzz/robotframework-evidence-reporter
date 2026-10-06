@@ -4,11 +4,11 @@ import base64
 import json
 import warnings
 from datetime import datetime
-from importlib.resources import files as package_files
 from pathlib import Path
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from .branding import load_branding
 from .i18n import footer_text, translator
 from .images import image_bytes
 from .manifest import file_entry, write_manifest
@@ -27,7 +27,14 @@ def timezone_label(value, language="en"):
 
 
 def build_reports(
-    results_dir, output_dir, *, formats=("html",), max_image_width=None, image_quality=None, language="en"
+    results_dir,
+    output_dir,
+    *,
+    formats=("html",),
+    max_image_width=None,
+    image_quality=None,
+    language="en",
+    brand_config=None,
 ):
     """Return generated HTML Paths. One HTML per recorded case, never a global dashboard.
 
@@ -35,6 +42,7 @@ def build_reports(
     Input image references must remain inside their case directory.
     """
     t = translator(language)
+    branding = load_branding(brand_config)
     if isinstance(formats, str):
         formats = formats.split(",")
     formats = tuple(dict.fromkeys(item.strip().lower() for item in formats))
@@ -56,9 +64,7 @@ def build_reports(
     environment.filters["display_date"] = lambda value: display_date(value, language)
     environment.filters["timezone_label"] = lambda value: timezone_label(value, language)
     template = environment.get_template("report.html")
-    logo_data = "data:image/svg+xml;base64," + base64.b64encode(
-        package_files("rf_evidence_reporter").joinpath("assets/logo.svg").read_bytes()
-    ).decode("ascii")
+    logo_data = branding["logo_data"]
     generated = []
     records = []
     for source in files:
@@ -109,6 +115,13 @@ def build_reports(
                 }
             )
         for block in blocks:
+            block["log_events"] = [
+                e for e in block["events"] if e["kind"] != "capture" or e["status"] == "WARN"
+            ]
+            times = [
+                datetime.fromisoformat(e["captured_at"]) for e in block["events"] if e.get("captured_at")
+            ]
+            block["duration_seconds"] = (max(times) - min(times)).total_seconds() if len(times) > 1 else None
             block["warning_count"] = sum(
                 event.get("level") == "WARN" or event.get("status") == "WARN" for event in block["events"]
             )
@@ -120,6 +133,7 @@ def build_reports(
                 target.write_text(
                     template.render(
                         logo_data=logo_data,
+                        branding=branding,
                         case=case,
                         blocks=blocks,
                         generated_at=timestamp(),
@@ -132,7 +146,7 @@ def build_reports(
             else:
                 from .documents import render_document
 
-                render_document(case, blocks, target, format_name, language=language)
+                render_document(case, blocks, target, format_name, language=language, branding=branding)
             generated.append(target)
             outputs.append(file_entry(target, destination, format_name))
         assets = [file_entry(source, destination, "case_json")]
