@@ -27,7 +27,7 @@ hide:
 
     Visible page, element or desktop. Choose when to record evidence and how to describe it.
 
-    [Choose a capture →](keywords.md)
+    [Choose a capture →](reference/keywords.html)
 
 -   :material-view-dashboard-outline:{ .card-icon } **Read the case result**
 
