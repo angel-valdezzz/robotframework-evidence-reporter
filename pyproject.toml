@@ -21,7 +21,7 @@ packages = [
     {include = "rf_evidence_reporter", from = "src"},
     {include = "EvidenceReporter", from = "src"},
 ]
-include = ["src/rf_evidence_reporter/templates/*.html"]
+include = [{path = "src/rf_evidence_reporter/templates/*.html", format = ["sdist", "wheel"]}, {path = "src/rf_evidence_reporter/assets/*", format = ["sdist", "wheel"]}]
 
 [tool.poetry.group.dev.dependencies]
 pypdf = ">=6.0,<7.0"

@@ -64,7 +64,8 @@ class ExportTests(unittest.TestCase):
         for expected in ["Cliente registrado", "Confirmación", "Mensaje de negocio"]:
             self.assertIn(expected, text)
             self.assertIn(expected, doc_text)
-        self.assertEqual(len(doc.inline_shapes), 1)
+        self.assertEqual(len(doc.inline_shapes), 2)  # Brand mark and recorded evidence.
+        self.assertIn("Evidence Reporter", doc.paragraphs[0].text)
         manifest = json.loads((output / "manifest.json").read_text())
         record = manifest["cases"][0]
         self.assertEqual(record["status"], "PASS")

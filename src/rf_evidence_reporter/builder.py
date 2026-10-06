@@ -3,14 +3,15 @@
 import base64
 import json
 import warnings
-from pathlib import Path
 from datetime import datetime
+from importlib.resources import files as package_files
+from pathlib import Path
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from .recorder import slug, timestamp
 from .images import image_bytes
 from .manifest import file_entry, write_manifest
+from .recorder import slug, timestamp
 
 
 def display_date(value):
@@ -51,6 +52,9 @@ def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width
     environment.filters["display_date"] = display_date
     environment.filters["timezone_label"] = timezone_label
     template = environment.get_template("report.html")
+    logo_data = "data:image/svg+xml;base64," + base64.b64encode(
+        package_files("rf_evidence_reporter").joinpath("assets/logo.svg").read_bytes()
+    ).decode("ascii")
     generated = []
     records = []
     for source in files:
@@ -110,7 +114,8 @@ def build_reports(results_dir, output_dir, *, formats=("html",), max_image_width
             target = destination / f"{stem}.{format_name}"
             if format_name == "html":
                 target.write_text(
-                    template.render(case=case, blocks=blocks, generated_at=timestamp()), encoding="utf-8"
+                    template.render(logo_data=logo_data, case=case, blocks=blocks, generated_at=timestamp()),
+                    encoding="utf-8",
                 )
             else:
                 from .documents import render_document

@@ -1,5 +1,10 @@
 # Robot Framework Evidence Reporter
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-wordmark-dark.svg">
+  <img src="docs/assets/logo-wordmark.svg" alt="Evidence Reporter" width="380">
+</picture>
+
 **Reportes de evidencia de negocio en HTML, PDF y Word por caso de Robot Framework.**
 
 [English](README.md) · **Español**

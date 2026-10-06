@@ -4,6 +4,11 @@ hide:
 ---
 
 <div class="hero" markdown>
+<div class="project-brand">
+<img class="project-brand-light" src="assets/logo-wordmark.svg" alt="Evidence Reporter">
+<img class="project-brand-dark" src="assets/logo-wordmark-dark.svg" alt="Evidence Reporter">
+</div>
+
 <span class="eyebrow">Robot Framework · Evidencias de negocio</span>
 
 # Lo que validaste, listo para compartir

@@ -66,3 +66,25 @@
 
 }
 
+
+/* Project palette without changing Libdoc's keyword layout or semantics. */
+:root { --brand-primary:#5744CC; --brand-secondary:#155571; --brand-link:#5744CC; --page-background:#f3f2fc; --background-color:#ffffff; --text-color:#17283d; --border-color:#dbe3ed; --light-background-color:#f3f2fc; --code-background-color:#f4f6fa; --link-color:var(--brand-link); --muted-text-color:#52627a; --less-important-text-color:#52627a; --arg-kind-color:#52627a; --hover-tint:#f3f2fc; }
+:root[data-theme="dark"] { --brand-link:#b9adff; --page-background:#111b2a; --background-color:#192638; --text-color:#eef3fa; --border-color:#35465f; --light-background-color:#23344b; --code-background-color:#121e30; --link-color:var(--brand-link); --muted-text-color:#b6c5d8; --less-important-text-color:#b6c5d8; --arg-kind-color:#b6c5d8; --hover-tint:#23344b; }
+body {background:var(--page-background);}
+body::before {content:"";position:fixed;inset:0 0 auto;height:54px;background:linear-gradient(115deg,var(--brand-primary),var(--brand-secondary));z-index:1;}
+.libdoc-title {background:transparent;color:white;gap:10px;height:38px;max-width:calc(100% - 330px);}
+.libdoc-title h1 {font-size:1.4rem;color:white;}
+html.scrolled .libdoc-title {max-width:calc(100% - 330px);}
+.libdoc-brand-mark {width:34px;height:34px;flex:none;padding:3px;background:white;border-radius:9px;box-sizing:border-box;}
+#libdoc-controls {background:transparent;border:0;min-height:46px;}
+#libdoc-theme-toggle,#libdoc-controls #language-container button {background:#ffffff18;color:white;border:1px solid #ffffff50;border-radius:7px;}
+#libdoc-controls #language-container ul {background:var(--background-color);border:1px solid var(--border-color);border-radius:8px;box-shadow:0 8px 24px #0003;}
+#libdoc-controls #language-container ul a {color:var(--text-color);}
+.libdoc-overview {background:var(--page-background);}
+.keywords-overview {background:var(--background-color);border-radius:10px;}
+.libdoc-details {background:var(--background-color);border:1px solid var(--border-color);border-radius:12px;margin:70px 16px 20px;padding:20px 24px;}
+.documentation-language-help {border-left-color:var(--brand-link);background:var(--light-background-color);border-radius:5px;}
+@media(max-width:600px) {body::before {height:100px;} .libdoc-title,html.scrolled .libdoc-title {max-width:calc(100% - 80px);} .libdoc-title h1 {font-size:1.1rem;} #libdoc-controls {top:50px;left:0;right:auto;min-height:42px;} .libdoc-details {margin:112px 8px 16px;padding:14px;} .keywords-overview {margin-top:108px;} span.hamburger-menu {background:white;} }
+@media print {body::before,.libdoc-title {display:none;} .libdoc-details {margin:0;border:0;}}
+
+@media(max-width:600px) {.libdoc-title h1,html.scrolled:not(.title-fits) .libdoc-title h1 {font-size:1rem;} .libdoc-title {padding-right:0;} }
