@@ -15,6 +15,8 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -29,6 +31,22 @@ jobs:
           version = tomllib.load(open('pyproject.toml', 'rb'))['project']['version']
           assert os.environ['RELEASE_TAG'] == 'v' + version
           PY
+      - name: Check version change on main
+        if: github.event_name == 'push'
+        id: version
+        run: |
+          python - <<'PY'
+          import os, subprocess, tomllib
+          from pathlib import Path
+          current = tomllib.loads(Path('pyproject.toml').read_text())['project']['version']
+          previous = tomllib.loads(subprocess.check_output(
+              ['git', 'show', 'HEAD^:pyproject.toml'], text=True
+          ))['project']['version']
+          changed = current != previous
+          print(f'Package version: {previous} -> {current}; publish: {changed}')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'publish={str(changed).lower()}\n')
+          PY
       - run: poetry install --no-interaction
       - run: poetry run python -m unittest discover -s tests -v
       - run: poetry build
@@ -40,3 +58,4 @@ jobs:
           name: python-distributions
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+        if: github.event_name != 'push' || steps.version.outputs.publish == 'true'
