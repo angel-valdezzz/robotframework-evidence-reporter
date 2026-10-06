@@ -27,7 +27,7 @@ Un **HTML por caso**, con el resultado de ejecución, capturas, hitos y mensajes
 
     Página visible, elemento o escritorio. Tú decides cuándo registrar una evidencia y cómo describirla.
 
-    [Elegir una captura →](keywords.md)
+    [Elegir una captura →](reference/keywords.html)
 
 -   :material-view-dashboard-outline:{ .card-icon } **Lee el resultado del caso**
 
