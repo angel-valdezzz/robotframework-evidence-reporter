@@ -1,11 +1,11 @@
 # Paralelo y CI/CD
 
-Guarda este caso en `tests/portal.robot`. La línea resaltada configura el directorio de evidencias compartido por los procesos de esta ejecución.
+Guarda este caso en `tests/portal.robot`. El directorio de salida de Robot también controla las evidencias; no hace falta un argumento de importación.
 
-```robotframework linenums="1" hl_lines="3"
+```robotframework linenums="1"
 *** Settings ***
 Library    SeleniumLibrary
-Library    EvidenceReporter    output_dir=${EXECDIR}/results/evidence
+Library    EvidenceReporter
 Test Teardown    Close All Browsers
 
 *** Test Cases ***
@@ -17,8 +17,10 @@ Consultar Portal En Paralelo
 
 ```bash
 pabot --processes 4 --testlevelsplit --outputdir results tests
-rf-evidence build results/evidence --output reports
+rf-evidence build results/pabot_results --output reports
 ```
+
+Pabot asigna a cada proceso una carpeta bajo `results/pabot_results`; sus evidencias se guardan en la subcarpeta `evidence`. El generador busca recursivamente al finalizar todos los procesos. Para Robot sin paralelo, usa `results/evidence`.
 
 La carpeta debe pertenecer a una sola ejecución. Cada proceso escribe casos en directorios con UUID, sin un manifiesto común. Los JSON se reemplazan de forma atómica después de cada evento.
 

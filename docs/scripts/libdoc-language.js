@@ -8,7 +8,8 @@
     const spanish = document.documentElement.lang === 'es';
     const label = spanish ? 'Elegir idioma de la documentación' : 'Choose documentation language';
     button.type = 'button';
-    button.textContent = spanish ? 'Idioma: Español ▾' : 'Language: English ▾';
+    const text = spanish ? 'Idioma: Español' : 'Language: English';
+    button.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 5h12M9 2v3M5 5c1 5 4 8 9 10M13 5c-1 5-4 8-9 10M14 21l4-10 4 10M16 17h4"/></svg><span class="libdoc-sr-only">'+text+'</span>';
     button.title = label;
     button.setAttribute('aria-label', label);
     button.setAttribute('aria-haspopup', 'true');

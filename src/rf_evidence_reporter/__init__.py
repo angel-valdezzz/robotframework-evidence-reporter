@@ -5,5 +5,5 @@ from .library import EvidenceReporter
 from .recorder import EvidenceRecorder
 from .merge import merge_results
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __all__ = ["EvidenceReporter", "EvidenceRecorder", "build_reports", "merge_results"]

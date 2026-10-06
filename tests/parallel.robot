@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Validación de evidencias explícitas, estados y aislamiento por caso.
 
-Library          EvidenceReporter    output_dir=${EXECDIR}/results/parallel-evidence
+Library          EvidenceReporter
 
 
 *** Test Cases ***

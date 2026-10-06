@@ -23,6 +23,21 @@ const { JSDOM, VirtualConsole } = require('jsdom');
       if (errors.length) throw errors[0];
       const document=dom.window.document;
       assert.equal(document.documentElement.lang,lang);
+      const header=document.querySelector('.libdoc-header');
+      assert(header && header.contains(document.querySelector('.libdoc-title')));
+      assert.equal(dom.window.getComputedStyle(header).position,'fixed');
+      assert(Number(dom.window.getComputedStyle(header).zIndex)>1000);
+      const navigation=[...header.querySelectorAll('.libdoc-icon-link')];
+      assert.equal(navigation.length,3);
+      for (const link of navigation) {
+        assert.equal(link.target,'_blank');
+        assert.equal(link.rel,'noopener noreferrer');
+        assert(link.getAttribute('aria-label') && link.title);
+      }
+      assert.equal(navigation[0].getAttribute('href'),'../');
+      assert(navigation[1].href.startsWith('https://github.com/angel-valdezzz/'));
+      assert(navigation[2].href.startsWith('https://pypi.org/project/'));
+      assert(document.querySelectorAll('.libdoc-code span').length>3);
       const theme=document.querySelector('#libdoc-theme-toggle');
       assert(theme, 'Visible Libdoc theme control');
       assert.equal(document.documentElement.getAttribute('data-theme'),'light');

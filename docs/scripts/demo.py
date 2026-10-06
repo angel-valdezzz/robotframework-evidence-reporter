@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+
 from rf_evidence_reporter import EvidenceRecorder, build_reports
 
 root = Path("results/demo")

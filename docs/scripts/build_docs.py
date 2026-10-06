@@ -7,11 +7,11 @@ from pathlib import Path
 from bilingual_libdoc import generate
 from bilingual_site import build
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def main() -> None:
-    subprocess.run([sys.executable, "scripts/demo.py"], cwd=ROOT, check=True)
+    subprocess.run([sys.executable, "docs/scripts/demo.py"], cwd=ROOT, check=True)
     generate(
         "EvidenceReporter",
         ROOT,

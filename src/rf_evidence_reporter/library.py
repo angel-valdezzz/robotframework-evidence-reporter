@@ -25,7 +25,9 @@ class EvidenceReporter:
     Screenshots and messages are stored with execution data as JSON. Generate HTML afterwards with ``rf-evidence build``, not during keywords. Milestones are optional: evidence without ``milestone_id`` belongs directly to the case.
 
     = Importing =
-    | Library | EvidenceReporter | output_dir=${OUTPUTDIR}/evidence | strict=${False} |
+    | Library | EvidenceReporter |
+
+    Robot's ``--outputdir`` sets the base directory; evidence goes into ``${OUTPUTDIR}/evidence``. To select a separate evidence directory, set the optional Robot variable ``${EVIDENCE_OUTPUT_DIR}`` with ``--variable EVIDENCE_OUTPUT_DIR:path``. An explicit import ``output_dir`` takes precedence for compatibility. With Pabot, each worker uses its own output directory; generate reports from the parent ``results/pabot_results`` after execution.
 
     = Common capture arguments =
     - ``title``: business title displayed in the report.
@@ -58,14 +60,19 @@ class EvidenceReporter:
     def __init__(self, output_dir=None, strict: bool = False):
         """Configure the evidence directory and capture error policy.
 
-        ``output_dir`` accepts an absolute path or a path relative to the execution directory. Defaults to Robot's ``${OUTPUTDIR}/evidence``. ``strict`` defaults to false and can be overridden per capture. Importing does not open a browser or generate HTML reports."""
+        ``output_dir`` accepts an absolute path or a path relative to the execution directory. Resolution order: explicit ``output_dir``, optional Robot variable ``${EVIDENCE_OUTPUT_DIR}``, then ``${OUTPUTDIR}/evidence``. Normally omit this argument and configure Robot's ``--outputdir``. ``strict`` defaults to false and can be overridden per capture. Importing does not open a browser or generate HTML reports."""
         self.ROBOT_LIBRARY_LISTENER = self
         self.output_dir = output_dir
         self.strict = strict
         self.recorder = None
 
     def start_test(self, data, result):
-        root = self.output_dir or Path(BuiltIn().get_variable_value("${OUTPUTDIR}")) / "evidence"
+        robot = BuiltIn()
+        root = (
+            self.output_dir
+            or robot.get_variable_value("${EVIDENCE_OUTPUT_DIR}")
+            or Path(robot.get_variable_value("${OUTPUTDIR}")) / "evidence"
+        )
         self.recorder = EvidenceRecorder(root)
         self.recorder.start(result.name, result.parent.full_name, str(data.doc), result.tags)
 

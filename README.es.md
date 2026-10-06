@@ -54,9 +54,9 @@ Los hitos son opcionales. La evidencia sin `milestone_id` pertenece directamente
 
 ## Configuración y limitaciones
 
-Configura `output_dir` y `strict` al importar. Los fallos de captura generan WARN por defecto sin cambiar el resultado; `strict=${True}` exige una captura exitosa. La evidencia admite INFO/PASS/WARN/FAIL; SKIP pertenece solo a la ejecución.
+Normalmente omite `output_dir`: las evidencias usan `${OUTPUTDIR}/evidence` de Robot, controlado por `--outputdir`. Para otra ubicación, usa `--variable EVIDENCE_OUTPUT_DIR:artifacts/evidence`. El argumento explícito `output_dir` tiene prioridad sobre esa variable y luego el valor predeterminado. Configura `strict` al importar cuando lo necesites. Los fallos de captura generan WARN por defecto sin cambiar el resultado; `strict=${True}` exige una captura exitosa. La evidencia admite INFO/PASS/WARN/FAIL; SKIP pertenece solo a la ejecución.
 
-Usa una carpeta nueva por ejecución. Pabot puede compartir esa carpeta porque los casos usan directorios UUID independientes; genera tras terminar todos los workers. La captura de escritorio exige un entorno gráfico compatible y captura el escritorio local del proceso, no el remoto de Selenium Grid. No se admite página completa.
+Usa una carpeta nueva por ejecución. Pabot guarda evidencias dentro de la salida de cada proceso; al terminar todos, genera recursivamente con `rf-evidence build results/pabot_results --output reports`. Los casos usan directorios UUID independientes. La captura de escritorio exige un entorno gráfico compatible y captura el escritorio local del proceso, no el remoto de Selenium Grid. No se admite página completa.
 
 Las imágenes y notas no se censuran automáticamente. Los errores de uso e inesperados se propagan. PDF/Word son estáticos; HTML incluye controles interactivos. `manifest.json` es el inventario de este paquete, no resultados Allure.
 
@@ -72,7 +72,7 @@ poetry run ruff check src tests scripts
 poetry run ruff format --check src tests scripts
 poetry run python -m unittest discover -s tests -v
 poetry run python scripts/validate.py
-poetry run python scripts/build_docs.py
+poetry run python docs/scripts/build_docs.py
 poetry build
 ```
 

@@ -16,7 +16,12 @@ def run(arguments, expected=0):
         raise SystemExit(f"Expected exit {expected}, got {result.returncode}: {arguments}")
 
 
-for directory in ["results/integration", "results/parallel", "results/parallel-evidence", "results/skip"]:
+for directory in [
+    "results/integration",
+    "results/parallel",
+    "results/parallel/pabot_results",
+    "results/skip",
+]:
     shutil.rmtree(directory, ignore_errors=True)
 
 run(["robot", "--outputdir", "results/integration", "tests/integration.robot"], expected=1)
@@ -40,11 +45,11 @@ run(
         "tests/parallel.robot",
     ]
 )
-cases = [json.loads(p.read_text()) for p in Path("results/parallel-evidence").rglob("case.json")]
+cases = [json.loads(p.read_text()) for p in Path("results/parallel/pabot_results").rglob("case.json")]
 assert len(cases) == 4, cases
 assert all(case["status"] == "PASS" for case in cases)
 assert len({case["process_id"] for case in cases}) >= 2
-assert len(build_reports("results/parallel-evidence", "results/parallel/html")) == 4
+assert len(build_reports("results/parallel/pabot_results", "results/parallel/html")) == 4
 print("Robot/Pabot acceptance passed: final teardown status, SKIP, warnings and isolated writers.")
 
 fixture = Path("results/skip-fixture.png").resolve()

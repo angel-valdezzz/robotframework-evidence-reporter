@@ -54,9 +54,9 @@ Milestones are optional. Evidence without `milestone_id` belongs directly to the
 
 ## Configuration and limitations
 
-Configure `output_dir` and `strict` on import. Capture failures produce WARN by default without changing test status; `strict=${True}` requires a successful capture. Evidence accepts INFO/PASS/WARN/FAIL; SKIP belongs only to execution.
+Normally omit `output_dir`: evidence uses Robot's `${OUTPUTDIR}/evidence`, controlled by `--outputdir`. For an alternative location, use `--variable EVIDENCE_OUTPUT_DIR:artifacts/evidence`. An explicit import `output_dir` takes precedence over that variable, then the default. Configure `strict` on import when needed. Capture failures produce WARN by default without changing test status; `strict=${True}` requires a successful capture. Evidence accepts INFO/PASS/WARN/FAIL; SKIP belongs only to execution.
 
-Use a new evidence directory per execution. Pabot can share that execution directory because cases use independent UUID directories; generate after all workers finish. Desktop capture requires a compatible graphical environment and captures the local process desktop, not a remote Selenium Grid desktop. Full-page capture is unsupported.
+Use a new evidence directory per execution. Pabot stores evidence inside each worker’s output directory; after all workers finish, generate recursively with `rf-evidence build results/pabot_results --output reports`. Cases use independent UUID directories. Desktop capture requires a compatible graphical environment and captures the local process desktop, not a remote Selenium Grid desktop. Full-page capture is unsupported.
 
 Images and notes are not automatically redacted. Usage errors and unexpected errors propagate. PDF/Word are static; HTML contains interactive controls. `manifest.json` is this package's inventory, not Allure results.
 
@@ -72,7 +72,7 @@ poetry run ruff check src tests scripts
 poetry run ruff format --check src tests scripts
 poetry run python -m unittest discover -s tests -v
 poetry run python scripts/validate.py
-poetry run python scripts/build_docs.py
+poetry run python docs/scripts/build_docs.py
 poetry build
 ```
 

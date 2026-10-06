@@ -70,3 +70,7 @@ Open the file in `reports/`. Its images, styles and controls are embedded, so re
 
 [Continue with milestones and metadata](guide.md){ .md-button }
 [Visual examples](demo/passed.html){ .md-button .md-button--primary }
+
+## Output directory
+
+Normally import `EvidenceReporter` without output arguments and run `robot --outputdir results tests`. Evidence goes into `results/evidence`. To choose a separate location, use `robot --outputdir results --variable EVIDENCE_OUTPUT_DIR:artifacts/evidence tests`. An explicit library `output_dir` still takes precedence for compatibility. For Pabot, see [parallel execution](parallel.md).

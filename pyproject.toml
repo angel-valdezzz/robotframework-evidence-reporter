@@ -1,6 +1,6 @@
 [project]
 name = "robotframework-evidence-reporter"
-version = "0.2.0"
+version = "0.2.1"
 description = "Standalone business evidence reports per Robot Framework test"
 authors = [{name = "Angel Gerardo Molina Valdez"}]
 readme = "README.md"
@@ -24,6 +24,7 @@ packages = [
 include = [{path = "src/rf_evidence_reporter/templates/*.html", format = ["sdist", "wheel"]}, {path = "src/rf_evidence_reporter/assets/*", format = ["sdist", "wheel"]}]
 
 [tool.poetry.group.dev.dependencies]
+pygments = ">=2.19,<3"
 pypdf = ">=6.0,<7.0"
 robotframework-seleniumlibrary = "^6.9.0"
 robotframework-pabot = "^5.1.0"

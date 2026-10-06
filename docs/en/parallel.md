@@ -1,11 +1,11 @@
 # Parallel execution and CI/CD
 
-Save this as `tests/portal.robot`. The highlighted line configures the evidence directory shared by this execution's processes.
+Save this as `tests/portal.robot`. Robot's output directory also controls the evidence location; no import argument is needed.
 
-```robotframework linenums="1" hl_lines="3"
+```robotframework linenums="1"
 *** Settings ***
 Library    SeleniumLibrary
-Library    EvidenceReporter    output_dir=${EXECDIR}/results/evidence
+Library    EvidenceReporter
 Test Teardown    Close All Browsers
 
 *** Test Cases ***
@@ -17,8 +17,10 @@ Consultar Portal En Paralelo
 
 ```bash
 pabot --processes 4 --testlevelsplit --outputdir results tests
-rf-evidence build results/evidence --output reports
+rf-evidence build results/pabot_results --output reports
 ```
+
+Pabot gives each worker an output directory under `results/pabot_results`; its evidence is saved in that worker’s `evidence` subdirectory. The generator searches recursively after all workers finish. For serial Robot execution, use `results/evidence`.
 
 Use the directory for one execution only. Processes write cases to separate UUID directories without a common manifest. JSON is replaced atomically after each event.
 
