@@ -158,7 +158,7 @@ Cada `build` genera `manifest.json` con una entrada por caso: ID, suite, nombre,
 
 Este es el esquema propio de Evidence Reporter para integraciones y subida de evidencias. No es el formato `allure-results` ni se puede enviar directamente a Allure.
 
-```python
+```python hl_lines="3-6"
 from rf_evidence_reporter import build_reports, merge_results
 
 merge_results(["results/run/evidence", "results/rerun/evidence"], "results/merged")

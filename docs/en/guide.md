@@ -166,7 +166,7 @@ Each `build` creates `manifest.json`, with case ID, suite, name, status, number 
 
 This is Evidence Reporter's own inventory schema for integration and evidence uploads. It is not `allure-results` and cannot be sent directly to Allure.
 
-```python
+```python hl_lines="3-6"
 from rf_evidence_reporter import build_reports, merge_results
 
 merge_results(["results/run/evidence", "results/rerun/evidence"], "results/merged")

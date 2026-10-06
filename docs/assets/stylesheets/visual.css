@@ -86,3 +86,9 @@
 [data-md-color-scheme="slate"] .project-brand .project-brand-dark {display:block;}
 .md-header__button.md-logo img {width:1.5rem;height:1.5rem;background:white;border-radius:6px;padding:2px;box-sizing:border-box;}
 @media(max-width:600px) {.project-brand img {max-width:290px;}}
+
+/* Emphasize the documented operation without hiding syntax or line numbers. */
+.md-typeset .highlight .hll {
+  background-color: color-mix(in srgb, var(--md-typeset-a-color) 15%, var(--md-code-bg-color));
+  box-shadow: inset 3px 0 var(--md-typeset-a-color);
+}
