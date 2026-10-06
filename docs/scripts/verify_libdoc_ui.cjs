@@ -29,6 +29,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
       assert(Number(dom.window.getComputedStyle(header).zIndex)>1000);
       const navigation=[...header.querySelectorAll('.libdoc-icon-link')];
       assert.equal(navigation.length,3);
+      assert.equal(dom.window.getComputedStyle(header.querySelector('#language-container button svg path')).stroke,'white');
       for (const link of navigation) {
         assert.equal(link.target,'_blank');
         assert.equal(link.rel,'noopener noreferrer');

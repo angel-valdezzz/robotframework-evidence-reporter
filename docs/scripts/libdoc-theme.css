@@ -101,6 +101,7 @@ body::before {display:none;}
 .libdoc-header #language-container ul {position:absolute;right:0;top:36px;min-width:125px;margin:4px 0;background:var(--background-color);border:1px solid var(--border-color);border-radius:7px;padding:4px;color:var(--text-color);}
 .libdoc-header #language-container ul a {color:var(--text-color);}
 .libdoc-header #language-container svg {width:22px;height:22px;}
+.libdoc-header #language-container button svg path {stroke:white;fill:none;}
 .libdoc-icon-link:hover,#libdoc-theme-toggle:hover,.libdoc-header #language-container button:hover {background:#ffffff30;}
 .libdoc-icon-link:focus-visible,.libdoc-header button:focus-visible {outline:2px solid white;outline-offset:2px;}
 .libdoc-external {position:absolute;right:1px;top:-2px;font-size:10px;line-height:1;color:white;}
