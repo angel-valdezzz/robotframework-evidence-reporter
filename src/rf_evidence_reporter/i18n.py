@@ -4,6 +4,12 @@ from ._version import __version__
 
 
 EN = {
+    "Ver advertencias": "View warnings",
+    "Expandir todo": "Expand all",
+    "Contraer todo": "Collapse all",
+    "Buscar en mensajes": "Search messages",
+    "Todos": "All",
+    "Sin mensajes para este filtro.": "No messages match this filter.",
     "No registrado": "Not recorded",
     "Sin zona horaria": "Timezone unspecified",
     "Resumen": "Summary",
