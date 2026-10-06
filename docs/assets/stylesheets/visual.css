@@ -33,7 +33,7 @@
   color: #fff;
   background: linear-gradient(115deg, var(--doc-primary), var(--doc-secondary));
 }
-.md-header { border-bottom: 3px solid var(--doc-highlight); box-shadow: 0 3px 18px #0b254326; }
+.md-header { border-bottom: 0; box-shadow: 0 3px 18px #0b254326; }
 .md-tabs__link { opacity: .88; }
 .md-tabs__link--active, .md-tabs__link:hover { opacity: 1; }
 .md-header__button.md-logo img { width: 1.8rem; height: 1.8rem; }
