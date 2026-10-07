@@ -24,12 +24,24 @@ theme:
 plugins:
   - search:
       lang: en
+  - tags
+  - social:
+      cards_layout_options:
+        background_color: "#101629"
+        color: "#eef2ff"
+        font_family: DejaVu Sans
+  - privacy
+  - optimize:
+      # Avoid cached-file races in Material 9.7 during repeated builds.
+      cache: false
+      concurrency: 1
 nav:
   - Home: index.md
   - User guide:
       - First evidence: getting-started.md
       - Usage: guide.md
       - Parallel execution and CI: parallel.md
+  - Browse by topic: topics.md
   - Keyword reference: reference/keywords.html
   - API reference: generation.md
   - Development and publishing: publishing.md

@@ -28,12 +28,21 @@ theme:
         icon: material/weather-sunny
         name: Cambiar a modo claro
   features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.instant.prefetch
+    - navigation.instant.preview
+    - navigation.tracking
+    - navigation.path
     - navigation.tabs
     - navigation.sections
     - navigation.top
     - navigation.footer
     - toc.follow
     - content.code.copy
+    - content.code.annotate
+    - content.code.select
+    - content.tooltips
     - content.tabs.link
     - search.highlight
     - search.suggest
@@ -44,14 +53,25 @@ extra_css:
   - assets/stylesheets/standard.css
   - assets/stylesheets/extra.css
   - assets/stylesheets/visual.css
+  - assets/stylesheets/landing.css
 markdown_extensions:
   - admonition
   - attr_list
   - md_in_html
+  - tables
+  - abbr
+  - footnotes
+  - toc:
+      permalink: true
   - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
-  - pymdownx.superfences
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.inlinehilite
   - pymdownx.tabbed:
       alternate_style: true
@@ -60,9 +80,18 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_javascript:
+  - assets/mermaid.min.js
   - assets/keyword-links.js
+  - assets/landing.js
 
 extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/angel-valdezzz/robotframework-evidence-reporter
+      name: Evidence Reporter on GitHub
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/robotframework-evidence-reporter/
+      name: Evidence Reporter on PyPI
   alternate:
     - name: English
       link: https://angel-valdezzz.github.io/robotframework-evidence-reporter/
@@ -70,3 +99,5 @@ extra:
     - name: Español
       link: https://angel-valdezzz.github.io/robotframework-evidence-reporter/es/
       lang: es
+
+copyright: Copyright &copy; Angel Gerardo Molina Valdez · MIT

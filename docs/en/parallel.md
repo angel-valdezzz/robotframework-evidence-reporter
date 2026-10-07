@@ -1,3 +1,9 @@
+---
+title: Parallel execution and CI/CD
+tags:
+  - Integration
+---
+
 # Parallel execution and CI/CD
 
 Save this as `tests/portal.robot`. Robot's output directory also controls the evidence location; no import argument is needed.

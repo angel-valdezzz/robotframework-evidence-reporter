@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% block tabs %}
+{{ super() }}
+{% set es = config.theme.language == 'es' %}
+<section class="er-hero" aria-labelledby="er-headline" data-er-hero data-lang="{{ config.theme.language }}">
+  <canvas class="er-field" aria-hidden="true"></canvas>
+  <div class="er-hero-inner">
+    <div class="er-hero-copy">
+      <div class="er-kicker">ROBOT FRAMEWORK <span> / </span> EVIDENCE REPORTER</div>
+      <h1 id="er-headline">{{ 'Cada prueba.' if es else 'Every test.' }}<br>{{ 'Una historia' if es else 'A story worth' }}<br><em>{{ 'que compartir.' if es else 'sharing.' }}</em></h1>
+      <p>{{ 'Transforma capturas, hitos y resultados en evidencia que se entiende. Un reporte por caso. Listo para tu equipo.' if es else 'Turn screenshots, milestones and results into evidence people can understand. One report per case. Ready for your team.' }}</p>
+      <div class="er-actions">
+        <a class="er-action er-action-primary" href="{{ 'getting-started/' | url }}">{{ 'Comenzar' if es else 'Get started' }} <span aria-hidden="true">↗</span></a>
+        <a class="er-action er-action-secondary" href="{{ ('demo/es/passed.html' if es else 'demo/passed.html') | url }}">{{ 'Explorar el reporte' if es else 'Explore the report' }} <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="er-facts"><span>HTML · PDF · DOCX</span><span>{{ 'Abierto y gratuito' if es else 'Open source & free' }}</span></div>
+    </div>
+    <div class="er-report-scene" aria-label="{{ 'Demostración animada de la construcción de un reporte' if es else 'Animated demonstration of a report being assembled' }}">
+      <div class="er-scene-caption"><span class="er-live-dot"></span>{{ 'DE LA EJECUCIÓN A LA EVIDENCIA' if es else 'FROM EXECUTION TO EVIDENCE' }}</div>
+      <div class="er-preview">
+        <div class="er-preview-bar"><img src="{{ 'assets/logo.svg' | url }}" alt="" width="24" height="24"><strong>Evidence Reporter</strong><span class="er-case-status">PASS</span></div>
+        <div class="er-preview-body">
+          <span class="er-overline">{{ 'REPORTE INDIVIDUAL / DEMO' if es else 'INDIVIDUAL REPORT / DEMO' }}</span>
+          <h2>{{ 'Registro de cliente' if es else 'Customer registration' }}</h2>
+          <div class="er-preview-tabs"><span>{{ 'Resumen' if es else 'Summary' }}</span><span class="er-selected">{{ 'Pasos' if es else 'Steps' }}</span><span>Logs</span></div>
+          <div class="er-milestone er-assemble" data-stage="1"><span class="er-step">01</span><div><strong>{{ 'Cliente registrado' if es else 'Customer registered' }}</strong><small>{{ 'Confirmación del flujo de negocio' if es else 'Business flow confirmed' }}</small></div><span class="er-check">✓</span></div>
+          <div class="er-shot er-assemble" data-stage="2"><img src="{{ 'assets/images/report-light.png' | url }}" width="1200" height="800" alt="{{ 'Captura del reporte de ejemplo con datos ficticios' if es else 'Sample report screenshot with fictitious data' }}" loading="eager"><div><span class="er-evidence-tag">PASS</span>{{ 'Evidencia registrada' if es else 'Evidence recorded' }}</div></div>
+          <div class="er-log er-assemble" data-stage="3"><span>INFO</span>{{ 'Resultado documentado. Listo para compartir.' if es else 'Result documented. Ready to share.' }}</div>
+          <div class="er-exports er-assemble" data-stage="4"><span>HTML</span><span>PDF</span><span>DOCX</span><span class="er-export-check">✓</span></div>
+        </div>
+      </div>
+      <div class="er-scene-footer"><span class="er-progress-label" aria-live="off">{{ 'Capturar · Organizar · Compartir' if es else 'Capture · Organize · Share' }}</span><div class="er-animation-controls" hidden><button type="button" data-er-pause aria-pressed="false">{{ 'Pausar' if es else 'Pause' }}</button><button type="button" data-er-replay>{{ 'Repetir' if es else 'Replay' }}</button></div></div>
+    </div>
+  </div>
+  <a class="er-scroll" href="#{{ 'evidencia-que-explica-el-resultado' if es else 'evidence-that-explains-the-result' }}">{{ 'Descubre lo que puedes crear' if es else 'Discover what you can create' }} <span aria-hidden="true">↓</span></a>
+</section>
+{% endblock %}
+{% block content %}<div class="er-home-content">{{ page.content }}</div>{% endblock %}

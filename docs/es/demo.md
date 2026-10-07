@@ -1,3 +1,9 @@
+---
+title: Ejemplos visuales
+tags:
+  - Reportes
+---
+
 # Ejemplos visuales
 
 ## Ejemplo PDF
