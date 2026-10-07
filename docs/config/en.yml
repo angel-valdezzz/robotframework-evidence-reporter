@@ -30,7 +30,10 @@ plugins:
         background_color: "#101629"
         color: "#eef2ff"
         font_family: DejaVu Sans
-  - privacy
+  - privacy:
+      # Mermaid is already bundled locally; skip Material's unused CDN fallback.
+      assets_exclude:
+        - unpkg.com/mermaid@11/*
   - optimize:
       # Avoid cached-file races in Material 9.7 during repeated builds.
       cache: false
