@@ -1,3 +1,9 @@
+---
+title: Publicación
+tags:
+  - Desarrollo
+---
+
 # Publicación
 
 ## GitHub Pages
@@ -39,3 +45,11 @@ El inglés vive en `docs/en/` y se publica en la raíz. El español vive en `doc
 y se publica bajo `/es/`. Conserva los mismos nombres de páginas en ambos idiomas.
 Las traducciones de Libdoc viven en `docs/translations/es/libdoc.json`; la compilación
 rechaza entradas faltantes o desactualizadas. El selector nativo de Libdoc cambia los controles y las descripciones. Actualiza ambos textos y el SHA-256 del original cuando cambie una keyword.
+
+## Piloto de documentación
+
+La portada utiliza `docs/overrides/home.html`, estilos propios en `docs/assets/stylesheets/landing.css` y una animación Canvas pequeña en `docs/assets/landing.js`. Se pausa fuera de pantalla y en pestañas en segundo plano, respeta el movimiento reducido y muestra el contenido completo sin JavaScript. La suscripción de navegación instantánea de Material libera los observers antes de montar otra escena.
+
+La construcción bilingüe activa búsqueda, etiquetas, tarjetas sociales, privacidad y optimización de imágenes. Mermaid 11.12.0 y las fuentes DejaVu Sans con licencia se incluyen localmente. `build_docs.py` prepara la caché de fuentes de tarjetas sociales para evitar descargarlas. Instala `pngquant` antes de construir (en Ubuntu: `sudo apt-get install pngquant`); CI lo instala automáticamente. Poetry incluye las dependencias de imágenes de Material.
+
+Agrega páginas equivalentes en `docs/en` y `docs/es`, selecciona etiquetas útiles y prioriza componentes Markdown nativos. La animación de portada es una demo explicativa; los reportes de ejemplo se generan con el paquete. Analytics, comentarios y despliegue versionado quedan como decisiones futuras separadas.

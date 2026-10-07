@@ -25,12 +25,27 @@ theme:
 plugins:
   - search:
       lang: es
+  - tags
+  - social:
+      cards_layout_options:
+        background_color: "#101629"
+        color: "#eef2ff"
+        font_family: DejaVu Sans
+  - privacy:
+      # Mermaid is already bundled locally; skip Material's unused CDN fallback.
+      assets_exclude:
+        - unpkg.com/mermaid@11/*
+  - optimize:
+      # Avoid cached-file races in Material 9.7 during repeated builds.
+      cache: false
+      concurrency: 1
 nav:
   - Inicio: index.md
   - Manual de usuario:
       - Primera evidencia: getting-started.md
       - Uso: guide.md
       - Paralelo y CI: parallel.md
+  - Explorar por tema: topics.md
   - Referencia de keywords: reference/keywords.html
   - Referencia de API: generation.md
   - Desarrollo y publicación: publishing.md

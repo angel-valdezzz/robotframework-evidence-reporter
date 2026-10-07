@@ -21,6 +21,8 @@ jobs:
       - run: xvfb-run -a poetry run robot --outputdir results/browser examples/browser.robot
       - if: always()
         run: poetry run rf-evidence build results/browser-evidence --output results/browser/html
+      - name: Install documentation image optimizer
+        run: sudo apt-get update && sudo apt-get install -y pngquant
       - run: poetry run python docs/scripts/build_docs.py
       - run: poetry run robot --outputdir results/report-ui tests/report_ui.robot
       - name: Set up Node for Libdoc UI verification

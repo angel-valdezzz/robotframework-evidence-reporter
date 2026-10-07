@@ -41,7 +41,7 @@ Consultar Ejemplos Por Pestañas
 
 Consultar Referencia Libdoc
     [Documentation]    Comprueba que MkDocs enlaza la referencia generada de la librería.
-    Click Link    css:a[href="reference/keywords.html"]
+    Click Link    css:.er-home-content a[href$="reference/keywords.html"]
     Switch Window    NEW
     Location Should Be    http://localhost:8765/reference/keywords.html
     Wait Until Page Contains    EvidenceReporter
@@ -69,8 +69,53 @@ Cambiar Idioma En Libdoc
     Location Should Be    http://localhost:8765/reference/keywords.html#Capture%20Page%20Evidence
     Wait Until Page Contains    Capture the visible page area
 
+Controlar La Animacion Y Volver Desde La Guia
+    [Documentation]    Pausa y reinicia el hero; verifica que la navegación instantánea restaura sus controles.
+    Wait Until Element Is Visible    css:[data-er-pause]
+    Click Element    css:[data-er-pause]
+    Element Text Should Be    css:[data-er-pause]    Resume
+    Comprobar Pausa De La Animacion
+    Click Element    css:[data-er-replay]
+    Element Text Should Be    css:[data-er-pause]    Pause
+    Volver A La Portada Desde La Guia
+
+Consultar Portada Movil En Espanol
+    [Documentation]    Comprueba traducción, CTA y ausencia de desbordamiento en un viewport estrecho.
+    Set Window Size    390    844
+    Go To    http://localhost:8765/es/
+    Wait Until Element Is Visible    css:[data-er-pause]
+    Element Should Contain    css:#er-headline    Cada prueba.
+    Comprobar Ancho Y Enlace En Espanol
+    Capture Page Screenshot    ${OUTPUTDIR}/landing-es-mobile.png
+    Set Window Size    1440    1000
+    Go To    http://localhost:8765/
+    Capture Page Screenshot    ${OUTPUTDIR}/landing-en-desktop.png
+
 
 *** Keywords ***
+Volver A La Portada Desde La Guia
+    [Documentation]    Verifica los controles después de volver a la portada con navegación instantánea.
+    Click Link    css:.er-action-primary
+    Wait Until Page Contains    Your first evidence
+    Click Link    css:.md-logo
+    Wait Until Element Is Visible    css:[data-er-pause]
+    Click Element    css:[data-er-pause]
+    Element Text Should Be    css:[data-er-pause]    Resume
+
+Comprobar Pausa De La Animacion
+    [Documentation]    Comprueba que las etapas visibles no avanzan cuando se pausa.
+    ${before}=    Execute Javascript    return document.querySelectorAll('.er-assemble.is-visible').length;
+    Sleep    2s
+    ${after}=    Execute Javascript    return document.querySelectorAll('.er-assemble.is-visible').length;
+    Should Be Equal    ${before}    ${after}
+
+Comprobar Ancho Y Enlace En Espanol
+    [Documentation]    Verifica que el móvil no desborda y abre el reporte del idioma elegido.
+    ${overflow}=    Execute Javascript    return document.documentElement.scrollWidth > window.innerWidth;
+    Should Not Be True    ${overflow}
+    ${report}=    Get Element Attribute    css:.er-action-secondary    href
+    Should Contain    ${report}    /es/demo/es/passed.html
+
 Abrir Documentación
     [Documentation]    Abre el sitio servido localmente por CI en un navegador aislado.
     Open Browser    http://localhost:8765/    headlesschrome

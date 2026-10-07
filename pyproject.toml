@@ -30,7 +30,7 @@ robotframework-seleniumlibrary = "^6.9.0"
 robotframework-pabot = "^5.1.0"
 robotframework-robocop = "^9.1.0"
 ruff = "^0.15.0"
-mkdocs-material = "^9.7.0"
+mkdocs-material = {version = "^9.7.0", extras = ["imaging"]}
 
 [tool.ruff]
 line-length = 110

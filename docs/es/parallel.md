@@ -1,3 +1,9 @@
+---
+title: Paralelo y CI/CD
+tags:
+  - Integración
+---
+
 # Paralelo y CI/CD
 
 Guarda este caso en `tests/portal.robot`. El directorio de salida de Robot también controla las evidencias; no hace falta un argumento de importación.

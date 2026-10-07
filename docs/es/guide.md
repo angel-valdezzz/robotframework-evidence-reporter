@@ -1,3 +1,10 @@
+---
+title: Guía de uso
+tags:
+  - Capturas
+  - Reportes
+---
+
 # Guía de uso
 
 Importa `EvidenceReporter` en las suites. La instancia incluye su listener: no necesitas registrar también `--listener`.

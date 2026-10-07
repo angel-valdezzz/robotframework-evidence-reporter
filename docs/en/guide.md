@@ -1,3 +1,10 @@
+---
+title: User guide
+tags:
+  - Captures
+  - Reporting
+---
+
 # User guide
 
 Import `EvidenceReporter` in your suites. Its listener is included; do not also register `--listener`.

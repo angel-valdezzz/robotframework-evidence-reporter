@@ -1,3 +1,10 @@
+---
+title: Tu primera evidencia
+tags:
+  - Capturas
+  - Integración
+---
+
 # Tu primera evidencia
 
 Registra una captura en un caso de Robot y genera el HTML al terminar. Necesitas **Python 3.12 o superior**, Robot Framework 7 y SeleniumLibrary para las capturas del navegador.
@@ -74,3 +81,17 @@ Abre el archivo de `reports/` en tu navegador. El HTML incluye las imágenes, es
 ## Directorio de salida
 
 Normalmente importa `EvidenceReporter` sin argumentos de salida y ejecuta `robot --outputdir results tests`. Las evidencias van a `results/evidence`. Para elegir otra ubicación, usa `robot --outputdir results --variable EVIDENCE_OUTPUT_DIR:artifacts/evidence tests`. El argumento explícito `output_dir` de la librería conserva la prioridad por compatibilidad. Para Pabot, consulta [ejecución paralela](parallel.md).
+
+## Elige la captura adecuada
+
+| Qué quieres mostrar | Keyword | Cuándo usarla |
+| --- | --- | --- |
+| Página visible del navegador | `Capture Page Evidence` | Una pantalla completada o confirmación |
+| Un elemento del navegador | `Capture Element Evidence` | Un resultado, mensaje o componente específico |
+| Escritorio | `Capture Desktop Evidence` | Una sesión de escritorio con captura disponible |
+| Archivo de imagen existente | `Attach Image Evidence` | Una imagen producida por otra herramienta |
+
+Consulta los argumentos exactos y requisitos del entorno en [Keyword Reference](reference/keywords.html). La captura de página registra el viewport; no es una captura de página completa.
+
+*[CLI]: Interfaz de línea de comandos
+*[Pabot]: Ejecutor paralelo para Robot Framework

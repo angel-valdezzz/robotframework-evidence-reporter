@@ -1,3 +1,10 @@
+---
+title: CLI and Python
+tags:
+  - Reporting
+  - Configuration
+---
+
 # CLI and Python
 
 === "CLI"
@@ -62,3 +69,29 @@ build_reports(
     brand_config="examples/brand.json",
 )
 ```
+
+## Choose an output format
+
+| Capability | HTML | PDF | DOCX |
+| --- | --- | --- | --- |
+| Individual case summary | Yes | Yes | Yes |
+| Images and milestones | Yes | Yes | Yes |
+| Expand captures and filter logs | Interactive | Static | Static |
+| Light/dark toggle | Yes | No | No |
+| Editable document | No | No | Yes |
+| Read without a report server | Yes | Yes | Yes |
+
+=== "English"
+
+    ```bash
+    rf-evidence build results/evidence --output reports/en --language en --formats html pdf docx
+    ```
+
+=== "Español"
+
+    ```bash
+    rf-evidence build results/evidence --output reports/es --language es --formats html pdf docx
+    ```
+
+!!! tip "One recording, several deliverables"
+    Generate formats and languages from the same inputs. Captures, case names and user messages retain their original content.

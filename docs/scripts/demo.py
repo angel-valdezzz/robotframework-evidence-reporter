@@ -121,11 +121,12 @@ for status, filename in [
             if status == "SKIP"
             else "",
         )
-    formats = ("html", "pdf") if status == "PASS" else ("html",)
+    formats = ("html", "pdf", "docx") if status == "PASS" else ("html",)
     paths = build_reports(recorder.case_dir, root / "html", formats=formats)
     shutil.copyfile(paths[0], Path("docs/demo") / filename)
     if status == "PASS":
         shutil.copyfile(paths[1], Path("docs/demo/passed.pdf"))
+        shutil.copyfile(paths[2], Path("docs/demo/passed.docx"))
 
 # Spanish interface preview from the same recorded cases, including PDF and Word.
 spanish = Path("docs/demo/es")

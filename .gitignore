@@ -24,3 +24,5 @@ docs/es/demo/
 docs/en/examples/*.html
 docs/es/examples/*.html
 docs/demo/
+
+.cache/
