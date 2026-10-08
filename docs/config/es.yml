@@ -50,3 +50,6 @@ nav:
   - Referencia de API: generation.md
   - Desarrollo y publicación: publishing.md
   - Ejemplos visuales: demo.md
+
+hooks:
+  - ../scripts/navigation.py

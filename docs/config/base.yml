@@ -80,11 +80,13 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_javascript:
+  - assets/navigation.js?v=locale-2
   - assets/mermaid.min.js
   - assets/keyword-links.js
   - assets/landing.js
 
 extra:
+  scope: /robotframework-evidence-reporter/
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/angel-valdezzz/robotframework-evidence-reporter
@@ -101,3 +103,6 @@ extra:
       lang: es
 
 copyright: Copyright &copy; Angel Gerardo Molina Valdez · MIT
+
+hooks:
+  - docs/scripts/navigation.py
