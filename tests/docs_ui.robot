@@ -101,12 +101,12 @@ Recorrer La Evidencia Y Capturar El Diseno
     Click Element    css:[data-er-replay]
     Wait For Condition    return document.querySelector('[data-er-hero]').dataset.erStep === '2';    timeout=12s
     Click Element    css:[data-er-pause]
-    Capture Page Screenshot    ${OUTPUTDIR}/landing-en-final.png
+    Capturar Portada Completa    landing-en-final.png
     Go To    http://localhost:8765/es/
     Click Element    css:[data-er-select="2"]
-    Set Window Size    1440    1120
+    Set Window Size    1440    1167
     Comprobar Controles Dentro Del Viewport
-    Capture Page Screenshot    ${OUTPUTDIR}/landing-es-final.png
+    Capturar Portada Completa    landing-es-final.png
 
 Consultar Evidencia En Pantallas Pequenas
     [Documentation]    Captura portátil y móvil sin desbordamiento, manteniendo las acciones visibles.
@@ -114,7 +114,7 @@ Consultar Evidencia En Pantallas Pequenas
     Click Element    css:[data-er-select="2"]
     Set Window Size    1366    768
     Comprobar Controles Dentro Del Viewport
-    Capture Page Screenshot    ${OUTPUTDIR}/landing-es-laptop.png
+    Capturar Portada Completa    landing-es-laptop.png
     Capturar Evidencia En Movil
     Set Window Size    1440    1000
 
@@ -141,10 +141,18 @@ Cambiar Vistas De La Demostracion
 Capturar Evidencia En Movil
     [Documentation]    Captura la entrada y la evidencia seleccionada en el viewport móvil.
     Set Window Size    390    844
+    Capturar Portada Completa    landing-es-mobile-top.png
     Comprobar Ancho Y Enlace En Espanol
-    Capture Page Screenshot    ${OUTPUTDIR}/landing-es-mobile-top.png
     Scroll Element Into View    css:.er-contexts
     Capture Page Screenshot    ${OUTPUTDIR}/landing-es-mobile-evidence.png
+
+Capturar Portada Completa
+    [Documentation]    Captura desde el inicio, evitando el desplazamiento generado por seleccionar una evidencia.
+    [Arguments]    ${archivo}
+    Execute Javascript    window.scrollTo(0,0);
+    Wait For Condition
+    ...    return document.querySelector('[data-er-capture]:not([hidden])').getBoundingClientRect().height > 0;
+    Capture Page Screenshot    ${OUTPUTDIR}/${archivo}
 
 Comprobar Controles Dentro Del Viewport
     [Documentation]    Comprueba que las acciones principales caben en pantallas de escritorio y portátil.
@@ -172,6 +180,10 @@ Comprobar Pausa De La Animacion
 Comprobar Ancho Y Enlace En Espanol
     [Documentation]    Verifica que el móvil no desborda y abre el reporte del idioma elegido.
     ${overflow}=    Execute Javascript    return document.documentElement.scrollWidth > window.innerWidth;
+    ${outside}=    Execute Javascript
+    ...    return [...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth)
+    ...    .map(el=>[el.tagName,el.className,Math.round(el.getBoundingClientRect().right)]).slice(0,20);
+    Log    ${outside}
     Should Not Be True    ${overflow}
     ${report}=    Get Element Attribute    css:.er-action-secondary    href
     Should Contain    ${report}    /es/demo/es/passed.html
