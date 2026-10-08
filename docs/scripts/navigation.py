@@ -1,5 +1,6 @@
 """Resolve translated pages for Material's regular and instant navigation."""
 
+import html as html_tools
 import json
 from pathlib import Path
 
@@ -53,7 +54,7 @@ def on_page_content(html, page, config, **_kwargs):
     # Material replaces content during instant navigation but keeps the header.
     # Carry destinations inside that content so the existing selector is updated.
     data = json.dumps(_alternates(page, config), ensure_ascii=True).replace("<", "\\u003c")
-    return html + f'<script type="application/json" data-doc-alternates>{data}</script>'
+    return html + f"<span hidden data-doc-alternates>{html_tools.escape(data)}</span>"
 
 
 def on_page_context(context, page, config, **_kwargs):

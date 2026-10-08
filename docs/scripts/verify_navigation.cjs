@@ -56,6 +56,9 @@ let mounted;
 persistent.window.document$ = {subscribe(callback) {mounted = callback; callback();}};
 persistent.window.eval(script);
 for (const page of pages) {
+  // Material removes scripts from fetched page content before mounting it.
+  const incoming = page.dom.window.document.querySelector('[data-doc-alternates]').cloneNode(true);
+  assert.notEqual(incoming.tagName, 'SCRIPT', 'Metadata must survive Material script removal');
   const metadata = persistent.window.document.querySelector('[data-doc-alternates]');
   metadata.textContent = JSON.stringify(page.targets);
   const fragment = Object.keys(page.targets.find(target => !target.current).fragments)[0];
