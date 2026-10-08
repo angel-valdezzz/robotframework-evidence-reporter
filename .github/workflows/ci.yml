@@ -34,6 +34,7 @@ jobs:
           npm install --prefix build/libdoc-ui jsdom@26.1.0 --no-audit --no-fund
           NODE_PATH="$PWD/build/libdoc-ui/node_modules" node docs/scripts/verify_libdoc_ui.cjs reference/keywords.html
           NODE_PATH="$PWD/build/libdoc-ui/node_modules" node docs/scripts/verify_navigation.cjs
+          NODE_PATH="$PWD/build/libdoc-ui/node_modules" node docs/scripts/verify_landing.cjs
       - name: Verificar documentación en navegador
         run: |
           python -m http.server 8765 --directory site >/tmp/evidence-docs-server.log 2>&1 &
