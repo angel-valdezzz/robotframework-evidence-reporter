@@ -6,6 +6,7 @@
     dispose();
     const hero = document.querySelector('[data-er-hero]');
     const pause = hero?.querySelector('[data-er-pause]');
+    const cue = hero?.querySelector('.er-scroll-cue');
     const search = document.querySelector('.er-search-trigger');
     const es = document.documentElement.lang === 'es';
     const cleanups = [];
@@ -26,6 +27,13 @@
         : (es ? 'Pausar animación' : 'Pause animation');
     }
     listen(pause, 'click', () => { paused = !paused; update(); });
+    listen(cue, 'click', event => {
+      const content = document.getElementById('er-content');
+      if (!content) return;
+      event.preventDefault();
+      content.scrollIntoView({behavior: motion.matches ? 'auto' : 'smooth', block: 'start'});
+      content.focus({preventScroll: true});
+    });
     listen(search, 'keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();

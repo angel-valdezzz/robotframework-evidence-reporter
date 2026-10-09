@@ -5,7 +5,11 @@ Library           SeleniumLibrary
 
 Suite Setup       Abrir Documentación
 Suite Teardown    Close All Browsers
-Test Setup        Go To    http://localhost:8765/
+Test Setup        Go To    ${DOCS_URL}
+
+
+*** Variables ***
+${DOCS_URL}    http://localhost:8765/robotframework-evidence-reporter/
 
 
 *** Test Cases ***
@@ -32,10 +36,10 @@ Buscar Keywords En La Documentación
 
 Consultar Ejemplos Por Pestañas
     [Documentation]    Valida alternativas de instalación y el enlace al reporte vivo.
-    Go To    http://localhost:8765/getting-started/
+    Go To    ${DOCS_URL}getting-started/
     Click Element    css:.tabbed-labels label:nth-child(2)
     Element Should Contain    css:.tabbed-block:nth-child(2)    pip install
-    Go To    http://localhost:8765/demo/passed.html
+    Go To    ${DOCS_URL}demo/passed.html
     Element Text Should Be    css:.execution-status    ✓ PASS
     Click Element    id:tab-steps
     Page Should Contain    Cuentas consultadas
@@ -44,7 +48,7 @@ Consultar Referencia Libdoc
     [Documentation]    Comprueba que MkDocs enlaza la referencia generada de la librería.
     Click Link    css:.er-home-content a[href$="reference/keywords.html"]
     Switch Window    NEW
-    Location Should Be    http://localhost:8765/reference/keywords.html
+    Location Should Be    ${DOCS_URL}reference/keywords.html
     Wait Until Page Contains    EvidenceReporter
     Wait Until Page Contains    Capture Page Evidence
     Page Should Contain    Create Milestone
@@ -52,7 +56,7 @@ Consultar Referencia Libdoc
 
 Consultar Ejemplos Resaltados
     [Documentation]    Comprueba contexto Robot completo y líneas resaltadas en la guía.
-    Go To    http://localhost:8765/guide/
+    Go To    ${DOCS_URL}guide/
     Page Should Contain    *** Settings ***
     Page Should Contain    *** Test Cases ***
     Page Should Contain Element    css:.highlight .hll
@@ -60,14 +64,14 @@ Consultar Ejemplos Resaltados
 
 Cambiar Idioma En Libdoc
     [Documentation]    Cambia controles y descripciones desde el menú nativo, conservando la keyword.
-    Go To    http://localhost:8765/reference/keywords.html#Capture%20Page%20Evidence
+    Go To    ${DOCS_URL}reference/keywords.html#Capture%20Page%20Evidence
     Elegir Idioma De Libdoc    Español
-    Location Should Be    http://localhost:8765/es/reference/keywords.html#Capture%20Page%20Evidence
+    Location Should Be    ${DOCS_URL}es/reference/keywords.html#Capture%20Page%20Evidence
     Wait Until Page Contains    Introducción
     Page Should Contain    Captura el área visible de la página
     Element Should Contain    css:#language-container button    Idioma: Español
     Elegir Idioma De Libdoc    English
-    Location Should Be    http://localhost:8765/reference/keywords.html#Capture%20Page%20Evidence
+    Location Should Be    ${DOCS_URL}reference/keywords.html#Capture%20Page%20Evidence
     Wait Until Page Contains    Capture the visible page area
 
 Controlar Movimiento Y Volver Desde La Guia
@@ -84,7 +88,7 @@ Controlar Movimiento Y Volver Desde La Guia
 Consultar Portada Movil En Espanol
     [Documentation]    Comprueba CTA, scroll y ausencia de desbordamiento en español.
     Set Window Size    390    844
-    Go To    http://localhost:8765/es/
+    Go To    ${DOCS_URL}es/
     Element Should Contain    css:#er-headline    Cada paso.
     Comprobar Portada Sin Desbordamiento
     Capturar Portada    landing-es-mobile.png
@@ -94,7 +98,7 @@ Capturar Diseno En Varios Viewports
     [Documentation]    Captura la composición sin demo y con cabecera transparente en EN/ES.
     Click Element    css:[data-er-pause]
     Capturar Portada    landing-en-final.png
-    Go To    http://localhost:8765/es/
+    Go To    ${DOCS_URL}es/
     Set Window Size    1440    1167
     Click Element    css:[data-er-pause]
     Comprobar Portada Sin Desbordamiento
@@ -121,7 +125,7 @@ Conservar Idioma Tema Y Encabezado
     Wait For Condition    return document.body.getAttribute('data-md-color-scheme') === 'slate';
     Click Element    css:.md-select button
     Click Link    Español
-    Location Should Be    http://localhost:8765/es/getting-started/
+    Location Should Be    ${DOCS_URL}es/getting-started/
     Wait For Condition    return document.body.getAttribute('data-md-color-scheme') === 'slate';
     ${animated}=    Execute Javascript
     ...    return getComputedStyle(document.querySelector('.md-header')).animationName;
@@ -173,7 +177,9 @@ Comprobar Estado De Movimiento
 Comprobar Portada Sin Desbordamiento
     [Documentation]    Comprueba ancho, acciones y separación de idioma/búsqueda.
     Execute Javascript    window.scrollTo(0,0);
-    ${overflow}=    Execute Javascript    return document.documentElement.scrollWidth > innerWidth;
+    ${overflow}=    Execute Javascript
+    ...    return document.documentElement.scrollWidth > innerWidth ||
+    ...    document.querySelector("#er-headline").scrollWidth > document.querySelector("#er-headline").clientWidth;
     Should Not Be True    ${overflow}
     ${visible}=    Execute Javascript
     ...    return [...document.querySelectorAll('.er-action,.er-scroll-cue')].every(el=>{
@@ -190,7 +196,7 @@ Comprobar Portada Sin Desbordamiento
 
 Abrir Documentación
     [Documentation]    Abre el sitio servido localmente por CI en un navegador aislado.
-    Open Browser    http://localhost:8765/    headlesschrome
+    Open Browser    ${DOCS_URL}    headlesschrome
     ...    options=add_argument("--no-sandbox");add_argument("--disable-dev-shm-usage")
     Set Window Size    1440    1000
 

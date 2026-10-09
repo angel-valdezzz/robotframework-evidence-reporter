@@ -1,5 +1,4 @@
 /* The approved brand field extends behind the home header; docs keep native surfaces. */
-html:has([data-er-hero]) {scroll-behavior:smooth}
 .er-home-nav {display:none}
 body:has([data-er-hero]) .md-sidebar {display:none}
 body:has([data-er-hero]) .md-main__inner {max-width:64rem;margin-top:0}
@@ -34,7 +33,8 @@ body:has([data-er-hero]) .md-search {position:static;width:0;height:0;padding:0}
 .er-hero-inner {width:min(100% - 144px,1440px);min-height:100svh;margin:auto;padding:128px 0 145px;display:flex;align-items:center}
 .er-intro {display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,1fr);gap:32px;align-items:center;width:100%}
 .er-intro>* {min-width:0}
-.er-hero h1 {font-size:clamp(52px,6vw,90px);line-height:1.055;letter-spacing:-.05em;font-weight:760;margin:0;color:#f7f7ff}
+.er-hero h1 {font-size:clamp(48px,5.5vw,82px);line-height:1.055;letter-spacing:-.05em;font-weight:760;margin:0;color:#f7f7ff}
+.er-headline-line {white-space:nowrap}
 .er-hero h1 em {font-style:normal;color:#b496fc}
 .er-period {display:inline-block;margin-left:.06em;letter-spacing:0}
 .er-hero-copy>p {font-size:clamp(16px,1.25vw,18px);line-height:1.55;color:#d4d9ee;margin:22px 0 0;max-width:830px}
@@ -119,7 +119,6 @@ body[data-er-motion-paused="true"] .er-field,body[data-er-motion-paused="true"] 
  .md-typeset .er-quickstart {padding:1rem}
 }
 @media(prefers-reduced-motion:reduce) {
- html:has([data-er-hero]) {scroll-behavior:auto}
  .er-field,.er-scroll-circle .er-icon,body:not(:has([data-er-hero])) .md-header {animation:none}
  .er-action,.er-scroll-circle {transition:none}
  .er-action:hover {transform:none}

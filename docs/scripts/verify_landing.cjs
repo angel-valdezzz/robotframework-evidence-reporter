@@ -13,10 +13,15 @@ for (const language of ['en', 'es']) {
     w.matchMedia = () => media;
     let remount;
     w.document$ = {subscribe(callback) { remount = callback; callback(); }};
+    let scrolled;
+    w.document.getElementById('er-content').scrollIntoView = options => {scrolled = options;};
     w.eval(script);
     const q = selector => w.document.querySelector(selector);
     assert.equal(q('.er-preview'), null, 'The invented report must not remain on home');
     assert.equal(q('.er-scroll-cue').getAttribute('href'), '#er-content');
+    q('.er-scroll-cue').click();
+    assert.equal(scrolled.behavior, reduced ? 'auto' : 'smooth');
+    assert.equal(w.document.activeElement, q('#er-content'));
     assert.ok(q('#er-content').querySelector('.er-format-preview'), 'Real examples must remain below home');
     const report = q('.er-action-secondary').getAttribute('href');
     assert.ok(report.endsWith(language === 'es' ? 'demo/es/passed.html' : 'demo/passed.html'));
