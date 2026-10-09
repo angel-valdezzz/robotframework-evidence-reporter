@@ -1,6 +1,6 @@
 ---
 title: Evidence Reporter
-description: Convierte capturas, hitos y resultados de Robot Framework en reportes individuales HTML, PDF y Word claros.
+description: Capturas, hitos y resultados para documentar tus ejecuciones de prueba en HTML, PDF y Word.
 template: home.html
 hide:
   - navigation
@@ -51,7 +51,7 @@ Una prueba indica si pasó. **La evidencia cuenta la historia.** Captura los mom
 
 </div>
 
-## Un caso. Tres formas de compartirlo.
+## Tres formas de compartir tu evidencia.
 
 === "HTML"
 

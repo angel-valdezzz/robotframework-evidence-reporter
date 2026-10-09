@@ -84,15 +84,83 @@ Consultar Portada Movil En Espanol
     Set Window Size    390    844
     Go To    http://localhost:8765/es/
     Wait Until Element Is Visible    css:[data-er-pause]
-    Element Should Contain    css:#er-headline    Cada prueba.
+    Element Should Contain    css:#er-headline    Cada paso.
     Comprobar Ancho Y Enlace En Espanol
     Capture Page Screenshot    ${OUTPUTDIR}/landing-es-mobile.png
     Set Window Size    1440    1000
     Go To    http://localhost:8765/
     Capture Page Screenshot    ${OUTPUTDIR}/landing-en-desktop.png
 
+Explorar Pasos Y Vistas De La Demostracion
+    [Documentation]    Comprueba selección de evidencia, pestañas y pausa manual.
+    Seleccionar Evidencia Manualmente
+    Cambiar Vistas De La Demostracion
+
+Recorrer La Evidencia Y Capturar El Diseno
+    [Documentation]    Comprueba el recorrido automático y captura el diseño final en ambos idiomas.
+    Click Element    css:[data-er-replay]
+    Wait For Condition    return document.querySelector('[data-er-hero]').dataset.erStep === '2';    timeout=12s
+    Click Element    css:[data-er-pause]
+    Capturar Portada Completa    landing-en-final.png
+    Go To    http://localhost:8765/es/
+    Click Element    css:[data-er-select="2"]
+    Set Window Size    1440    1167
+    Comprobar Controles Dentro Del Viewport
+    Capturar Portada Completa    landing-es-final.png
+
+Consultar Evidencia En Pantallas Pequenas
+    [Documentation]    Captura portátil y móvil sin desbordamiento, manteniendo las acciones visibles.
+    Go To    http://localhost:8765/es/
+    Click Element    css:[data-er-select="2"]
+    Set Window Size    1366    768
+    Comprobar Controles Dentro Del Viewport
+    Capturar Portada Completa    landing-es-laptop.png
+    Capturar Evidencia En Movil
+    Set Window Size    1440    1000
+
 
 *** Keywords ***
+Seleccionar Evidencia Manualmente
+    [Documentation]    Selecciona una captura y comprueba que se pausa el recorrido.
+    Click Element    css:[data-er-select="1"]
+    Element Text Should Be    css:[data-er-pause]    Resume
+    Element Should Contain    css:[data-er-context="1"]    Details confirmed
+    Element Should Be Visible    css:[data-er-capture="1"]
+    Element Should Not Be Visible    css:[data-er-capture="0"]
+
+Cambiar Vistas De La Demostracion
+    [Documentation]    Comprueba Logs, Resumen y el reinicio en la vista Pasos.
+    Click Element    css:[data-er-view="logs"]
+    Element Should Be Visible    id:er-view-logs
+    Element Should Not Be Visible    id:er-view-steps
+    Click Element    css:[data-er-view="summary"]
+    Element Should Be Visible    id:er-view-summary
+    Click Element    css:[data-er-replay]
+    Element Should Be Visible    id:er-view-steps
+
+Capturar Evidencia En Movil
+    [Documentation]    Captura la entrada y la evidencia seleccionada en el viewport móvil.
+    Set Window Size    390    844
+    Capturar Portada Completa    landing-es-mobile-top.png
+    Comprobar Ancho Y Enlace En Espanol
+    Scroll Element Into View    css:.er-contexts
+    Capture Page Screenshot    ${OUTPUTDIR}/landing-es-mobile-evidence.png
+
+Capturar Portada Completa
+    [Documentation]    Captura desde el inicio, evitando el desplazamiento generado por seleccionar una evidencia.
+    [Arguments]    ${archivo}
+    Execute Javascript    window.scrollTo(0,0);
+    Wait For Condition
+    ...    return document.querySelector('[data-er-capture]:not([hidden])').getBoundingClientRect().height > 0;
+    Capture Page Screenshot    ${OUTPUTDIR}/${archivo}
+
+Comprobar Controles Dentro Del Viewport
+    [Documentation]    Comprueba que las acciones principales caben en pantallas de escritorio y portátil.
+    ${visible}=    Execute Javascript
+    ...    return [...document.querySelectorAll('.er-action')].every(el=>{
+    ...    const b=el.getBoundingClientRect();return b.top>=0&&b.bottom<=innerHeight;});
+    Should Be True    ${visible}
+
 Volver A La Portada Desde La Guia
     [Documentation]    Verifica los controles después de volver a la portada con navegación instantánea.
     Click Link    css:.er-action-primary
@@ -103,15 +171,19 @@ Volver A La Portada Desde La Guia
     Element Text Should Be    css:[data-er-pause]    Resume
 
 Comprobar Pausa De La Animacion
-    [Documentation]    Comprueba que las etapas visibles no avanzan cuando se pausa.
-    ${before}=    Execute Javascript    return document.querySelectorAll('.er-assemble.is-visible').length;
+    [Documentation]    Comprueba que la evidencia seleccionada no avanza cuando se pausa.
+    ${before}=    Get Element Attribute    css:[data-er-hero]    data-er-step
     Sleep    2s
-    ${after}=    Execute Javascript    return document.querySelectorAll('.er-assemble.is-visible').length;
+    ${after}=    Get Element Attribute    css:[data-er-hero]    data-er-step
     Should Be Equal    ${before}    ${after}
 
 Comprobar Ancho Y Enlace En Espanol
     [Documentation]    Verifica que el móvil no desborda y abre el reporte del idioma elegido.
     ${overflow}=    Execute Javascript    return document.documentElement.scrollWidth > window.innerWidth;
+    ${outside}=    Execute Javascript
+    ...    return [...document.querySelectorAll('body *')].filter(el=>el.getBoundingClientRect().right>innerWidth)
+    ...    .map(el=>[el.tagName,el.className,Math.round(el.getBoundingClientRect().right)]).slice(0,20);
+    Log    ${outside}
     Should Not Be True    ${overflow}
     ${report}=    Get Element Attribute    css:.er-action-secondary    href
     Should Contain    ${report}    /es/demo/es/passed.html

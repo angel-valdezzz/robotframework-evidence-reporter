@@ -1,6 +1,6 @@
 ---
 title: Evidence Reporter
-description: Turn Robot Framework screenshots, milestones and results into clear, individual HTML, PDF and Word reports.
+description: Screenshots, milestones and results to document your test executions in HTML, PDF and Word.
 template: home.html
 hide:
   - navigation
@@ -51,7 +51,7 @@ A test tells you whether it passed. **Evidence tells the story.** Capture the mo
 
 </div>
 
-## One case. Three ways to share it.
+## Three ways to share your evidence.
 
 === "HTML"
 
