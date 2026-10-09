@@ -26,6 +26,14 @@
         : paused ? (es ? 'Reanudar animación' : 'Resume animation')
         : (es ? 'Pausar animación' : 'Pause animation');
     }
+    function syncHeaderMotion() {
+      if (hero) return;
+      const animation = selector => document.querySelector(selector)?.getAnimations?.()
+        .find(item => item.animationName === 'er-header-flow');
+      const header = animation('.md-header'), tabs = animation('.md-tabs');
+      // Tabs restart when they reappear after a mobile viewport; restore the shared phase.
+      if (header && tabs && header.currentTime !== null) tabs.currentTime = header.currentTime;
+    }
     listen(pause, 'click', () => { paused = !paused; update(); });
     listen(cue, 'click', event => {
       const content = document.getElementById('er-content');
@@ -41,7 +49,9 @@
       }
     });
     listen(motion, 'change', update);
+    listen(window, 'resize', syncHeaderMotion);
     update();
+    syncHeaderMotion();
     dispose = () => cleanups.forEach(cleanup => cleanup());
   }
   if (typeof document$ !== 'undefined') document$.subscribe(mount);
