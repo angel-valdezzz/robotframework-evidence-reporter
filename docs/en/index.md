@@ -51,13 +51,13 @@ A test tells you whether it passed. **Evidence tells the story.** Capture the mo
 
 </div>
 
-## Three ways to share your evidence.
+## Three ways to share your evidence. {#er-report}
 
 === "HTML"
 
     <div class="er-format-preview" markdown>
 
-    [![Summary of the generated sample report](assets/images/report-light.png)](demo/passed.html)
+    <iframe src="demo/passed.html" title="Real Evidence Reporter sample report" loading="lazy"></iframe>
 
     </div>
 

@@ -19,6 +19,17 @@
       else link.removeAttribute("aria-current");
     }
   }
+  // Keep the generated page and translated section authoritative. Material's
+  // body-level locale handler otherwise rebuilds URLs from the sitemap.
+  for (const link of document.querySelectorAll("[data-doc-language]")) {
+    link.addEventListener("click", event => event.stopPropagation());
+  }
+  for (const button of document.querySelectorAll(".md-select button")) {
+    button.addEventListener("pointerdown", sync);
+    button.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") sync();
+    });
+  }
   if (typeof document$ !== "undefined") document$.subscribe(sync);
   else if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", sync, {once: true});
   else sync();

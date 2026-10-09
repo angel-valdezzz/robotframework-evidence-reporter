@@ -114,7 +114,7 @@ Explorar Contenido Y Hover
     Click Link    css:.er-scroll-cue
     Wait For Condition    return scrollY > 100;
     Page Should Contain    Evidence that explains the result
-    Page Should Contain Element    css:.er-format-preview img
+    Page Should Contain Element    css:.er-format-preview iframe
     Page Should Not Contain Element    css:.er-preview
     Capture Page Screenshot    ${OUTPUTDIR}/landing-content.png
 
@@ -186,9 +186,10 @@ Comprobar Portada Sin Desbordamiento
     ...    document.querySelector("#er-headline").scrollWidth > document.querySelector("#er-headline").clientWidth;
     Should Not Be True    ${overflow}
     ${visible}=    Execute Javascript
-    ...    return [...document.querySelectorAll('.er-action,.er-scroll-cue')].every(el=>{
+    ...    return [...document.querySelectorAll('.er-action')].every(el=>{
     ...    const b=el.getBoundingClientRect();return b.top>=0&&b.bottom<=innerHeight;});
     Should Be True    ${visible}
+    Comprobar Indicacion De Scroll
     ${separate}=    Execute Javascript
     ...    const a=document.querySelector('.md-select button').getBoundingClientRect();
     ...    const b=document.querySelector('.er-search-trigger').getBoundingClientRect();
@@ -197,6 +198,14 @@ Comprobar Portada Sin Desbordamiento
     ${transparent}=    Execute Javascript
     ...    return getComputedStyle(document.querySelector('.md-header')).backgroundColor;
     Should Be Equal    ${transparent}    rgba(0, 0, 0, 0)
+
+Comprobar Indicacion De Scroll
+    [Documentation]    Comprueba que el botón para bajar queda dentro de la portada completa.
+    ${reachable}=    Execute Javascript
+    ...    const hero=document.querySelector('[data-er-hero]').getBoundingClientRect();
+    ...    const cue=document.querySelector('.er-scroll-cue').getBoundingClientRect();
+    ...    return cue.top>=hero.top && cue.bottom<=hero.bottom;
+    Should Be True    ${reachable}
 
 Abrir Documentación
     [Documentation]    Abre el sitio servido localmente por CI en un navegador aislado.

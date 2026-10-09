@@ -55,6 +55,12 @@ const persistent = pages[0].dom;
 let mounted;
 persistent.window.document$ = {subscribe(callback) {mounted = callback; callback();}};
 persistent.window.eval(script);
+let intercepted = false;
+persistent.window.document.body.addEventListener('click', () => {intercepted = true;});
+const localeLink = persistent.window.document.querySelector('[data-doc-language]');
+localeLink.addEventListener('click', event => event.preventDefault(), {once: true});
+localeLink.dispatchEvent(new persistent.window.MouseEvent('click', {bubbles: true, cancelable: true}));
+assert.equal(intercepted, false, 'Material must not overwrite the generated locale destination');
 for (const page of pages) {
   // Material removes scripts from fetched page content before mounting it.
   const incoming = page.dom.window.document.querySelector('[data-doc-alternates]').cloneNode(true);

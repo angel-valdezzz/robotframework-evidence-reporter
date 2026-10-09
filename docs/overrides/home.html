@@ -1,29 +1,22 @@
 {% extends "main.html" %}
 {% set es = config.theme.language == 'es' %}
-{% macro icon(name) %}<span class="er-icon" aria-hidden="true">{% include '.icons/material/' ~ name ~ '.svg' %}</span>{% endmacro %}
 {% block tabs %}
-<section class="er-hero" aria-labelledby="er-headline" data-er-hero data-lang="{{ config.theme.language }}">
-  <img class="er-field" src="{{ 'assets/images/landing-field.webp' | url }}" alt="" width="1536" height="1024" fetchpriority="high">
-  <div class="er-hero-inner">
-    <div class="er-intro">
+  <section class="er-hero" id="er-inicio" data-er-hero data-lang="{{ config.theme.language }}" aria-labelledby="er-headline">
+    <div class="er-hero-inner">
       <div class="er-hero-copy">
-        <h1 id="er-headline"><span class="er-headline-line">{{ 'Cada paso' if es else 'Every step' }}<span class="er-period">.</span></span><br><em class="er-headline-line">{{ 'Todo el contexto' if es else 'All the context' }}<span class="er-period">.</span></em></h1>
-        <p>{{ 'Capturas, hitos y resultados para documentar tus ejecuciones de prueba.' if es else 'Screenshots, milestones and results to document your test executions.' }}</p>
+        <p class="er-eyebrow">{{ "EVIDENCIA CON CONTEXTO" if es else "EVIDENCE WITH CONTEXT" }}</p>
+        <h1 id="er-headline"><span class="er-first-line">{{ "Cada paso." if es else "Every step." }}</span><span class="er-last-line">{{ "Todo el contexto." if es else "All the context." }}</span></h1>
+        <div class="er-pitch"><p>{{ "Capturas, hitos y resultados para documentar tus ejecuciones de prueba." if es else "Screenshots, milestones and results to document your test executions." }}</p><div class="er-actions"><a class="er-action er-action-primary" href="{{ "getting-started/" | url }}">{{ "Comenzar" if es else "Get started" }}</a><a class="er-action er-action-secondary" href="#er-report">{{ "Ver el reporte" if es else "See the report" }}</a></div></div>
+        <div class="er-hero-meta"><span class="er-formats">HTML<span>·</span>PDF<span>·</span>DOCX</span><span class="er-meta-line"></span><span>PYTHON · ROBOT FRAMEWORK</span></div>
       </div>
-      <div class="er-intro-actions">
-        <div class="er-actions">
-          <a class="er-action er-action-primary" href="{{ 'getting-started/' | url }}">{{ 'Comenzar' if es else 'Get started' }} {{ icon('arrow-right') }}</a>
-          <a class="er-action er-action-secondary" href="{{ ('demo/es/passed.html' if es else 'demo/passed.html') | url }}">{{ 'Explorar el reporte' if es else 'Explore the report' }} {{ icon('arrow-right') }}</a>
-        </div>
-        <div class="er-facts">HTML · PDF · DOCX</div>
+      <div class="er-sequence" id="er-sequence" role="img" aria-label="{{ 'Recorrido abstracto de capturas que se conectan y reúnen; no representa la interfaz del reporte.' if es else 'An abstract journey of captures that connect and gather; this is not a report interface.' }}">
+        <canvas id="er-stage" aria-hidden="true"></canvas>
+        <img class="er-motion-fallback" src="{{ config.theme.logo | url }}" alt="" width="160" height="160">
+        <div class="er-art-heading"><span class="er-art-index">ER / 01</span><span>{{ "Un recorrido de evidencia" if es else "A journey through evidence" }}</span></div>
+        <ol class="er-sequence-labels"><li><span>{{ "Captura" if es else "Capture" }}</span></li><li><span>{{ "Hito" if es else "Milestone" }}</span></li><li><span>{{ "Resultado" if es else "Result" }}</span></li></ol>
       </div>
+      <div class="er-hero-bottom"><a class="er-scroll-cue" href="#er-content"><span class="er-scroll-circle" aria-hidden="true">↓</span><span>{{ "Descubre Evidence Reporter" if es else "Discover Evidence Reporter" }}</span></a><button class="er-motion-toggle" id="er-pause" data-er-pause aria-pressed="false" hidden><span class="er-pause-icon" aria-hidden="true"></span><span>{{ "Pausar animación" if es else "Pause animation" }}</span></button></div>
     </div>
-  </div>
-  <a class="er-scroll-cue" href="#er-content" aria-label="{{ 'Explorar contenido' if es else 'Explore content' }}">
-    <span class="er-scroll-circle">{{ icon('arrow-down') }}</span>
-    <span>{{ 'Descubre Evidence Reporter' if es else 'Discover Evidence Reporter' }}</span>
-  </a>
-  <button class="er-motion-toggle" type="button" data-er-pause aria-pressed="false" hidden>{{ icon('pause') }}<span>{{ 'Pausar animación' if es else 'Pause animation' }}</span></button>
-</section>
+  </section>
 {% endblock %}
 {% block content %}<div class="er-home-content" id="er-content" tabindex="-1">{{ page.content }}</div>{% endblock %}

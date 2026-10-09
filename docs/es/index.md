@@ -51,13 +51,13 @@ Una prueba indica si pasó. **La evidencia cuenta la historia.** Captura los mom
 
 </div>
 
-## Tres formas de compartir tu evidencia.
+## Tres formas de compartir tu evidencia. {#er-report}
 
 === "HTML"
 
     <div class="er-format-preview" markdown>
 
-    [![Resumen del reporte de ejemplo generado](assets/images/report-light.png)](demo/es/passed.html)
+    <iframe src="demo/es/passed.html" title="Reporte real de ejemplo de Evidence Reporter" loading="lazy"></iframe>
 
     </div>
 
