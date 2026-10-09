@@ -189,11 +189,7 @@ Comprobar Portada Sin Desbordamiento
     ...    return [...document.querySelectorAll('.er-action')].every(el=>{
     ...    const b=el.getBoundingClientRect();return b.top>=0&&b.bottom<=innerHeight;});
     Should Be True    ${visible}
-    ${reachable}=    Execute Javascript
-    ...    const hero=document.querySelector('[data-er-hero]').getBoundingClientRect();
-    ...    const cue=document.querySelector('.er-scroll-cue').getBoundingClientRect();
-    ...    return cue.top>=hero.top && cue.bottom<=hero.bottom;
-    Should Be True    ${reachable}
+    Comprobar Indicacion De Scroll
     ${separate}=    Execute Javascript
     ...    const a=document.querySelector('.md-select button').getBoundingClientRect();
     ...    const b=document.querySelector('.er-search-trigger').getBoundingClientRect();
@@ -202,6 +198,15 @@ Comprobar Portada Sin Desbordamiento
     ${transparent}=    Execute Javascript
     ...    return getComputedStyle(document.querySelector('.md-header')).backgroundColor;
     Should Be Equal    ${transparent}    rgba(0, 0, 0, 0)
+
+Comprobar Indicacion De Scroll
+    [Documentation]    Comprueba que el botón para bajar queda dentro de la portada completa.
+    ${reachable}=    Execute Javascript
+    ...    const hero=document.querySelector('[data-er-hero]').getBoundingClientRect();
+    ...    const cue=document.querySelector('.er-scroll-cue').getBoundingClientRect();
+    ...    return cue.top>=hero.top && cue.bottom<=hero.bottom;
+    Should Be True    ${reachable}
+
 
 Abrir Documentación
     [Documentation]    Abre el sitio servido localmente por CI en un navegador aislado.
