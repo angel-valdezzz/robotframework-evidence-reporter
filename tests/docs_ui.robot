@@ -207,7 +207,6 @@ Comprobar Indicacion De Scroll
     ...    return cue.top>=hero.top && cue.bottom<=hero.bottom;
     Should Be True    ${reachable}
 
-
 Abrir Documentación
     [Documentation]    Abre el sitio servido localmente por CI en un navegador aislado.
     Open Browser    ${DOCS_URL}    headlesschrome
