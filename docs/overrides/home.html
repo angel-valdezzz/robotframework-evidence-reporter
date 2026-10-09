@@ -1,18 +1,13 @@
 {% extends "main.html" %}
 {% set es = config.theme.language == 'es' %}
 {% macro icon(name) %}<span class="er-icon" aria-hidden="true">{% include '.icons/material/' ~ name ~ '.svg' %}</span>{% endmacro %}
-{% set steps = [
-  {'image': 'landing-start.webp', 'label': 'Inicio' if es else 'Start', 'brief': 'Acceder al portal de clientes.' if es else 'Open the customer portal.', 'title': 'Portal disponible' if es else 'Portal available', 'description': 'El formulario está listo para comenzar el registro.' if es else 'The form is ready to begin customer registration.', 'log': 'Portal abierto. Inicio del flujo registrado.' if es else 'Portal opened. Workflow start recorded.'},
-  {'image': 'landing-registration.webp', 'label': 'Registro' if es else 'Registration', 'brief': 'Completar y confirmar los datos.' if es else 'Complete and confirm the details.', 'title': 'Datos confirmados' if es else 'Details confirmed', 'description': 'Los datos de demostración quedan documentados antes de confirmar.' if es else 'The illustrative details are documented before confirmation.', 'log': 'Datos de registro preparados para confirmar.' if es else 'Registration details ready to confirm.'},
-  {'image': 'landing-confirmation.webp', 'label': 'Confirmación' if es else 'Confirmation', 'brief': 'Cliente registrado y acceso habilitado.' if es else 'Customer registered and access enabled.', 'title': 'Cliente registrado' if es else 'Customer registered', 'description': 'Se confirma el registro del cliente y su acceso al portal.' if es else 'Customer registration and portal access are confirmed.', 'log': 'Registro completado. Evidencia guardada.' if es else 'Registration completed. Evidence saved.'}
-] %}
 {% block tabs %}
-<section class="er-hero" aria-labelledby="er-headline" data-er-hero data-lang="{{ config.theme.language }}" data-er-step="2">
+<section class="er-hero" aria-labelledby="er-headline" data-er-hero data-lang="{{ config.theme.language }}">
   <img class="er-field" src="{{ 'assets/images/landing-field.webp' | url }}" alt="" width="1536" height="1024" fetchpriority="high">
   <div class="er-hero-inner">
     <div class="er-intro">
       <div class="er-hero-copy">
-        <h1 id="er-headline">{{ 'Cada paso.' if es else 'Every step.' }}<br><em>{{ 'Todo el contexto.' if es else 'All the context.' }}</em></h1>
+        <h1 id="er-headline"><span class="er-headline-line">{{ 'Cada paso' if es else 'Every step' }}<span class="er-period">.</span></span><br><em class="er-headline-line">{{ 'Todo el contexto' if es else 'All the context' }}<span class="er-period">.</span></em></h1>
         <p>{{ 'Capturas, hitos y resultados para documentar tus ejecuciones de prueba.' if es else 'Screenshots, milestones and results to document your test executions.' }}</p>
       </div>
       <div class="er-intro-actions">
@@ -23,52 +18,12 @@
         <div class="er-facts">HTML · PDF · DOCX</div>
       </div>
     </div>
-    <div class="er-report-scene" aria-label="{{ 'Demostración de evidencia con datos ficticios' if es else 'Evidence demonstration with fictitious data' }}">
-      <div class="er-preview">
-        <div class="er-preview-bar"><img src="{{ 'assets/logo.svg' | url }}" alt="" width="28" height="28"><strong>Evidence Reporter</strong><span class="er-demo-label">{{ 'Demostración' if es else 'Demonstration' }}</span><span class="er-case-status">{{ icon('check') }} PASS</span></div>
-        <div class="er-preview-heading">
-          <div><h2>{{ 'Registro de cliente' if es else 'Customer registration' }}</h2><p>{{ 'Capturas ilustrativas de un flujo de registro.' if es else 'Illustrative captures of a registration workflow.' }}</p></div>
-          <div class="er-preview-tabs" role="tablist" aria-label="{{ 'Vista de la demostración' if es else 'Demonstration view' }}">
-            {% for view, label in [('summary', 'Resumen' if es else 'Summary'), ('steps', 'Pasos' if es else 'Steps'), ('logs', 'Logs')] %}
-            <button type="button" id="er-tab-{{ view }}" role="tab" aria-controls="er-view-{{ view }}" aria-selected="{{ 'true' if view == 'steps' else 'false' }}" tabindex="{{ '0' if view == 'steps' else '-1' }}" data-er-view="{{ view }}" disabled>{{ label }}</button>
-            {% endfor %}
-          </div>
-        </div>
-        <div id="er-view-steps" class="er-view er-steps-view" role="tabpanel" aria-labelledby="er-tab-steps">
-          <ol class="er-milestones" aria-label="{{ 'Pasos de la ejecución' if es else 'Execution steps' }}">
-            {% for step in steps %}
-            <li><button type="button" data-er-select="{{ loop.index0 }}" aria-pressed="{{ 'true' if loop.last else 'false' }}" disabled><span class="er-step-number">0{{ loop.index }}</span><span><strong>{{ step.label }}</strong><small>{{ step.brief }}</small></span></button></li>
-            {% endfor %}
-          </ol>
-          <div class="er-captures">
-            {% for step in steps %}
-            <figure class="er-capture" data-er-capture="{{ loop.index0 }}"{% if not loop.last %} hidden{% endif %}><img src="{{ ('assets/images/' ~ step.image) | url }}" alt="{{ step.title }} — {{ 'portal ficticio de demostración' if es else 'fictitious demonstration portal' }}" width="1200" height="720" loading="eager"><figcaption>{{ 'Datos ficticios · Captura ilustrativa' if es else 'Fictitious data · Illustrative capture' }}</figcaption></figure>
-            {% endfor %}
-          </div>
-          <div class="er-contexts">
-            {% for step in steps %}
-            <div class="er-context" data-er-context="{{ loop.index0 }}"{% if not loop.last %} hidden{% endif %}>
-              <span class="er-context-count">{{ 'Paso' if es else 'Step' }} 0{{ loop.index }} {{ 'de' if es else 'of' }} 03</span><h3>{{ step.title }}</h3><p>{{ step.description }}</p>
-              <div class="er-evidence"><strong>{{ 'Evidencia capturada' if es else 'Captured evidence' }}</strong><img src="{{ ('assets/images/' ~ step.image) | url }}" alt="" width="1200" height="720" loading="eager"></div>
-              <div class="er-log">{{ icon('information') }}<div><span>INFO · {{ 'Evidencia guardada' if es else 'Evidence saved' }}</span><small>{{ step.log }}</small></div></div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        <div id="er-view-summary" class="er-view er-summary-view" role="tabpanel" aria-labelledby="er-tab-summary" hidden>
-          <img src="{{ 'assets/images/landing-confirmation.webp' | url }}" alt="{{ 'Registro confirmado en el portal ficticio' if es else 'Registration confirmed in the fictitious portal' }}" width="1200" height="720">
-          <div><span class="er-context-count">{{ 'EVIDENCIA CON CONTEXTO' if es else 'EVIDENCE WITH CONTEXT' }}</span><h3>{{ 'Del inicio a la confirmación.' if es else 'From start to confirmation.' }}</h3><p>{{ 'Tres momentos del flujo, sus capturas y sus mensajes, reunidos para entender qué ocurrió.' if es else 'Three moments in the workflow, their captures and their messages, brought together to explain what happened.' }}</p><a href="{{ ('demo/es/passed.html' if es else 'demo/passed.html') | url }}">{{ 'Abrir el reporte real' if es else 'Open the actual report' }} {{ icon('arrow-right') }}</a></div>
-        </div>
-        <div id="er-view-logs" class="er-view er-logs-view" role="tabpanel" aria-labelledby="er-tab-logs" hidden>
-          <h3>{{ 'Mensajes que acompañan la evidencia.' if es else 'Messages alongside the evidence.' }}</h3>
-          {% for step in steps %}<div class="er-log-row"><span>0{{ loop.index }}</span><strong>INFO</strong><p>{{ step.log }}</p></div>{% endfor %}
-          <p class="er-demo-note">{{ 'Demostración con datos ficticios. Abre el reporte real para explorar todas sus funciones.' if es else 'Demonstration with fictitious data. Open the actual report to explore all its features.' }}</p>
-        </div>
-        <div class="er-scene-footer"><span>HTML · PDF · DOCX <span class="er-footer-divider">/</span> {{ 'Código abierto y gratuito' if es else 'Open source & free' }}</span><div class="er-animation-controls" hidden><button type="button" data-er-pause aria-pressed="false">{{ 'Pausar' if es else 'Pause' }}</button><button type="button" data-er-replay>{{ 'Repetir' if es else 'Replay' }}</button></div></div>
-      </div>
-      <span class="er-live-status" aria-live="polite" aria-atomic="true"></span>
-    </div>
   </div>
+  <a class="er-scroll-cue" href="#er-content" aria-label="{{ 'Explorar contenido' if es else 'Explore content' }}">
+    <span class="er-scroll-circle">{{ icon('arrow-down') }}</span>
+    <span>{{ 'Descubre Evidence Reporter' if es else 'Discover Evidence Reporter' }}</span>
+  </a>
+  <button class="er-motion-toggle" type="button" data-er-pause aria-pressed="false" hidden>{{ icon('pause') }}<span>{{ 'Pausar animación' if es else 'Pause animation' }}</span></button>
 </section>
 {% endblock %}
-{% block content %}<div class="er-home-content">{{ page.content }}</div>{% endblock %}
+{% block content %}<div class="er-home-content" id="er-content" tabindex="-1">{{ page.content }}</div>{% endblock %}

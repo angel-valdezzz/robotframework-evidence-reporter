@@ -37,7 +37,9 @@ jobs:
           NODE_PATH="$PWD/build/libdoc-ui/node_modules" node docs/scripts/verify_landing.cjs
       - name: Verificar documentación en navegador
         run: |
-          python -m http.server 8765 --directory site >/tmp/evidence-docs-server.log 2>&1 &
+          mkdir -p build/docs-server
+          ln -s "$PWD/site" build/docs-server/robotframework-evidence-reporter
+          python -m http.server 8765 --directory build/docs-server >/tmp/evidence-docs-server.log 2>&1 &
           poetry run robot --outputdir results/docs-ui tests/docs_ui.robot
       - run: poetry build
       - run: poetry run python scripts/check_wheel.py

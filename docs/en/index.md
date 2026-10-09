@@ -78,7 +78,7 @@ A test tells you whether it passed. **Evidence tells the story.** Capture the mo
     [Download sample Word](demo/passed.docx){ .md-button .md-button--primary }
 
 !!! note "Real renderer, illustrative data"
-    Samples are generated with Evidence Reporter's own engine. The customer data and images are fictitious. The hero is an explanatory animation; open a sample to use the actual report controls.
+    Samples are generated with Evidence Reporter's own engine. The customer data and images are fictitious. Open a sample to explore the report controls.
 
 <div class="er-quickstart" markdown>
 

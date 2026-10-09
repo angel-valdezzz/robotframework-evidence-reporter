@@ -78,7 +78,7 @@ Una prueba indica si pasó. **La evidencia cuenta la historia.** Captura los mom
     [Descargar Word de ejemplo](demo/es/passed.docx){ .md-button .md-button--primary }
 
 !!! note "Motor real, datos ilustrativos"
-    Los ejemplos se generan con el motor de Evidence Reporter. Los datos de clientes y las imágenes son ficticios. La portada es una animación explicativa; abre un ejemplo para usar los controles del reporte real.
+    Los ejemplos se generan con el motor de Evidence Reporter. Los datos de clientes y las imágenes son ficticios. Abre un ejemplo para explorar los controles del reporte.
 
 <div class="er-quickstart" markdown>
 

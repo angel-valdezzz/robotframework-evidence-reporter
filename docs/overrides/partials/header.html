@@ -53,7 +53,7 @@
     {% if "material/search" in config.plugins %}
       {% set search = config.plugins["material/search"] | attr("config") %}
       {% if search.enabled %}
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon er-search-trigger" for="__search" aria-label="{{ lang.t('search') }}" tabindex="0" role="button">
           {% set icon = config.theme.icon.search or "material/magnify" %}
           {% include ".icons/" ~ icon ~ ".svg" %}
         </label>
