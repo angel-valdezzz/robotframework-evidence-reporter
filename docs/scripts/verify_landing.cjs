@@ -11,6 +11,15 @@ for (const language of ['en', 'es']) {
     const media = new w.EventTarget();
     media.matches = reduced;
     w.matchMedia = () => media;
+    w.HTMLCanvasElement.prototype.getContext = () => new Proxy({}, {
+      get(target, key) {
+        if (String(key).startsWith('create')) return () => ({addColorStop() {}});
+        return () => {};
+      }
+    });
+    w.ResizeObserver = class {observe() {} disconnect() {}};
+    w.IntersectionObserver = class {observe() {} disconnect() {}};
+    w.document.querySelector('#er-sequence').getBoundingClientRect = () => ({width:600,height:620});
     let remount;
     w.document$ = {subscribe(callback) { remount = callback; callback(); }};
     let scrolled;
@@ -22,9 +31,10 @@ for (const language of ['en', 'es']) {
     q('.er-scroll-cue').click();
     assert.equal(scrolled.behavior, reduced ? 'auto' : 'smooth');
     assert.equal(w.document.activeElement, q('#er-content'));
-    assert.ok(q('#er-content').querySelector('.er-format-preview'), 'Real examples must remain below home');
+    assert.ok(q('#er-content').querySelector('.er-format-preview iframe'), 'Real report must remain interactive below home');
     const report = q('.er-action-secondary').getAttribute('href');
-    assert.ok(report.endsWith(language === 'es' ? 'demo/es/passed.html' : 'demo/passed.html'));
+    assert.equal(report, '#er-report');
+    assert.ok(q('.er-format-preview iframe').getAttribute('src').endsWith(language === 'es' ? 'demo/es/passed.html' : 'demo/passed.html'));
     const pause = q('[data-er-pause]');
     assert.equal(pause.hidden, false);
     assert.equal(pause.disabled, reduced);

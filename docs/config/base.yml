@@ -53,7 +53,7 @@ extra_css:
   - assets/stylesheets/standard.css
   - assets/stylesheets/extra.css
   - assets/stylesheets/visual.css
-  - assets/stylesheets/landing.css?v=ambient-3
+  - assets/stylesheets/landing.css?v=ribbon-1
 markdown_extensions:
   - admonition
   - attr_list
@@ -80,10 +80,10 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_javascript:
-  - assets/navigation.js?v=locale-3
+  - assets/navigation.js?v=locale-4
   - assets/mermaid.min.js
   - assets/keyword-links.js
-  - assets/landing.js?v=ambient-3
+  - assets/landing.js?v=ribbon-1
 
 extra:
   scope: /robotframework-evidence-reporter/
