@@ -67,10 +67,12 @@ body:has([data-er-hero]) .md-search {position:static;width:0;height:0;padding:0}
 .md-typeset .er-quickstart h2 {margin-top:0!important}
 .md-typeset .er-doc-intro {border-left:3px solid var(--md-typeset-a-color);padding:.3rem 1rem;color:var(--md-default-fg-color--light);margin-bottom:1.5rem}
 .md-typeset a[data-preview] {text-underline-offset:.2em}
-/* Only the background of the documentation header moves. Text and controls stay fixed. */
-body:not(:has([data-er-hero])) .md-header {background:linear-gradient(110deg,#5744cc 0%,#245778 35%,#22777d 55%,#5744cc 100%);background-size:260% 100%;animation:er-header-flow 32s ease-in-out infinite}
+/* Both documentation bars share a horizontal field and phase; text stays fixed. */
+body:not(:has([data-er-hero])) :is(.md-header,.md-tabs) {background:linear-gradient(90deg,#5744cc 0%,#245778 35%,#22777d 55%,#5744cc 100%);background-size:260% 100%;animation:er-header-flow 32s ease-in-out infinite}
+body:not(:has([data-er-hero])) .md-header {box-shadow:none}
+body:not(:has([data-er-hero])) .md-tabs {box-shadow:0 3px 18px #0b254326}
 @keyframes er-header-flow {0%,100% {background-position:0% 50%}50% {background-position:100% 50%}}
-body[data-er-motion-paused="true"] .er-field,body[data-er-motion-paused="true"] .er-scroll-circle .er-icon,body[data-er-motion-paused="true"] .md-header {animation-play-state:paused}
+body[data-er-motion-paused="true"] .er-field,body[data-er-motion-paused="true"] .er-scroll-circle .er-icon,body[data-er-motion-paused="true"] :is(.md-header,.md-tabs) {animation-play-state:paused}
 @media(min-width:1100px) and (max-height:740px) {
  .er-hero-inner {padding-top:100px;padding-bottom:125px}
  .er-hero h1 {font-size:clamp(52px,5.2vw,78px)}
@@ -119,7 +121,7 @@ body[data-er-motion-paused="true"] .er-field,body[data-er-motion-paused="true"] 
  .md-typeset .er-quickstart {padding:1rem}
 }
 @media(prefers-reduced-motion:reduce) {
- .er-field,.er-scroll-circle .er-icon,body:not(:has([data-er-hero])) .md-header {animation:none}
+ .er-field,.er-scroll-circle .er-icon,body:not(:has([data-er-hero])) :is(.md-header,.md-tabs) {animation:none}
  .er-action,.er-scroll-circle {transition:none}
  .er-action:hover {transform:none}
 }

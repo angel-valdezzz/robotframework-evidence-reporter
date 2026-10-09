@@ -119,7 +119,7 @@ Explorar Contenido Y Hover
     Capture Page Screenshot    ${OUTPUTDIR}/landing-content.png
 
 Conservar Idioma Tema Y Encabezado
-    [Documentation]    Comprueba tema y ruta tras cambiar idioma; solo se anima el fondo del encabezado.
+    [Documentation]    Comprueba idioma, tema y sincronía del fondo del encabezado y navegación.
     Click Link    css:.er-action-primary
     Click Element    css:label[for="__palette_1"]
     Wait For Condition    return document.body.getAttribute('data-md-color-scheme') === 'slate';
@@ -128,8 +128,12 @@ Conservar Idioma Tema Y Encabezado
     Location Should Be    ${DOCS_URL}es/getting-started/
     Wait For Condition    return document.body.getAttribute('data-md-color-scheme') === 'slate';
     ${animated}=    Execute Javascript
-    ...    return getComputedStyle(document.querySelector('.md-header')).animationName;
-    Should Be Equal    ${animated}    er-header-flow
+    ...    const header=document.querySelector('.md-header'),tabs=document.querySelector('.md-tabs');
+    ...    const a=getComputedStyle(header),b=getComputedStyle(tabs);
+    ...    return a.animationName==='er-header-flow' && b.animationName===a.animationName &&
+    ...    a.backgroundImage===b.backgroundImage && a.backgroundPosition===b.backgroundPosition &&
+    ...    Math.abs(header.getAnimations()[0].currentTime-tabs.getAnimations()[0].currentTime)<1;
+    Should Be True    ${animated}
     Capture Page Screenshot    ${OUTPUTDIR}/docs-es-header.png
 
 

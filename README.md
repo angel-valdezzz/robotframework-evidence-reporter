@@ -5,7 +5,7 @@
   <img src="docs/assets/logo-wordmark.svg" alt="Evidence Reporter" width="380">
 </picture>
 
-**Business evidence reports in HTML, PDF and Word for each Robot Framework test case.**
+**Screenshots, milestones and results to document your test executions in HTML, PDF and Word.**
 
 **English** · [Español](README.es.md)
 
