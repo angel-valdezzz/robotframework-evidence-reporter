@@ -24,7 +24,7 @@ body:has([data-er-hero]) .md-logo img {width:36px;height:36px}
 .er-intro>* {min-width:0}
 .er-hero h1 {font-size:clamp(52px,6vw,90px);line-height:1.035;letter-spacing:-.055em;font-weight:760;margin:0;color:#f7f7ff}
 .er-hero h1 em {font-style:normal;color:#b496fc}
-.er-hero-copy > p {font-size:clamp(17px,1.45vw,21px);line-height:1.55;color:#d4d9ee;margin:14px 0 0;max-width:830px}
+.er-hero-copy > p {font-size:clamp(16px,1.25vw,18px);line-height:1.55;color:#d4d9ee;margin:14px 0 0;max-width:830px}
 .er-intro-actions {border-left:1px solid #697397;padding:20px 0 20px 32px}
 .er-actions {display:flex;align-items:flex-start;flex-direction:column;gap:16px}
 .er-action {display:inline-flex;align-items:center;justify-content:space-between;gap:22px;font-size:17px;font-weight:700;text-decoration:none;transition:background .2s,transform .2s}
@@ -190,9 +190,9 @@ body:has([data-er-hero]) .md-logo img {width:36px;height:36px}
  .er-preview-heading p {font-size:12px}
  .er-preview-tabs {width:100%;justify-content:space-between;gap:0}
  .er-preview-tabs button {font-size:13px}
- .er-milestones button {gap:6px;padding:14px 6px}
+ .er-milestones button {flex-direction:column;gap:6px;padding:12px 6px}
  .er-step-number {width:29px;height:29px;font-size:11px}
- .er-milestones strong {font-size:10px;overflow-wrap:anywhere}
+ .er-milestones strong {font-size:10px;white-space:nowrap}
  .er-captures {padding:14px}
  .er-capture figcaption {font-size:10px}
  .er-contexts {padding:15px}
